@@ -128,14 +128,6 @@ namespace My6705.NET_Framework_4._5
                 {
                     AxesController.StopContinuousMovementEmg(Machine.board[3]);
                 }
-            //home svon checker
-            //bool svonDisabled = false;
-            //for(int i = 0; i < 4; i++)
-            //{
-            //    if (AxesController.CheckAxisSVON(Machine.board[i],6)) svonDisabled = true;
-            //}
-            //if(svonDisabled) btnHome.Enabled = true;
-            //else btnHome.Enabled = false;
         }
 
         int t1;
@@ -357,7 +349,7 @@ namespace My6705.NET_Framework_4._5
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AxesController.ResetAllErrors();
+            AxesController.ResetAllErrors(Machine.board);
         }
 
         private void trbY_Scroll(object sender, EventArgs e)
