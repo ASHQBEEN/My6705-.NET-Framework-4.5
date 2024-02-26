@@ -5,6 +5,7 @@ using DirectShowLib;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
+using Advantech.Motion;
 
 namespace My6705.NET_Framework_4._5
 {
@@ -94,6 +95,7 @@ namespace My6705.NET_Framework_4._5
         {
             PictureBox[] pictureBoxNeg = { pbLimNeg0, pbLimNeg1, pbLimNeg2, pbLimNeg3 };
             PictureBox[] pictureBoxPos = { pbLimPos0, pbLimPos1, pbLimPos2, pbLimPos3 };
+            TextBox[] tbStates = {tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
 
             //Get current command position of the specified axis
             TextBox[] nCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
@@ -104,30 +106,28 @@ namespace My6705.NET_Framework_4._5
                 dr.GetIOTicker(i, pictureBoxPos, pictureBoxNeg);
             }
 
-
-            if (Machine.Instance.MaxCoordinate[0] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.board[0]) >= Machine.Instance.MaxCoordinate[0])
+            //error checker cycle
+            for (int i = 0; i < Machine.board.AxesCount; i++)
+            {
+                if (AxesController.GetAxisState(Machine.board[i]) == (ushort)AxisState.STA_AX_ERROR_STOP)
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.board[0]);
+                    tbStates[i].BackColor = Color.Red;
                 }
-
-            if (Machine.Instance.MaxCoordinate[1] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.board[1]) >= Machine.Instance.MaxCoordinate[1])
+                else
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.board[1]);
+                    tbStates[i].BackColor= Color.White;
                 }
+            }
 
-            if (Machine.Instance.MaxCoordinate[2] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.board[2]) >= Machine.Instance.MaxCoordinate[2])
-                {
-                    AxesController.StopContinuousMovementEmg(Machine.board[2]);
-                }
-
-            if (Machine.Instance.MaxCoordinate[3] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.board[3]) >= Machine.Instance.MaxCoordinate[3])
-                {
-                    AxesController.StopContinuousMovementEmg(Machine.board[3]);
-                }
+                //max coord checker
+                for (int i = 0; i < Machine.board.AxesCount; i++)
+            {
+                if (Machine.Instance.MaxCoordinate[i] != 0)
+                    if (AxesController.GetAxisCommandPosition(Machine.board[2]) >= Machine.Instance.MaxCoordinate[i])
+                    {
+                        AxesController.StopContinuousMovementEmg(Machine.board[i]);
+                    }
+            }
         }
 
         int t1;
