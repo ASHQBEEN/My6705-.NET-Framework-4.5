@@ -35,6 +35,7 @@ public class Machine
     public double[] MaxCoordinate { get; set; }
     public static readonly string ParametersFilePath = $"{nameof(Machine)}.json";
     public static readonly Board board = new Board((uint)DevTypeID.V_PCI1245, 1, 4);
+    //public static readonly Board secondBoard;
 
     public static void SaveMachineParameters()
     {
