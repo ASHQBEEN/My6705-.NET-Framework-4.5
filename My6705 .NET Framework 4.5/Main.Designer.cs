@@ -74,8 +74,6 @@
             this.lblTrbX = new System.Windows.Forms.Label();
             this.lblTrbY = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimPos0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimNeg0)).BeginInit();
@@ -513,8 +511,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(839, 629);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTrbY);
             this.Controls.Add(this.lblTrbX);
@@ -623,8 +619,6 @@
         private System.Windows.Forms.Label lblTrbX;
         private System.Windows.Forms.Label lblTrbY;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
     }
 }
 
