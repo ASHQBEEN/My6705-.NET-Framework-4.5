@@ -97,8 +97,8 @@ namespace My6705.NET_Framework_4._5
 
             //Get current command position of the specified axis
             TextBox[] nCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
-            double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.b);
-            for (int i = 0; i < Machine.b.AxesCount; i++)
+            double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.board);
+            for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 nCmdPos[i].Text = Convert.ToString(cmdPos[i]);
                 dr.GetIOTicker(i, pictureBoxPos, pictureBoxNeg);
@@ -106,33 +106,33 @@ namespace My6705.NET_Framework_4._5
 
 
             if (Machine.Instance.MaxCoordinate[0] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.b[0]) >= Machine.Instance.MaxCoordinate[0])
+                if (AxesController.GetAxisCommandPosition(Machine.board[0]) >= Machine.Instance.MaxCoordinate[0])
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.b[0]);
+                    AxesController.StopContinuousMovementEmg(Machine.board[0]);
                 }
 
             if (Machine.Instance.MaxCoordinate[1] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.b[1]) >= Machine.Instance.MaxCoordinate[1])
+                if (AxesController.GetAxisCommandPosition(Machine.board[1]) >= Machine.Instance.MaxCoordinate[1])
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.b[1]);
+                    AxesController.StopContinuousMovementEmg(Machine.board[1]);
                 }
 
             if (Machine.Instance.MaxCoordinate[2] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.b[2]) >= Machine.Instance.MaxCoordinate[2])
+                if (AxesController.GetAxisCommandPosition(Machine.board[2]) >= Machine.Instance.MaxCoordinate[2])
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.b[2]);
+                    AxesController.StopContinuousMovementEmg(Machine.board[2]);
                 }
 
             if (Machine.Instance.MaxCoordinate[3] != 0)
-                if (AxesController.GetAxisCommandPosition(Machine.b[3]) >= Machine.Instance.MaxCoordinate[3])
+                if (AxesController.GetAxisCommandPosition(Machine.board[3]) >= Machine.Instance.MaxCoordinate[3])
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.b[3]);
+                    AxesController.StopContinuousMovementEmg(Machine.board[3]);
                 }
             //home svon checker
             //bool svonDisabled = false;
             //for(int i = 0; i < 4; i++)
             //{
-            //    if (AxesController.CheckAxisSVON(Machine.b[i],6)) svonDisabled = true;
+            //    if (AxesController.CheckAxisSVON(Machine.board[i],6)) svonDisabled = true;
             //}
             //if(svonDisabled) btnHome.Enabled = true;
             //else btnHome.Enabled = false;
@@ -144,7 +144,7 @@ namespace My6705.NET_Framework_4._5
             btnHome.Enabled = false;
             homeState = 0;
             t1 = Environment.TickCount;
-            AxesController.SetHighVelocity(Machine.b, Machine.Instance.DriverVelocity);
+            AxesController.SetHighVelocity(Machine.board, Machine.Instance.DriverVelocity);
             timerHome.Start();
 
         }
@@ -168,14 +168,14 @@ namespace My6705.NET_Framework_4._5
             string btnServoOffCaption = "Servo Off";
             if (servoAll == false)
             {
-                AxesController.AllAxesServoOn(Machine.b);
+                AxesController.AllAxesServoOn(Machine.board);
                 servoAll = true;
                 button.Text = btnServoOffCaption;
                 btnHome.Enabled = true;
             }
             else
             {
-                AxesController.AllAxesServoOff(Machine.b);
+                AxesController.AllAxesServoOff(Machine.board);
                 servoAll = false;
                 button.Text = btnServoOnCaption;
                 btnHome.Enabled = false;
@@ -190,7 +190,7 @@ namespace My6705.NET_Framework_4._5
 
         private void driverTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //AxesController.SetHighVelocity(Machine.b, Machine.Instance.FastManipulatorVelocity);
+            //AxesController.SetHighVelocity(Machine.board, Machine.Instance.FastManipulatorVelocity);
             DriverTest interpolatedMovement = new DriverTest();
             interpolatedMovement.Show();
         }
@@ -352,7 +352,7 @@ namespace My6705.NET_Framework_4._5
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Machine.InterpolaionIsActive = false;
+
         }
 
         private void button1_Click(object sender, EventArgs e)

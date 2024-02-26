@@ -20,13 +20,13 @@ namespace My6705.NET_Framework_4._5
         //
         public void LoadCfg(string path)
         {
-            Machine.b.LoadConfig(path);
+            Machine.board.LoadConfig(path);
 
             //Since Acceleration = Deceleration (requirement)
-            AxesController.SetDeceleration(Machine.b, Machine.Instance.Acceleration);
-            AxesController.SetLowVelocity(Machine.b, Machine.Instance.LowVelocity);
-            AxesController.SetActAcc(Machine.b, Machine.Instance.Acceleration);
-            AxesController.SetJerk(Machine.b, Machine.Instance.Jerk);
+            AxesController.SetDeceleration(Machine.board, Machine.Instance.Acceleration);
+            AxesController.SetLowVelocity(Machine.board, Machine.Instance.LowVelocity);
+            AxesController.SetActAcc(Machine.board, Machine.Instance.Acceleration);
+            AxesController.SetJerk(Machine.board, Machine.Instance.Jerk);
         }
         public DialogResult SelectPath(string loadPath)
         {
@@ -65,7 +65,7 @@ namespace My6705.NET_Framework_4._5
             else
                 DoValue = 1;
             //Set DO value to channel
-            Result = Motion.mAcm_AxDoSetBit(Machine.b[i], DOChannel, DoValue);
+            Result = Motion.mAcm_AxDoSetBit(Machine.board[i], DOChannel, DoValue);
             if (Result != (uint)ErrorCode.SUCCESS)
             {
                 strTemp = "Set AxDoSetBit Failed With Error Code: [0x" + Convert.ToString(Result, 16) + "]";
@@ -90,7 +90,7 @@ namespace My6705.NET_Framework_4._5
             UInt32 Result;
             UInt32 IOStatus = new UInt32();
 
-            Result = Motion.mAcm_AxGetMotionIO(Machine.b[index], ref IOStatus);
+            Result = Motion.mAcm_AxGetMotionIO(Machine.board[index], ref IOStatus);
             if (Result == (uint)ErrorCode.SUCCESS)
             {
                 if ((IOStatus & (uint)Ax_Motion_IO.AX_MOTION_IO_LMTP) > 0) pictureBoxPos[index].BackColor = Color.Red;
@@ -105,66 +105,66 @@ namespace My6705.NET_Framework_4._5
             switch (j)
             {
                 case 0:
-                    AxesController.AxisMoveHome(Machine.b[Axes.Z], 1, 1);
+                    AxesController.AxisMoveHome(Machine.board[Axes.Z], 1, 1);
                     j = 1;
                     break;
                 case 1:
                     if (Environment.TickCount - t1 > ticksBeforeStop)
                     {
                         timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.b[Axes.Z]);
+                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Z]);
                         j = -1;
                         MessageBox.Show("Не удалось обнаружить датчик ИП");
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.b[2]) == (ushort)AxisState.STA_AX_HOMING) break;
+                    if (AxesController.GetAxisState(Machine.board[2]) == (ushort)AxisState.STA_AX_HOMING) break;
                     j = 2;
                     break;
                 case 2:
-                    AxesController.AxisMoveHome(Machine.b[Axes.X], 1, 1);
+                    AxesController.AxisMoveHome(Machine.board[Axes.X], 1, 1);
                     j = 3;
                     break;
                 case 3:
                     if (Environment.TickCount - t1 > ticksBeforeStop * 2)
                     {
                         timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.b[Axes.X]);
+                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.X]);
                         j = -1;
                         MessageBox.Show("Не удалось обнаружить датчик ИП");
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.b[0]) == (ushort)AxisState.STA_AX_HOMING) break;
+                    if (AxesController.GetAxisState(Machine.board[0]) == (ushort)AxisState.STA_AX_HOMING) break;
                     j = 4;
                     break;
                 case 4:
-                    AxesController.AxisMoveHome(Machine.b[Axes.Y], 1, 1);
+                    AxesController.AxisMoveHome(Machine.board[Axes.Y], 1, 1);
                     j = 5;
                     break;
                 case 5:
                     if (Environment.TickCount - t1 > ticksBeforeStop * 3)
                     {
                         timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.b[Axes.Y]);
+                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Y]);
                         j = -1;
                         MessageBox.Show("Не удалось обнаружить датчик ИП");
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.b[1]) == (ushort)AxisState.STA_AX_HOMING) break;
+                    if (AxesController.GetAxisState(Machine.board[1]) == (ushort)AxisState.STA_AX_HOMING) break;
                     j = 6; break;
                 case 6:
-                    AxesController.AxisMoveHome(Machine.b[Axes.Phi], 1, 1);
+                    AxesController.AxisMoveHome(Machine.board[Axes.Phi], 1, 1);
                     j = 7;
                     break;
                 case 7:
                     if (Environment.TickCount - t1 > ticksBeforeStop * 4)
                     {
                         timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.b[Axes.Phi]);
+                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Phi]);
                         j = -1;
                         MessageBox.Show("Не удалось обнаружить датчик ИП");
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.b[3]) == (ushort)AxisState.STA_AX_HOMING) break;
+                    if (AxesController.GetAxisState(Machine.board[3]) == (ushort)AxisState.STA_AX_HOMING) break;
                     else
                     {
                         j = -1;
