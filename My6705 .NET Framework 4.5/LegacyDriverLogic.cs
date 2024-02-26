@@ -106,7 +106,7 @@ namespace My6705.NET_Framework_4._5
             {
                 case 0:
                     AxesController.AxisMoveHome(Machine.board[Axes.Z], 1, 1);
-                    j = 1;
+                    j++;
                     break;
                 case 1:
                     if (Environment.TickCount - t1 > ticksBeforeStop)
@@ -118,14 +118,14 @@ namespace My6705.NET_Framework_4._5
                         break;
                     }
                     if (AxesController.GetAxisState(Machine.board[2]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j = 2;
+                    j++;
                     break;
                 case 2:
                     AxesController.AxisMoveHome(Machine.board[Axes.X], 1, 1);
-                    j = 3;
+                    j++;
                     break;
                 case 3:
-                    if (Environment.TickCount - t1 > ticksBeforeStop * 2)
+                    if (Environment.TickCount - t1 > ticksBeforeStop)
                     {
                         timer.Stop();
                         AxesController.StopContinuousMovementEmg(Machine.board[Axes.X]);
@@ -134,14 +134,14 @@ namespace My6705.NET_Framework_4._5
                         break;
                     }
                     if (AxesController.GetAxisState(Machine.board[0]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j = 4;
+                    j++;
                     break;
                 case 4:
                     AxesController.AxisMoveHome(Machine.board[Axes.Y], 1, 1);
-                    j = 5;
+                    j++;
                     break;
                 case 5:
-                    if (Environment.TickCount - t1 > ticksBeforeStop * 3)
+                    if (Environment.TickCount - t1 > ticksBeforeStop)
                     {
                         timer.Stop();
                         AxesController.StopContinuousMovementEmg(Machine.board[Axes.Y]);
@@ -150,13 +150,13 @@ namespace My6705.NET_Framework_4._5
                         break;
                     }
                     if (AxesController.GetAxisState(Machine.board[1]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j = 6; break;
+                    j++; break;
                 case 6:
                     AxesController.AxisMoveHome(Machine.board[Axes.Phi], 1, 1);
-                    j = 7;
+                    j++;
                     break;
                 case 7:
-                    if (Environment.TickCount - t1 > ticksBeforeStop * 4)
+                    if (Environment.TickCount - t1 > ticksBeforeStop)
                     {
                         timer.Stop();
                         AxesController.StopContinuousMovementEmg(Machine.board[Axes.Phi]);

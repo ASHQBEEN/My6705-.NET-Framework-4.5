@@ -95,7 +95,7 @@ namespace My6705.NET_Framework_4._5
         {
             PictureBox[] pictureBoxNeg = { pbLimNeg0, pbLimNeg1, pbLimNeg2, pbLimNeg3 };
             PictureBox[] pictureBoxPos = { pbLimPos0, pbLimPos1, pbLimPos2, pbLimPos3 };
-            TextBox[] tbStates = {tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
+            TextBox[] tbStates = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
 
             //Get current command position of the specified axis
             TextBox[] nCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
@@ -115,12 +115,12 @@ namespace My6705.NET_Framework_4._5
                 }
                 else
                 {
-                    tbStates[i].BackColor= Color.White;
+                    tbStates[i].BackColor = Color.White;
                 }
             }
 
-                //max coord checker
-                for (int i = 0; i < Machine.board.AxesCount; i++)
+            //max coord checker
+            for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 if (Machine.Instance.MaxCoordinate[i] != 0)
                     if (AxesController.GetAxisCommandPosition(Machine.board[2]) >= Machine.Instance.MaxCoordinate[i])
