@@ -131,6 +131,7 @@ namespace My6705.NET_Framework_4._5
         int homeTickerState = 0;
         private void btnHome_Click(object sender, EventArgs e)
         {
+            btnServo.Enabled = false;
             KeyboardControl.blockControls = true;
             homeTickerState = 1;
             SetHomeTicker(homeTickerState, Environment.TickCount);
@@ -146,6 +147,7 @@ namespace My6705.NET_Framework_4._5
         private void HomeSensorNotFoundStop(int axisIndex)
         {
             timerHome.Stop();
+            btnServo.Enabled = true;
             btnHome.Enabled = true;
             AxesController.StopContinuousMovementEmg(Machine.board[axisIndex]);
             homeTickerState = 0;
@@ -261,6 +263,7 @@ namespace My6705.NET_Framework_4._5
             if (homeTickerState == 0)
             {
                 btnHome.Enabled = true;
+                btnServo.Enabled = true;
                 timerHome.Stop();
                 KeyboardControl.blockControls = false;
                 return;
