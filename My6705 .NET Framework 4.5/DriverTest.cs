@@ -44,6 +44,7 @@ namespace My6705.NET_Framework_4._5
                     rbBackAndForth.Enabled = true;
                     btnStartInterpolatedMovement.Enabled = true;
                 }
+                KeyboardControl.blockControls = false;
                 driverTestTimer.Stop();
                 speedometer.Stop();
             }
@@ -62,6 +63,9 @@ namespace My6705.NET_Framework_4._5
             }
             throw new Exception();
         }
+
+        ushort statePtpMoving = (ushort)AxisState.STA_AX_PTP_MOT;
+        ushort stateIntMoving = (ushort)GroupState.STA_Gp_Motion;
         private void SetPTPStepTicker(int ptpAxisIndex, PairOfCoordinates coords)
         {
             testTimerTick = () =>
@@ -78,7 +82,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 2:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == (ushort)AxisState.STA_AX_PTP_MOT) break;
+                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
                         tickerState++;
                         break;
                     case 3:
@@ -90,7 +94,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 5:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == (ushort)AxisState.STA_AX_PTP_MOT) break;
+                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
                         tickerState++;
                         break;
                     case 6:
@@ -111,7 +115,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 2:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == (ushort)AxisState.STA_AX_PTP_MOT) break;
+                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
                         testStartTime = Environment.TickCount;
                         tickerState++;
                         break;
@@ -124,7 +128,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 5:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == (ushort)AxisState.STA_AX_PTP_MOT) break;
+                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
                         testStartTime = Environment.TickCount;
                         tickerState++;
                         break;
@@ -197,7 +201,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 2:
-                        if (InterpolationController.GetInterpolationGroupState() == (ushort)GroupState.STA_Gp_Motion) break;
+                        if (InterpolationController.GetInterpolationGroupState() == stateIntMoving) break;
                         tickerState++;
                         break;
                     case 3:
@@ -209,7 +213,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 5:
-                        if (InterpolationController.GetInterpolationGroupState() == (ushort)GroupState.STA_Gp_Motion) break;
+                        if (InterpolationController.GetInterpolationGroupState() == stateIntMoving) break;
                         tickerState++;
                         break;
                     case 6:
@@ -230,7 +234,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 2:
-                        if (InterpolationController.GetInterpolationGroupState() == (ushort)GroupState.STA_Gp_Motion) break;
+                        if (InterpolationController.GetInterpolationGroupState() == stateIntMoving) break;
                         tickerState++;
                         break;
                     case 3:
@@ -246,7 +250,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 6:
-                        if (InterpolationController.GetInterpolationGroupState() == (ushort)GroupState.STA_Gp_Motion) break;
+                        if (InterpolationController.GetInterpolationGroupState() == stateIntMoving) break;
                         tickerState++;
                         break;
                     case 7:
@@ -306,8 +310,8 @@ namespace My6705.NET_Framework_4._5
 
         private bool IsHybridInterpolationInProgress()
         {
-            return AxesController.GetAxisState(Machine.board[3]) == (ushort)AxisState.STA_AX_PTP_MOT ||
-                        InterpolationController.GetInterpolationGroupState() == (ushort)GroupState.STA_Gp_Motion;
+            return AxesController.GetAxisState(Machine.board[3]) == statePtpMoving ||
+                        InterpolationController.GetInterpolationGroupState() == stateIntMoving;
         }
 
         private void SetHybridAutoTicker(double[] pos1, double[] pos2, double phiPos1, double phiPos2, int delay)
@@ -431,6 +435,7 @@ namespace My6705.NET_Framework_4._5
                 tickerState = 1;
                 driverTestTimer.Start();
                 speedometer.Start();
+                KeyboardControl.blockControls = true;
             }
             else
             {
@@ -439,6 +444,7 @@ namespace My6705.NET_Framework_4._5
                 InterpolationController.StopInterpolationGroupMovement();
                 AxesController.StopMovementForAllAxes(Machine.board);
                 btnStartInterpolatedMovement.Text = "Начать\nдвижение";
+                KeyboardControl.blockControls = false;
             }
         }
 

@@ -123,28 +123,6 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        public static double[] GetAccelerationAsArray(Board b)
-        {
-            int axesCount = b.AxesCount;
-            double[] acc = new double[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                acc[i] = GetAxisAcceleration(b[i]);
-            }
-            return acc;
-        }
-
-        public static double GetAxisAcceleration(IntPtr axisHandler)
-        {
-            double acc = new double();
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GetF64Property(axisHandler, (uint)PropertyID.PAR_AxAcc, ref acc); ;
-            },
-            "Get acceleration");
-            return acc;
-        }
-
         public static void SetAxisJerk(IntPtr axisHandler, double value)
         {
             BoardActionPerformer.PerformBoardAction(() =>
@@ -177,72 +155,6 @@ namespace My6705.NET_Framework_4._5
             {
                 SetAxisLowVelocity(b[i], velLow[i]);
             }
-        }
-
-        public static double GetAxisLowVelocity(IntPtr axisHandler)
-        {
-            double velLow = new double();
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GetF64Property(axisHandler, (uint)PropertyID.PAR_AxVelLow, ref velLow); ;
-            },
-            "Get Low velocity");
-            return velLow;
-        }
-
-        public static double[] GetLowVelocityAsArray(Board b)
-        {
-            int axesCount = b.AxesCount;
-            double[] velLow = new double[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                velLow[i] = GetAxisLowVelocity(b[i]);
-            }
-            return velLow;
-        }
-
-        public static double GetAxisHighVelocity(IntPtr axisHandler)
-        {
-            double velHigh = new double();
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GetF64Property(axisHandler, (uint)PropertyID.PAR_AxVelHigh, ref velHigh); ;
-            },
-            "Get High velocity");
-            return velHigh;
-        }
-
-        public static double[] GetHighVelocityAsArray(Board b)
-        {
-            int axesCount = b.AxesCount;
-            double[] velHigh = new double[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                velHigh[i] = GetAxisHighVelocity(b[i]);
-            }
-            return velHigh;
-        }
-
-        public static double GetAxisJerk(IntPtr axisHandler)
-        {
-            double jerk = new double();
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GetF64Property(axisHandler, (uint)PropertyID.PAR_AxJerk, ref jerk); ;
-            },
-            "Get Jerk");
-            return jerk;
-        }
-
-        public static double[] GetJerkAsArray(Board b)
-        {
-            int axesCount = b.AxesCount;
-            double[] jerk = new double[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                jerk[i] = GetAxisJerk(b[i]);
-            }
-            return jerk;
         }
 
         public static void AxisServoOn(IntPtr axisHandler)
@@ -357,7 +269,16 @@ namespace My6705.NET_Framework_4._5
             {
                 return Motion.mAcm_AxMoveRel(axisHandler, distance);
             },
-            "Reset axis's error");
+            "Ax Move Rel");
+        }
+
+        public static void ResetCmdPosition(IntPtr axisHandler)
+        {
+            BoardActionPerformer.PerformBoardAction(() =>
+            {
+                return Motion.mAcm_AxSetCmdPosition(axisHandler, 0);
+            },
+            "Reset cmd position");
         }
     }
 }
