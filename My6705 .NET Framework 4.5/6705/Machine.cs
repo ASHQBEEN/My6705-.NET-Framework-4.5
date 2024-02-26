@@ -13,7 +13,7 @@ public class Machine
         SlowManipulatorVelocity = new double[] { 500, 500, 500, 500 },
         FastManipulatorVelocity = new double[] { 2000, 2000, 2000, 2000 },
         DriverVelocity = new double[] { 50000, 50000, 50000, 50000 },
-        Acceleration = new double[] { 500000, 500000, 500000, 500000 },
+        Acceleration = new double[] { 1000000, 1000000, 1000000, 1000000 },
         Jerk = new double[] { 0, 0, 0, 0 },
         MaxCoordinate = new double[] { 0, 0, 64000, 0}
     };
