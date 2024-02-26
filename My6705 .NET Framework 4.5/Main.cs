@@ -245,7 +245,7 @@ namespace My6705.NET_Framework_4._5
                         break;
                     case 16:
                         if (AxesController.GetAxisState(Machine.board[3]) == stateMoving) break;
-                        homeTickerState++;
+                        homeTickerState = 0;
                         break;
                 }
             };
