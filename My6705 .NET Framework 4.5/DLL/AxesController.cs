@@ -346,7 +346,7 @@ namespace My6705.NET_Framework_4._5
         {
             BoardActionPerformer.PerformBoardAction(() =>
             {
-                return Motion.mAcm_AxResetError(Machine.b[axisIndex]);
+                return Motion.mAcm_AxResetError(Machine.board[axisIndex]);
             },
             "Reset axis's error");
 
@@ -366,7 +366,7 @@ namespace My6705.NET_Framework_4._5
             BoardActionPerformer.PerformBoardAction(() =>
             {
                 return Motion.mAcm_AxDoGetBit(axisHandler, doChanell, ref bitDo);
-                //return Motion.mAcm_AxDoGetBit(Machine.b[j], i, ref bitDo);
+                //return Motion.mAcm_AxDoGetBit(Machine.board[j], i, ref bitDo);
             }, 
             "getBitDo");
             return bitDo == 1;
@@ -375,8 +375,8 @@ namespace My6705.NET_Framework_4._5
         public static void getdrivespeed(int axisIndex)
         {
             double vel = 1;
-            //MessageBox.Show(Motion.mAcm_AxGetCmdVelocity(Machine.b[axisIndex], ref vel).ToString());
-            Motion.mAcm_AxGetCmdVelocity(Machine.b[axisIndex], ref vel);
+            //MessageBox.Show(Motion.mAcm_AxGetCmdVelocity(Machine.board[axisIndex], ref vel).ToString());
+            Motion.mAcm_AxGetCmdVelocity(Machine.board[axisIndex], ref vel);
             MessageBox.Show(Machine.Instance.DriverVelocity[axisIndex].ToString() + " " + vel);
         }
     }

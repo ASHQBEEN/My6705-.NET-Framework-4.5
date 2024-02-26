@@ -71,7 +71,7 @@ namespace My6705.NET_Framework_4._5.DLL
 
         public static void RemoveAllAxesFromInterpolationGroup(Board b)
         {
-            for (int i = 0; i < Machine.b.AxesCount; i++) //3 = максимальное число осей для интерполяции
+            for (int i = 0; i < Machine.board.AxesCount; i++) //3 = максимальное число осей для интерполяции
             {
                 RemoveAxisFromInterpolationGroup(b[i]);
             }
@@ -97,7 +97,7 @@ namespace My6705.NET_Framework_4._5.DLL
         public static double getdrivespeed(int axisIndex)
         {
             double vel = 1;
-            //MessageBox.Show(Motion.mAcm_AxGetCmdVelocity(Machine.b[axisIndex], ref vel).ToString());
+            //MessageBox.Show(Motion.mAcm_AxGetCmdVelocity(Machine.board[axisIndex], ref vel).ToString());
             Motion.mAcm_GpGetCmdVel(interpolationHandler, ref vel);
             //MessageBox.Show(Machine.Instance.DriverVelocity[axisIndex].ToString() + " " + vel);
             return vel;

@@ -34,12 +34,7 @@ public class Machine
     public double[] Jerk { get; set; }
     public double[] MaxCoordinate { get; set; }
     public static readonly string ParametersFilePath = $"{nameof(Machine)}.json";
-    public static readonly Board b = new Board((uint)DevTypeID.PCI1245, 0, 4);
-    //*Для рефакторинга
-    //Если придётся делать интерполяцию для нескольких плат
-    //сделать потоки нестатичными и присваивать их инстансу
-    public static bool InterpolaionIsActive { get; set; } = false;
-
+    public static readonly Board board = new Board((uint)DevTypeID.V_PCI1245, 1, 4);
 
     public static void SaveMachineParameters()
     {

@@ -46,7 +46,7 @@ namespace My6705.NET_Framework_4._5
                 Machine.LoadMachineParameters();
             }
 
-            for (int i = 0; i < Machine.b.AxesCount; i++)
+            for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 nVelManipSlow[i].Text = Convert.ToString(Machine.Instance.SlowManipulatorVelocity[i]);
                 nVelManipFast[i].Text = Convert.ToString(Machine.Instance.FastManipulatorVelocity[i]);
@@ -67,14 +67,14 @@ namespace My6705.NET_Framework_4._5
             RadioButton[] rbT = { rbT0, rbT1, rbT2, rbT3 };
             NumericUpDown[] ndMaxCoord = { ndMaxCoord0, ndMaxCoord1, ndMaxCoord2, ndMaxCoord3 };
             //buffer values
-            double[] jerk = new double[Machine.b.AxesCount];
-            double[] velDr = new double[Machine.b.AxesCount];
-            double[] acc = new double[Machine.b.AxesCount];
-            double[] velManFast = new double[Machine.b.AxesCount];
-            double[] velManSlow = new double[Machine.b.AxesCount];
-            double[] maxCoord = new double[Machine.b.AxesCount];
+            double[] jerk = new double[Machine.board.AxesCount];
+            double[] velDr = new double[Machine.board.AxesCount];
+            double[] acc = new double[Machine.board.AxesCount];
+            double[] velManFast = new double[Machine.board.AxesCount];
+            double[] velManSlow = new double[Machine.board.AxesCount];
+            double[] maxCoord = new double[Machine.board.AxesCount];
 
-            for (int i = 0; i < Machine.b.AxesCount; i++)
+            for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 if (rbT[i].Checked == true) jerk[i] = 0;
                 else jerk[i] = 1;
@@ -86,10 +86,10 @@ namespace My6705.NET_Framework_4._5
             }
 
             Machine.Instance.Jerk = jerk;
-            AxesController.SetJerk(Machine.b, Machine.Instance.Jerk);
+            AxesController.SetJerk(Machine.board, Machine.Instance.Jerk);
             Machine.Instance.Acceleration = acc;
-            AxesController.SetActAcc(Machine.b, Machine.Instance.Acceleration);
-            AxesController.SetDeceleration(Machine.b, acc);
+            AxesController.SetActAcc(Machine.board, Machine.Instance.Acceleration);
+            AxesController.SetDeceleration(Machine.board, acc);
             Machine.Instance.SlowManipulatorVelocity = velManSlow;
             Machine.Instance.FastManipulatorVelocity = velManFast;
             Machine.Instance.DriverVelocity = velDr;
@@ -123,9 +123,9 @@ namespace My6705.NET_Framework_4._5
             double[] tempSlowManipVel = new double[4];
             double[] tempFastManipVel = new double[4];
             double[] tempDrVel = new double[4];
-            double[] jerk = new double[Machine.b.AxesCount];
+            double[] jerk = new double[Machine.board.AxesCount];
 
-            for (int i = 0; i < Machine.b.AxesCount; i++)
+            for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 tempAcc[i] = Convert.ToDouble(nAcc[i].Value);
                 tempSlowManipVel[i] = Convert.ToDouble(nVelManipSlow[i].Value);
