@@ -269,7 +269,16 @@ namespace My6705.NET_Framework_4._5
             {
                 return Motion.mAcm_AxMoveRel(axisHandler, distance);
             },
-            "Reset axis's error");
+            "Ax Move Rel");
+        }
+
+        public static void ResetCmdPosition(IntPtr axisHandler)
+        {
+            BoardActionPerformer.PerformBoardAction(() =>
+            {
+                return Motion.mAcm_AxSetCmdPosition(axisHandler, 0);
+            },
+            "Reset cmd position");
         }
     }
 }
