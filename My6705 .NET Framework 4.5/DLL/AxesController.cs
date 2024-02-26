@@ -334,50 +334,30 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        public static void ResetAllErrors()
+        public static void ResetAllErrors(Board b)
         {
             for (int i = 0; i < 4; i++)
             {
-                ResetAxisError(i);
+                ResetAxisError(b[i]);
             }
         }
 
-        public static void ResetAxisError(int axisIndex)
+        public static void ResetAxisError(IntPtr axisHandler)
         {
             BoardActionPerformer.PerformBoardAction(() =>
             {
-                return Motion.mAcm_AxResetError(Machine.board[axisIndex]);
+                return Motion.mAcm_AxResetError(axisHandler);
             },
             "Reset axis's error");
-
         }
 
-        public static void SetHighVelocityForAllAxes(Board b, double[] value) 
+        public static void AxisRelativeMove(IntPtr axisHandler, double distance)
         {
-            for(int i = 0; i < b.AxesCount; i++)
-            {
-                SetAxisHighVelocity(b[i], value[i]);
-            }
-        }
-
-        public static bool CheckAxisSVON(IntPtr axisHandler, ushort doChanell)
-        {
-            byte bitDo = 0;
             BoardActionPerformer.PerformBoardAction(() =>
             {
-                return Motion.mAcm_AxDoGetBit(axisHandler, doChanell, ref bitDo);
-                //return Motion.mAcm_AxDoGetBit(Machine.board[j], i, ref bitDo);
-            }, 
-            "getBitDo");
-            return bitDo == 1;
-        }
-
-        public static void getdrivespeed(int axisIndex)
-        {
-            double vel = 1;
-            //MessageBox.Show(Motion.mAcm_AxGetCmdVelocity(Machine.board[axisIndex], ref vel).ToString());
-            Motion.mAcm_AxGetCmdVelocity(Machine.board[axisIndex], ref vel);
-            MessageBox.Show(Machine.Instance.DriverVelocity[axisIndex].ToString() + " " + vel);
+                return Motion.mAcm_AxMoveRel(axisHandler, distance);
+            },
+            "Reset axis's error");
         }
     }
 }
