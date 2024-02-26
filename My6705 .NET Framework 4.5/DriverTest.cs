@@ -44,6 +44,7 @@ namespace My6705.NET_Framework_4._5
                     rbBackAndForth.Enabled = true;
                     btnStartInterpolatedMovement.Enabled = true;
                 }
+                KeyboardControl.blockControls = false;
                 driverTestTimer.Stop();
                 speedometer.Stop();
             }
@@ -431,6 +432,7 @@ namespace My6705.NET_Framework_4._5
                 tickerState = 1;
                 driverTestTimer.Start();
                 speedometer.Start();
+                KeyboardControl.blockControls = true;
             }
             else
             {
@@ -439,6 +441,7 @@ namespace My6705.NET_Framework_4._5
                 InterpolationController.StopInterpolationGroupMovement();
                 AxesController.StopMovementForAllAxes(Machine.board);
                 btnStartInterpolatedMovement.Text = "Начать\nдвижение";
+                KeyboardControl.blockControls = false;
             }
         }
 
