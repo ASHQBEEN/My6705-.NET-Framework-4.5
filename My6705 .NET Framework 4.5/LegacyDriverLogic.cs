@@ -81,7 +81,6 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        int ticksBeforeStop = 5000; // Home timer variable to control time spend on reaching the limiter
         //
         // Ticker methods, called every timer tick
         //
@@ -100,80 +99,7 @@ namespace My6705.NET_Framework_4._5
                 else pictureBoxNeg[index].BackColor = Color.Gray;
             }
         }
-        public int HomeTicker(int j, int t1, Timer timer)
-        {
-            switch (j)
-            {
-                case 0:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Z], 1, 1);
-                    j++;
-                    break;
-                case 1:
-                    if (Environment.TickCount - t1 > ticksBeforeStop)
-                    {
-                        timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Z]);
-                        j = -1;
-                        MessageBox.Show("Не удалось обнаружить датчик ИП");
-                        break;
-                    }
-                    if (AxesController.GetAxisState(Machine.board[2]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j++;
-                    break;
-                case 2:
-                    AxesController.AxisMoveHome(Machine.board[Axes.X], 1, 1);
-                    j++;
-                    break;
-                case 3:
-                    if (Environment.TickCount - t1 > ticksBeforeStop)
-                    {
-                        timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.X]);
-                        j = -1;
-                        MessageBox.Show("Не удалось обнаружить датчик ИП");
-                        break;
-                    }
-                    if (AxesController.GetAxisState(Machine.board[0]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j++;
-                    break;
-                case 4:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Y], 1, 1);
-                    j++;
-                    break;
-                case 5:
-                    if (Environment.TickCount - t1 > ticksBeforeStop)
-                    {
-                        timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Y]);
-                        j = -1;
-                        MessageBox.Show("Не удалось обнаружить датчик ИП");
-                        break;
-                    }
-                    if (AxesController.GetAxisState(Machine.board[1]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    j++; break;
-                case 6:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Phi], 1, 1);
-                    j++;
-                    break;
-                case 7:
-                    if (Environment.TickCount - t1 > ticksBeforeStop)
-                    {
-                        timer.Stop();
-                        AxesController.StopContinuousMovementEmg(Machine.board[Axes.Phi]);
-                        j = -1;
-                        MessageBox.Show("Не удалось обнаружить датчик ИП");
-                        break;
-                    }
-                    if (AxesController.GetAxisState(Machine.board[3]) == (ushort)AxisState.STA_AX_HOMING) break;
-                    else
-                    {
-                        j = -1;
-                    }
-                    break;
-                default: break;
-            }
-            return j;
-        }
+
         #endregion
         // Error messages wrapper from Advantech example's
         public void ShowMessages(string DetailMessage, uint errorCode)
