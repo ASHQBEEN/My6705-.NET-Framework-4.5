@@ -20,7 +20,7 @@ namespace My6705.NET_Framework_4._5
         private VideoCapture capture = null;
         private DsDevice[] webCams = null;
 
-        HomeHandler hh;
+        private readonly HomeHandler hh;
         public Main()
         {
             InitializeComponent();
