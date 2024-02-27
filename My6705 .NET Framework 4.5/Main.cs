@@ -142,7 +142,7 @@ namespace My6705.NET_Framework_4._5
         }
 
         Action homeTicker;
-        int ticksBeforeStop = 5000; // Home timer variable to control time spend on reaching the limiter
+        private readonly int ticksBeforeStop = 5000; // Home timer variable to control time spend on reaching the limiter
 
         private void HomeSensorNotFoundStop(int axisIndex)
         {
@@ -154,9 +154,9 @@ namespace My6705.NET_Framework_4._5
             KeyboardControl.blockControls = false;
             MessageBox.Show("Не удалось обнаружить датчик ИП");
         }
-        double basingDistance = 1000;
-        ushort stateHoming = (ushort)AxisState.STA_AX_HOMING;
-        ushort stateMoving = (ushort)AxisState.STA_AX_PTP_MOT;
+        private readonly double basingDistance = 1000;
+        private readonly ushort stateHoming = (ushort)AxisState.STA_AX_HOMING;
+        private readonly ushort stateMoving = (ushort)AxisState.STA_AX_PTP_MOT;
         public void SetHomeTicker(int homeTickerState, int t1)
         {
             homeTicker = () =>
