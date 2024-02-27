@@ -16,12 +16,15 @@ namespace My6705.NET_Framework_4._5
         Graph graph = new Graph();
         TestData td = new TestData();
 
+
         private VideoCapture capture = null;
         private DsDevice[] webCams = null;
 
+        private readonly HomeHandler hh;
         public Main()
         {
             InitializeComponent();
+            hh = new HomeHandler(timerHome, btnHome, btnServo);
         }
 
         private void velParametersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -128,148 +131,8 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        int homeTickerState = 0;
-        private void btnHome_Click(object sender, EventArgs e)
-        {
-            btnServo.Enabled = false;
-            KeyboardControl.blockControls = true;
-            homeTickerState = 1;
-            SetHomeTicker(homeTickerState, Environment.TickCount);
-            btnHome.Enabled = false;
-            AxesController.SetHighVelocity(Machine.board, Machine.Instance.DriverVelocity);
-            timerHome.Start();
+        
 
-        }
-
-        Action homeTicker;
-        int ticksBeforeStop = 5000; // Home timer variable to control time spend on reaching the limiter
-
-        private void HomeSensorNotFoundStop(int axisIndex)
-        {
-            timerHome.Stop();
-            btnServo.Enabled = true;
-            btnHome.Enabled = true;
-            AxesController.StopContinuousMovementEmg(Machine.board[axisIndex]);
-            homeTickerState = 0;
-            KeyboardControl.blockControls = false;
-            MessageBox.Show("Не удалось обнаружить датчик ИП");
-        }
-        double basingDistance = 1000;
-        ushort stateHoming = (ushort)AxisState.STA_AX_HOMING;
-        ushort stateMoving = (ushort)AxisState.STA_AX_PTP_MOT;
-        public void SetHomeTicker(int homeTickerState, int t1)
-        {
-            homeTicker = () =>
-            {
-                switch (homeTickerState)
-                {
-                    case 1:
-                        AxesController.AxisMoveHome(Machine.board[Axes.Z], 1, 1);
-                        homeTickerState++;
-                        break;
-                    case 2:
-                        if (Environment.TickCount - t1 > ticksBeforeStop)
-                        {
-                            HomeSensorNotFoundStop(2);
-                            break;
-                        }
-                        if (AxesController.GetAxisState(Machine.board[2]) == stateHoming) break;
-                        homeTickerState++;
-                        break;
-                    case 3:
-                        AxesController.AxisRelativeMove(Machine.board[2], basingDistance);
-                        homeTickerState++;
-                        break;
-                    case 4:
-                        if (AxesController.GetAxisState(Machine.board[2]) == stateMoving) break;
-                        AxesController.ResetCmdPosition(Machine.board[2]);
-                        homeTickerState++;
-                        break;
-                    case 5:
-                        AxesController.AxisMoveHome(Machine.board[Axes.X], 1, 1);
-                        homeTickerState++;
-                        break;
-                    case 6:
-                        if (Environment.TickCount - t1 > ticksBeforeStop)
-                        {
-                            HomeSensorNotFoundStop(0);
-                            break;
-                        }
-                        if (AxesController.GetAxisState(Machine.board[0]) == stateHoming) break;
-                        homeTickerState++;
-                        break;
-                    case 7:
-                        AxesController.AxisRelativeMove(Machine.board[0], basingDistance);
-                        homeTickerState++;
-                        break;
-                    case 8:
-                        if (AxesController.GetAxisState(Machine.board[0]) == stateMoving) break;
-                        homeTickerState++;
-                        AxesController.ResetCmdPosition(Machine.board[0]);
-                        break;
-                    case 9:
-                        AxesController.AxisMoveHome(Machine.board[Axes.Y], 1, 1);
-                        homeTickerState++;
-                        break;
-                    case 10:
-                        if (Environment.TickCount - t1 > ticksBeforeStop)
-                        {
-                            HomeSensorNotFoundStop(1);
-                            break;
-                        }
-                        if (AxesController.GetAxisState(Machine.board[1]) == stateHoming) break;
-                        homeTickerState++; break;
-                    case 11:
-                        AxesController.AxisRelativeMove(Machine.board[1], basingDistance);
-                        homeTickerState++;
-                        break;
-                    case 12:
-                        if (AxesController.GetAxisState(Machine.board[1]) == stateMoving) break;
-                        AxesController.ResetCmdPosition(Machine.board[1]);
-                        homeTickerState++;
-                        break;
-                    case 13:
-                        AxesController.AxisMoveHome(Machine.board[Axes.Phi], 1, 1);
-                        homeTickerState++;
-                        break;
-                    case 14:
-                        if (Environment.TickCount - t1 > ticksBeforeStop)
-                        {
-                            HomeSensorNotFoundStop(3);
-                            break;
-                        }
-                        if (AxesController.GetAxisState(Machine.board[3]) == stateHoming) break;
-                        else
-                        {
-                            homeTickerState = 0;
-                        }
-                        break;
-                    case 15:
-                        AxesController.AxisRelativeMove(Machine.board[3], basingDistance);
-                        homeTickerState++;
-                        break;
-                    case 16:
-                        if (AxesController.GetAxisState(Machine.board[3]) == stateMoving) break;
-                        AxesController.ResetCmdPosition(Machine.board[3]);
-                        homeTickerState = 0;
-                        break;
-                }
-            };
-        }
-
-        private void timerHomer_Tick(object sender, EventArgs e)
-        {
-            //Home Timer
-            if (homeTickerState == 0)
-            {
-                btnHome.Enabled = true;
-                btnServo.Enabled = true;
-                timerHome.Stop();
-                KeyboardControl.blockControls = false;
-                return;
-            }
-            homeTicker();
-        }
 
         bool servoAll = false;  // Controls servo state
         public void ServoAll(Button button)

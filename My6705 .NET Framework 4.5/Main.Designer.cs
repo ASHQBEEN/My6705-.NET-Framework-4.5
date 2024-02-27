@@ -337,11 +337,6 @@
             this.btnHome.TabIndex = 21;
             this.btnHome.Text = "Home";
             this.btnHome.UseVisualStyleBackColor = true;
-            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
-            // 
-            // timerHome
-            // 
-            this.timerHome.Tick += new System.EventHandler(this.timerHomer_Tick);
             // 
             // btnServo
             // 
