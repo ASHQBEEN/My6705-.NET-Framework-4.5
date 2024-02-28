@@ -29,8 +29,6 @@ namespace My6705.NET_Framework_4._5
             SetMaxCoord();
         }
 
-        //static bool stepDone = false;
-
         private Dictionary<CheckBox, RadioButton> checkboxesToRadioButtons = new Dictionary<CheckBox, RadioButton>();
 
         GroupState interpolationGroupState;
@@ -63,6 +61,7 @@ namespace My6705.NET_Framework_4._5
             }
             throw new Exception();
         }
+
 
         ushort statePtpMoving = (ushort)AxisState.STA_AX_PTP_MOT;
         ushort stateIntMoving = (ushort)GroupState.STA_Gp_Motion;
@@ -104,6 +103,7 @@ namespace My6705.NET_Framework_4._5
                 }
             };
         }
+
         private void SetPTPAutoTicker(int ptpAxisIndex, PairOfCoordinates coords, int delay)
         {
             testTimerTick = () =>
@@ -142,17 +142,7 @@ namespace My6705.NET_Framework_4._5
                 }
             };
         }
-        struct PairOfCoordinates
-        {
-            public double first;
-            public double second;
 
-            public PairOfCoordinates(double first, double second)
-            {
-                this.first = first;
-                this.second = second;
-            }
-        }
         private PairOfCoordinates GetPTPCoordinates()
         {
             for (int i = 0; i < cbAddedAxes.Length; i++)
@@ -597,16 +587,6 @@ namespace My6705.NET_Framework_4._5
         private void nudPosition2Phi_ValueChanged(object sender, EventArgs e)
         {
             SetMaxCoord();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i< rbDriveSpeed.Length; i++)
-            {
-                if (rbDriveSpeed[i].Checked)
-                    InterpolationController.getdrivespeed(i);
-            }
-
         }
 
         private void speedometer_Tick(object sender, EventArgs e)

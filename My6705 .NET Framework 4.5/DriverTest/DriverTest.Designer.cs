@@ -352,11 +352,11 @@
             this.cbAddAxisX.UseVisualStyleBackColor = true;
             this.cbAddAxisX.CheckedChanged += new System.EventHandler(this.cbAddAxisX_CheckedChanged);
             // 
-            // btnStartInterpolatedMovement
+            // btnStart
             // 
             this.btnStartInterpolatedMovement.Location = new System.Drawing.Point(34, 235);
             this.btnStartInterpolatedMovement.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnStartInterpolatedMovement.Name = "btnStartInterpolatedMovement";
+            this.btnStartInterpolatedMovement.Name = "btnStart";
             this.btnStartInterpolatedMovement.Size = new System.Drawing.Size(196, 63);
             this.btnStartInterpolatedMovement.TabIndex = 16;
             this.btnStartInterpolatedMovement.Text = "Начать\r\nдвижение";
