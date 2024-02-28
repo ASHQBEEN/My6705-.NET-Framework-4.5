@@ -1,16 +1,5 @@
-﻿using Advantech.Motion;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO.Ports;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
-using ZedGraph;
 
 namespace My6705.NET_Framework_4._5
 {
