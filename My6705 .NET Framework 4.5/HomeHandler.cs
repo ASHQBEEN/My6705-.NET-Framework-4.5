@@ -62,10 +62,10 @@ namespace My6705.NET_Framework_4._5
                 KeyboardControl.blockControls = false;
                 return;
             }
-            HomeTicker();
+            HomeTick();
         }
 
-        public void HomeTicker()
+        public void HomeTick()
         {
             switch (homeTickerState)
             {
