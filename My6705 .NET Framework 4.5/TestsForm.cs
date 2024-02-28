@@ -60,11 +60,7 @@ namespace My6705.NET_Framework_4._5
             tempData = comPort.getPortGraphDataTicker();
             rtbComValues.AppendText(tempData.ToString() + '\n');
 
-
-
-            td.AddTestValue(testIndex - 1, tempData);
-            
-
+            td.AddTestValue(testIndex - 1, tempData);   
 
             if (rbBreak.Checked) tbTestResult.Text = td.GetBreakValue(testIndex-1).ToString();
             //else if(rbShear.Checked)
