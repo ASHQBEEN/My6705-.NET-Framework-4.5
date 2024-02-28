@@ -1,13 +1,9 @@
-﻿using Advantech.Motion;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Globalization;
 
 
 namespace My6705.NET_Framework_4._5
@@ -55,7 +51,6 @@ namespace My6705.NET_Framework_4._5
             strData = comPort.ReadLine();
             doubleData = double.Parse(strData, CultureInfo.InvariantCulture);
             doubleData = Math.Round(doubleData, 1);
-
 
             strData = doubleData.ToString("F1");
         }
