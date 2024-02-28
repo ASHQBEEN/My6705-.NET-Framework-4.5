@@ -280,5 +280,11 @@ namespace My6705.NET_Framework_4._5
             },
             "Reset cmd position");
         }
+
+        public static bool IfMaximumReached(int axisIndex)
+        {
+            return Machine.Instance.MaxCoordinate[axisIndex] 
+                <= GetAxisCommandPosition(Machine.board[axisIndex]);
+        }
     }
 }

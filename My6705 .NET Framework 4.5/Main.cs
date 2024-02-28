@@ -124,7 +124,7 @@ namespace My6705.NET_Framework_4._5
             for (int i = 0; i < Machine.board.AxesCount; i++)
             {
                 if (Machine.Instance.MaxCoordinate[i] != 0)
-                    if (AxesController.GetAxisCommandPosition(Machine.board[2]) >= Machine.Instance.MaxCoordinate[i])
+                    if (AxesController.IfMaximumReached(i))
                     {
                         AxesController.StopContinuousMovementEmg(Machine.board[i]);
                     }
