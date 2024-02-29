@@ -15,7 +15,10 @@ public class Machine
         DriverVelocity = new double[] { 50000, 50000, 50000, 50000 },
         Acceleration = new double[] { 1000000, 1000000, 1000000, 1000000 },
         Jerk = new double[] { 0, 0, 0, 0 },
-        MaxCoordinate = new double[] { 0, 0, 64000, 0}
+        MaxCoordinate = new double[] { 0, 0, 64000, 0},
+        BreakTestPosition = new double[] { 1000, 1000, 1000 },
+        StretchTestPosition = new double[] { 1000, 1000, 1000 },
+        ShearTestPosition = new double[] { 1000, 1000, 1000 },
     };
 
     private Machine() { }
@@ -35,6 +38,11 @@ public class Machine
     public double[] MaxCoordinate { get; set; }
     public static readonly string ParametersFilePath = $"{nameof(Machine)}.json";
     public static readonly Board board = new Board((uint)DevTypeID.V_PCI1245, 1, 4);
+    
+    public double[] BreakTestPosition { get; set; }
+    public double[] StretchTestPosition { get; set; }
+    public double[] ShearTestPosition { get; set; }
+
     //public static readonly Board secondBoard;
 
     public static void SaveMachineParameters()

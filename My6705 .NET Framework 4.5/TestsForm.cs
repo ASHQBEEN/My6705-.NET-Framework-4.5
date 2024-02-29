@@ -95,11 +95,8 @@ namespace My6705.NET_Framework_4._5
             testIndex = graph.GetTestsCount().Count() + 1;
         }
 
-
-
         private void btnStartTest_Click(object sender, EventArgs e)
         {
- 
             double[] pos = new double[4];
             if (rbBreak.Checked)
                 pos = LoadParamVal(breakTestPath, Machine.board);
@@ -253,24 +250,24 @@ namespace My6705.NET_Framework_4._5
             sw.Close();
         }
 
-        //Tests testType = Tests.Break;
+        //Test testType = Test.Break;
 
         private void rbBreak_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Макс. усилие";
-        //    testType = Tests.Break;
+        //    testType = Test.Break;
         }
 
         private void rbStretch_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Растяжение, %";
-            //testType = Tests.Stretch;
+            //testType = Test.Stretch;
         }
 
         private void rbShear_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Макс. усилие";
-            //testType = Tests.Shear;
+            //testType = Test.Shear;
         }
 
         private void btnSetupWire_Click(object sender, EventArgs e)

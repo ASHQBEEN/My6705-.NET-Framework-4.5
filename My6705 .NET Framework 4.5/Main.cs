@@ -15,6 +15,7 @@ namespace My6705.NET_Framework_4._5
         ComPort comPort = new ComPort();
         Graph graph = new Graph();
         TestData td = new TestData();
+        COMPort port = new COMPort();
 
 
         private VideoCapture capture = null;
@@ -123,7 +124,6 @@ namespace My6705.NET_Framework_4._5
             //max coord checker
             for (int i = 0; i < Machine.board.AxesCount; i++)
             {
-                if (Machine.Instance.MaxCoordinate[i] != 0)
                     if (AxesController.IfMaximumReached(i))
                     {
                         AxesController.StopContinuousMovementEmg(Machine.board[i]);
@@ -184,7 +184,9 @@ namespace My6705.NET_Framework_4._5
                     comPort.SetPortName(cmbComPort.Text);
                     btnOpenPort.Text = "Закрыть порт";
                     // Open the port
-                    comPort.ComOpen();
+                    //comPort.ComOpen();
+                    port.PortName = cmbComPort.Text;
+                    port.Open();
                     // Start Graph Timer
                 }
                 catch (UnauthorizedAccessException) { error = true; }
@@ -320,7 +322,7 @@ namespace My6705.NET_Framework_4._5
         private void btnTest1_Click(object sender, EventArgs e)
         {
             TestsForm testsForm = new TestsForm(comPort, graph, td, dr);
-            testsForm.ShowDialog();
+            testsForm.Show();
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -331,6 +333,13 @@ namespace My6705.NET_Framework_4._5
         private void button1_Click(object sender, EventArgs e)
         {
             AxesController.ResetAllErrors(Machine.board);
+        }
+
+        
+        private void button2_Click(object sender, EventArgs e)
+        {
+            WireTest wt = new WireTest(port);
+            wt.Show();
         }
 
         private void trbY_Scroll(object sender, EventArgs e)

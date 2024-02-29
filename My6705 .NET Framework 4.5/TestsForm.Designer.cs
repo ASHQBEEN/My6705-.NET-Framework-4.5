@@ -177,11 +177,11 @@
             this.btnToStartPosition.UseVisualStyleBackColor = true;
             this.btnToStartPosition.Click += new System.EventHandler(this.btnToStartPosition_Click);
             // 
-            // btnSetupWire
+            // btnFixWire
             // 
             this.btnSetupWire.Location = new System.Drawing.Point(974, 445);
             this.btnSetupWire.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnSetupWire.Name = "btnSetupWire";
+            this.btnSetupWire.Name = "btnFixWire";
             this.btnSetupWire.Size = new System.Drawing.Size(152, 54);
             this.btnSetupWire.TabIndex = 13;
             this.btnSetupWire.Text = "Зафиксировать проволоку";

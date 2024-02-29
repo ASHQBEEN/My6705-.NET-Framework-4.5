@@ -205,13 +205,9 @@ namespace My6705.NET_Framework_4._5
             if (GetAxisState(b[axisIndex]) == (ushort)AxisState.STA_AX_READY)
             {
                 //если максимальная координата задана и нынешняя координата больше максимальной
-                if ((Machine.Instance.MaxCoordinate[axisIndex] != 0) &&
-                    (GetAxisCommandPosition(b[axisIndex]) >=
-                    Machine.Instance.MaxCoordinate[axisIndex])
+                if (IfMaximumReached(axisIndex)
                     && direction == 0)
-
                 {
-                    
                     return;
                 }
                 StartContinuousMovement(b, axisIndex, direction);
@@ -283,8 +279,8 @@ namespace My6705.NET_Framework_4._5
 
         public static bool IfMaximumReached(int axisIndex)
         {
-            return Machine.Instance.MaxCoordinate[axisIndex] 
-                <= GetAxisCommandPosition(Machine.board[axisIndex]);
+            return Machine.Instance.MaxCoordinate[axisIndex] != 0 ? Machine.Instance.MaxCoordinate[axisIndex] 
+                <= GetAxisCommandPosition(Machine.board[axisIndex]) : false;
         }
     }
 }
