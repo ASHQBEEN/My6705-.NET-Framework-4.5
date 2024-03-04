@@ -37,7 +37,7 @@ public class Machine
     public double[] Jerk { get; set; }
     public double[] MaxCoordinate { get; set; }
     public static readonly string ParametersFilePath = $"{nameof(Machine)}.json";
-    public static readonly Board board = new Board((uint)DevTypeID.V_PCI1245, 1, 4);
+    public static readonly Board board = new Board((uint)DevTypeID.PCI1245, 0, 4);
     
     public double[] BreakTestPosition { get; set; }
     public double[] StretchTestPosition { get; set; }

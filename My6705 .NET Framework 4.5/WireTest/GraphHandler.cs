@@ -30,7 +30,7 @@ namespace My6705.NET_Framework_4._5
         private void DrawLine(object sender, EventArgs e)
         {
             countSecond += 0.25;
-            DrawLine_port(countSecond, testValue, zgc, ref tickStart, comPort);
+            //DrawLine_port(countSecond, testValue, zgc, ref tickStart, comPort);
             zgc.AxisChange();
             zgc.Invalidate();
         }
