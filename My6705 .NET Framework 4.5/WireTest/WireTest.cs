@@ -9,6 +9,7 @@ namespace My6705.NET_Framework_4._5
         private List<Test> tests = new List<Test>(20);
         private TestHandler testHandler;
         private readonly COMPort port;
+        private double testValue = 0;
 
         public WireTest(COMPort port)
         {
@@ -153,6 +154,14 @@ namespace My6705.NET_Framework_4._5
         private void btnSetupWire_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void testHandlerTimer_Tick(object sender, EventArgs e)
+        {
+            //сделать класс comGetter для получения данных
+            double recievedValue = port.TestValue;
+            testHandler.testValue = recievedValue;
+            testValue = recievedValue;
         }
     }
 }

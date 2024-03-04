@@ -19,7 +19,7 @@ namespace My6705.NET_Framework_4._5
         int stopTimerCounter = 0;
         private readonly CheckBox cbBoundSet;
         private readonly NumericUpDown nudForceBound;
-        double testValue;
+        public double testValue;
         private readonly TextBox tbTestResult;
         int testAxisIndex;
         private readonly RichTextBox rtbTestValues;
@@ -111,7 +111,6 @@ namespace My6705.NET_Framework_4._5
 
         private void TestTick()
         {
-            testValue = port.TestValue;
             test.AddTestValue(testValue);
 
             rtbTestValues.AppendText(testValue.ToString() + '\n');

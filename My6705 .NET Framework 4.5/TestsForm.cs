@@ -282,5 +282,10 @@ namespace My6705.NET_Framework_4._5
             nudForceBound.Enabled = !nudForceBound.Enabled;
             boundIsSet = !boundIsSet;
         }
+
+        private void zgc_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

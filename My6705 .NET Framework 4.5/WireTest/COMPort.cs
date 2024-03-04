@@ -34,5 +34,9 @@ namespace My6705.NET_Framework_4._5
             TestValue = double.Parse(receivedStringValue, CultureInfo.InvariantCulture);
             TestValue = Math.Round(TestValue, 1);
         }
+
+        int stayTime = 0;
+        int stayTimeStart = 0;
+        int accumulatedStayTime = 0;
     }
 }

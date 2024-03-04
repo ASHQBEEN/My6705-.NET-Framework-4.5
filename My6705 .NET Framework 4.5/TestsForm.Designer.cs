@@ -77,6 +77,7 @@
             this.zgc.Size = new System.Drawing.Size(855, 502);
             this.zgc.TabIndex = 1;
             this.zgc.UseExtendedPrintDialog = true;
+            this.zgc.Load += new System.EventHandler(this.zgc_Load);
             // 
             // tbTestResult
             // 
@@ -118,6 +119,7 @@
             this.rbBreak.Name = "rbBreak";
             this.rbBreak.Size = new System.Drawing.Size(90, 24);
             this.rbBreak.TabIndex = 5;
+            this.rbBreak.TabStop = true;
             this.rbBreak.Text = "Разрыв";
             this.rbBreak.UseVisualStyleBackColor = true;
             this.rbBreak.CheckedChanged += new System.EventHandler(this.rbBreak_CheckedChanged);
@@ -177,11 +179,11 @@
             this.btnToStartPosition.UseVisualStyleBackColor = true;
             this.btnToStartPosition.Click += new System.EventHandler(this.btnToStartPosition_Click);
             // 
-            // btnFixWire
+            // btnSetupWire
             // 
             this.btnSetupWire.Location = new System.Drawing.Point(974, 445);
             this.btnSetupWire.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnSetupWire.Name = "btnFixWire";
+            this.btnSetupWire.Name = "btnSetupWire";
             this.btnSetupWire.Size = new System.Drawing.Size(152, 54);
             this.btnSetupWire.TabIndex = 13;
             this.btnSetupWire.Text = "Зафиксировать проволоку";

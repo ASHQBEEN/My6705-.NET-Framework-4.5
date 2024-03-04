@@ -52,12 +52,14 @@
             this.btnFixWire = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             ((System.ComponentModel.ISupportInitialize)(this.nudForceBound)).BeginInit();
             this.SuspendLayout();
             // 
             // testHandlerTimer
             // 
             this.testHandlerTimer.Interval = 250;
+            this.testHandlerTimer.Tick += new System.EventHandler(this.testHandlerTimer_Tick);
             // 
             // tbTestResult
             // 
@@ -295,11 +297,28 @@
             this.label8.TabIndex = 26;
             this.label8.Text = "Тип теста:";
             // 
+            // zedGraphControl1
+            // 
+            this.zedGraphControl1.Location = new System.Drawing.Point(13, 46);
+            this.zedGraphControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.zedGraphControl1.Name = "zedGraphControl1";
+            this.zedGraphControl1.ScrollGrace = 0D;
+            this.zedGraphControl1.ScrollMaxX = 0D;
+            this.zedGraphControl1.ScrollMaxY = 0D;
+            this.zedGraphControl1.ScrollMaxY2 = 0D;
+            this.zedGraphControl1.ScrollMinX = 0D;
+            this.zedGraphControl1.ScrollMinY = 0D;
+            this.zedGraphControl1.ScrollMinY2 = 0D;
+            this.zedGraphControl1.Size = new System.Drawing.Size(762, 406);
+            this.zedGraphControl1.TabIndex = 27;
+            this.zedGraphControl1.UseExtendedPrintDialog = true;
+            // 
             // WireTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1115, 473);
+            this.Controls.Add(this.zedGraphControl1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btnFixWire);
@@ -356,5 +375,6 @@
         private System.Windows.Forms.Button btnFixWire;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private ZedGraph.ZedGraphControl zedGraphControl1;
     }
 }

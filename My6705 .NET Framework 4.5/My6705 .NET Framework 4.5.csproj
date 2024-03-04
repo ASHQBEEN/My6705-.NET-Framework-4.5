@@ -142,6 +142,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="6705\TestData.cs" />
+    <Compile Include="WireTest\GraphHandler.cs" />
     <Compile Include="WireTest\ShearTest.cs" />
     <Compile Include="WireTest\StretchTest.cs" />
     <Compile Include="WireTest\TestHandler.cs" />
