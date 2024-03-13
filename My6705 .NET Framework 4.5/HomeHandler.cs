@@ -35,7 +35,7 @@ namespace My6705.NET_Framework_4._5
             homeTickerState = 0;
             turnServoBtn.Enabled = true;
             homeBtn.Enabled = true;
-            AxesController.StopContinuousMovementEmg(Machine.board[axisIndex]);
+            AxesController.StopContinuousMovementEmg(Machine.Board[axisIndex]);
             KeyboardControl.blockControls = false;
             MessageBox.Show("Не удалось обнаружить датчик ИП");
         }
@@ -47,7 +47,7 @@ namespace My6705.NET_Framework_4._5
             KeyboardControl.blockControls = true;
             homeTickerState = 1;
             homeBtn.Enabled = false;
-            AxesController.SetHighVelocity(Machine.board, Machine.Instance.DriverVelocity);
+            AxesController.SetHighVelocity(Machine.Board, Machine.DriverVelocity);
             timer.Start();
         }
 
@@ -70,7 +70,7 @@ namespace My6705.NET_Framework_4._5
             switch (homeTickerState)
             {
                 case 1:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Z], 1, 1);
+                    AxesController.AxisMoveHome(Machine.Board[Axes.Z], 1, 1);
                     homeTickerState++;
                     break;
                 case 2:
@@ -79,20 +79,20 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(2);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.board[2]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[2]) == stateHoming) break;
                     homeTickerState++;
                     break;
                 case 3:
-                    AxesController.AxisRelativeMove(Machine.board[2], basingDistance);
+                    AxesController.AxisRelativeMove(Machine.Board[2], basingDistance);
                     homeTickerState++;
                     break;
                 case 4:
-                    if (AxesController.GetAxisState(Machine.board[2]) == stateMoving) break;
-                    AxesController.ResetCmdPosition(Machine.board[2]);
+                    if (AxesController.GetAxisState(Machine.Board[2]) == stateMoving) break;
+                    AxesController.ResetCmdPosition(Machine.Board[2]);
                     homeTickerState++;
                     break;
                 case 5:
-                    AxesController.AxisMoveHome(Machine.board[Axes.X], 1, 1);
+                    AxesController.AxisMoveHome(Machine.Board[Axes.X], 1, 1);
                     homeTickerState++;
                     break;
                 case 6:
@@ -101,20 +101,20 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(0);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.board[0]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[0]) == stateHoming) break;
                     homeTickerState++;
                     break;
                 case 7:
-                    AxesController.AxisRelativeMove(Machine.board[0], basingDistance);
+                    AxesController.AxisRelativeMove(Machine.Board[0], basingDistance);
                     homeTickerState++;
                     break;
                 case 8:
-                    if (AxesController.GetAxisState(Machine.board[0]) == stateMoving) break;
+                    if (AxesController.GetAxisState(Machine.Board[0]) == stateMoving) break;
                     homeTickerState++;
-                    AxesController.ResetCmdPosition(Machine.board[0]);
+                    AxesController.ResetCmdPosition(Machine.Board[0]);
                     break;
                 case 9:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Y], 1, 1);
+                    AxesController.AxisMoveHome(Machine.Board[Axes.Y], 1, 1);
                     homeTickerState++;
                     break;
                 case 10:
@@ -123,19 +123,19 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(1);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.board[1]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[1]) == stateHoming) break;
                     homeTickerState++; break;
                 case 11:
-                    AxesController.AxisRelativeMove(Machine.board[1], basingDistance);
+                    AxesController.AxisRelativeMove(Machine.Board[1], basingDistance);
                     homeTickerState++;
                     break;
                 case 12:
-                    if (AxesController.GetAxisState(Machine.board[1]) == stateMoving) break;
-                    AxesController.ResetCmdPosition(Machine.board[1]);
+                    if (AxesController.GetAxisState(Machine.Board[1]) == stateMoving) break;
+                    AxesController.ResetCmdPosition(Machine.Board[1]);
                     homeTickerState++;
                     break;
                 case 13:
-                    AxesController.AxisMoveHome(Machine.board[Axes.Phi], 1, 1);
+                    AxesController.AxisMoveHome(Machine.Board[Axes.Phi], 1, 1);
                     homeTickerState++;
                     break;
                 case 14:
@@ -144,19 +144,19 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(3);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.board[3]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[3]) == stateHoming) break;
                     else
                     {
                         homeTickerState = 0;
                     }
                     break;
                 case 15:
-                    AxesController.AxisRelativeMove(Machine.board[3], basingDistance);
+                    AxesController.AxisRelativeMove(Machine.Board[3], basingDistance);
                     homeTickerState++;
                     break;
                 case 16:
-                    if (AxesController.GetAxisState(Machine.board[3]) == stateMoving) break;
-                    AxesController.ResetCmdPosition(Machine.board[3]);
+                    if (AxesController.GetAxisState(Machine.Board[3]) == stateMoving) break;
+                    AxesController.ResetCmdPosition(Machine.Board[3]);
                     homeTickerState = 0;
                     break;
             }

@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="6705\Axes.cs" />
     <Compile Include="BoardControl.cs" />
+    <Compile Include="TestPosition.cs" />
     <Compile Include="WireTest\BreakTest.cs" />
     <Compile Include="WireTest\COMPort.cs" />
     <Compile Include="DLL\Board.cs" />

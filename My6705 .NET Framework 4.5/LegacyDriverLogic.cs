@@ -20,13 +20,13 @@ namespace My6705.NET_Framework_4._5
         //
         public void LoadCfg(string path)
         {
-            Machine.board.LoadConfig(path);
+            Machine.Board.LoadConfig(path);
 
             //Since Acceleration = Deceleration (requirement)
-            AxesController.SetDeceleration(Machine.board, Machine.Instance.Acceleration);
-            AxesController.SetLowVelocity(Machine.board, Machine.Instance.LowVelocity);
-            AxesController.SetActAcc(Machine.board, Machine.Instance.Acceleration);
-            AxesController.SetJerk(Machine.board, Machine.Instance.Jerk);
+            AxesController.SetDeceleration(Machine.Board, Machine.Acceleration);
+            AxesController.SetLowVelocity(Machine.Board, Machine.Board.LowVelocity);
+            AxesController.SetActAcc(Machine.Board, Machine.Acceleration);
+            AxesController.SetJerk(Machine.Board, Machine.Jerk);
         }
         public DialogResult SelectPath(string loadPath)
         {
@@ -65,7 +65,7 @@ namespace My6705.NET_Framework_4._5
             else
                 DoValue = 1;
             //Set DO value to channel
-            Result = Motion.mAcm_AxDoSetBit(Machine.board[i], DOChannel, DoValue);
+            Result = Motion.mAcm_AxDoSetBit(Machine.Board[i], DOChannel, DoValue);
             if (Result != (uint)ErrorCode.SUCCESS)
             {
                 strTemp = "Set AxDoSetBit Failed With Error Code: [0x" + Convert.ToString(Result, 16) + "]";
@@ -89,7 +89,7 @@ namespace My6705.NET_Framework_4._5
             UInt32 Result;
             UInt32 IOStatus = new UInt32();
 
-            Result = Motion.mAcm_AxGetMotionIO(Machine.board[index], ref IOStatus);
+            Result = Motion.mAcm_AxGetMotionIO(Machine.Board[index], ref IOStatus);
             if (Result == (uint)ErrorCode.SUCCESS)
             {
                 if ((IOStatus & (uint)Ax_Motion_IO.AX_MOTION_IO_LMTP) > 0) pictureBoxPos[index].BackColor = Color.Red;

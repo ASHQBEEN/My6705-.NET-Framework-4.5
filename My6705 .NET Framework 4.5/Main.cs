@@ -25,6 +25,7 @@ namespace My6705.NET_Framework_4._5
         public Main()
         {
             InitializeComponent();
+            Machine.TestPosition.ToString();
             hh = new HomeHandler(timerHome, btnHome, btnServo);
         }
 
@@ -49,8 +50,6 @@ namespace My6705.NET_Framework_4._5
             {
                 MessageBox.Show(ex.Message);
             }
-
-            Machine.LoadMachineParameters();
 
             //First we are looking in our .exe directory for file that contains the path to config
             //if it exists - load the config file
@@ -101,17 +100,17 @@ namespace My6705.NET_Framework_4._5
 
             //Get current command position of the specified axis
             TextBox[] nCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
-            double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.board);
-            for (int i = 0; i < Machine.board.AxesCount; i++)
+            double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.Board);
+            for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
                 nCmdPos[i].Text = Convert.ToString(cmdPos[i]);
                 dr.GetIOTicker(i, pictureBoxPos, pictureBoxNeg);
             }
 
             //error checker cycle
-            for (int i = 0; i < Machine.board.AxesCount; i++)
+            for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
-                if (AxesController.GetAxisState(Machine.board[i]) == (ushort)AxisState.STA_AX_ERROR_STOP)
+                if (AxesController.GetAxisState(Machine.Board[i]) == (ushort)AxisState.STA_AX_ERROR_STOP)
                 {
                     tbStates[i].BackColor = Color.Red;
                 }
@@ -122,11 +121,11 @@ namespace My6705.NET_Framework_4._5
             }
 
             //max coord checker
-            for (int i = 0; i < Machine.board.AxesCount; i++)
+            for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
                     if (AxesController.IfMaximumReached(i))
                     {
-                        AxesController.StopContinuousMovementEmg(Machine.board[i]);
+                        AxesController.StopContinuousMovementEmg(Machine.Board[i]);
                     }
             }
         }
@@ -141,14 +140,14 @@ namespace My6705.NET_Framework_4._5
             string btnServoOffCaption = "Servo Off";
             if (servoAll == false)
             {
-                AxesController.AllAxesServoOn(Machine.board);
+                AxesController.AllAxesServoOn(Machine.Board);
                 servoAll = true;
                 button.Text = btnServoOffCaption;
                 btnHome.Enabled = true;
             }
             else
             {
-                AxesController.AllAxesServoOff(Machine.board);
+                AxesController.AllAxesServoOff(Machine.Board);
                 servoAll = false;
                 button.Text = btnServoOnCaption;
                 btnHome.Enabled = false;
@@ -332,7 +331,7 @@ namespace My6705.NET_Framework_4._5
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AxesController.ResetAllErrors(Machine.board);
+            AxesController.ResetAllErrors(Machine.Board);
         }
 
         

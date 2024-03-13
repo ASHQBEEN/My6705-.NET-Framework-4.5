@@ -69,12 +69,12 @@ namespace My6705.NET_Framework_4._5
             {
                 breakCounter++;
             }
-            if (breakCounter == 20 || Machine.Instance.MaxCoordinate[2] <= AxesController.GetAxisCommandPosition(Machine.board[2])
+            if (breakCounter == 20 || Machine.MaxCoordinate[2] <= AxesController.GetAxisCommandPosition(Machine.Board[2])
                 || (boundIsSet && Convert.ToDouble(nudForceBound.Value) <= tempData))
             {
                 tmrComDataGetter.Stop();
                 tmrDrawLine.Stop();
-                AxesController.StopContinuousMovementEmg(Machine.board[2]);
+                AxesController.StopContinuousMovementEmg(Machine.Board[2]);
                 //MessageBox.Show(forceValues.Max().ToString());
                 //forceValues.Clear();
                 breakCounter = 0;
@@ -99,14 +99,14 @@ namespace My6705.NET_Framework_4._5
         {
             double[] pos = new double[4];
             if (rbBreak.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             if (rbStretch.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             if (rbShear.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             pos = pos.Take(pos.Count() - 1).ToArray();
 
-            double[] curpos = AxesController.GetCommandPositionsAsArray(Machine.board);
+            double[] curpos = AxesController.GetCommandPositionsAsArray(Machine.Board);
             curpos = curpos.Take(curpos.Count() - 1).ToArray();
 
             if (coordSet && curpos.SequenceEqual(pos) == false)
@@ -123,8 +123,8 @@ namespace My6705.NET_Framework_4._5
             tickStart = Environment.TickCount;
             zgc.AxisChange();
             zgc.Invalidate();
-            AxesController.SetHighVelocity(Machine.board, Machine.Instance.SlowManipulatorVelocity);
-            AxesController.StartContinuousMovementChecked(Machine.board, 2, 0);
+            AxesController.SetHighVelocity(Machine.Board, Machine.SlowVelocity);
+            AxesController.StartContinuousMovementChecked(Machine.Board, 2, 0);
                    
             tmrComDataGetter.Start();
             tmrDrawLine.Start();
@@ -173,11 +173,11 @@ namespace My6705.NET_Framework_4._5
         {
             double[] pos = new double[4];
             if (rbBreak.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             if (rbStretch.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             if (rbShear.Checked)
-                pos = LoadParamVal(breakTestPath, Machine.board);
+                pos = LoadParamVal(breakTestPath, Machine.Board);
             pos = pos.Take(pos.Count() - 1).ToArray();
             if (pos[0] == 0 && pos[1] == 0 && pos[2] == 0)
             {
@@ -185,9 +185,9 @@ namespace My6705.NET_Framework_4._5
                 return;
             }
 
-            AxesController.MoveToPoint(Machine.board[0], pos[0]);
-            AxesController.MoveToPoint(Machine.board[1], pos[1]);
-            AxesController.MoveToPoint(Machine.board[2], pos[2]);
+            AxesController.MoveToPoint(Machine.Board[0], pos[0]);
+            AxesController.MoveToPoint(Machine.Board[1], pos[1]);
+            AxesController.MoveToPoint(Machine.Board[2], pos[2]);
 
             //dr.RemoveAllAxes();
 
@@ -199,24 +199,24 @@ namespace My6705.NET_Framework_4._5
         private void button1_Click(object sender, EventArgs e)
         {
             string path = "";
-            double[] pos = AxesController.GetCommandPositionsAsArray(Machine.board);
+            double[] pos = AxesController.GetCommandPositionsAsArray(Machine.Board);
             if (rbBreak.Checked)
             {
                 breakTestPosition = pos;
                 path = breakTestPath;
-                SaveParamVal(breakTestPosition, path, Machine.board);
+                SaveParamVal(breakTestPosition, path, Machine.Board);
             }
             if (rbStretch.Checked)
             {
                 stretchTestPosition = pos;
                 path = stretchTestPath;
-                SaveParamVal(stretchTestPosition, path, Machine.board);
+                SaveParamVal(stretchTestPosition, path, Machine.Board);
             }
             if (rbShear.Checked)
             {
                 shearTestPosition = pos;
                 path = shearTestPath;
-                SaveParamVal(shearTestPosition, path, Machine.board);
+                SaveParamVal(shearTestPosition, path, Machine.Board);
             }
             coordSet = true;
         }

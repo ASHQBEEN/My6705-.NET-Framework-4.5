@@ -53,7 +53,7 @@ namespace My6705.NET_Framework_4._5
 
         private void rbBreakTest_CheckedChanged(object sender, EventArgs e)
         {
-            ChangeLabelCoords(Machine.Instance.BreakTestPosition);
+            ChangeLabelCoords(Machine.BreakTestPosition);
             cmbTests.Items.Clear();
             bool noTestsFound = true;
             foreach (var test in tests)
@@ -72,7 +72,7 @@ namespace My6705.NET_Framework_4._5
         private void rbShearTest_CheckedChanged(object sender, EventArgs e)
         {
             bool noTestsFound = true;
-            ChangeLabelCoords(Machine.Instance.ShearTestPosition);
+            ChangeLabelCoords(Machine.ShearTestPosition);
             cmbTests.Items.Clear();
             foreach (var test in tests)
             {
@@ -87,7 +87,7 @@ namespace My6705.NET_Framework_4._5
         private void rbStretchTest_CheckedChanged(object sender, EventArgs e)
         {
             bool noTestsFound = true;
-            ChangeLabelCoords(Machine.Instance.StretchTestPosition);
+            ChangeLabelCoords(Machine.StretchTestPosition);
             cmbTests.Items.Clear();
             foreach (var test in tests)
             {
@@ -102,52 +102,52 @@ namespace My6705.NET_Framework_4._5
 
         private void WireTest_Load(object sender, EventArgs e)
         {
-            ChangeLabelCoords(Machine.Instance.BreakTestPosition);
+            ChangeLabelCoords(Machine.BreakTestPosition);
         }
 
         private void btnToStartPosition_Click(object sender, EventArgs e)
         {
             double[] pos = new double[3];
             if (rbBreakTest.Checked)
-                pos = Machine.Instance.BreakTestPosition;
+                pos = Machine.BreakTestPosition;
             else if (rbStretchTest.Checked)
-                pos = Machine.Instance.StretchTestPosition;
+                pos = Machine.StretchTestPosition;
             else if (rbShearTest.Checked)
-                pos = Machine.Instance.ShearTestPosition;
+                pos = Machine.ShearTestPosition;
 
-            AxesController.SetHighVelocity(Machine.board, Machine.Instance.DriverVelocity);
+            AxesController.SetHighVelocity(Machine.Board, Machine.DriverVelocity);
 
-            AxesController.MoveToPoint(Machine.board[0], pos[0]);
-            AxesController.MoveToPoint(Machine.board[1], pos[1]);
-            AxesController.MoveToPoint(Machine.board[2], pos[2]);
+            AxesController.MoveToPoint(Machine.Board[0], pos[0]);
+            AxesController.MoveToPoint(Machine.Board[1], pos[1]);
+            AxesController.MoveToPoint(Machine.Board[2], pos[2]);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             double[] newCoords = new double[]
 {
-                AxesController.GetAxisCommandPosition(Machine.board[0]),
-                AxesController.GetAxisCommandPosition(Machine.board[1]),
-                AxesController.GetAxisCommandPosition(Machine.board[2])
+                AxesController.GetAxisCommandPosition(Machine.Board[0]),
+                AxesController.GetAxisCommandPosition(Machine.Board[1]),
+                AxesController.GetAxisCommandPosition(Machine.Board[2])
 };
 
             if (rbBreakTest.Checked)
             {
-                Machine.Instance.BreakTestPosition = newCoords;
-                ChangeLabelCoords(Machine.Instance.BreakTestPosition);
+                Machine.BreakTestPosition = newCoords;
+                ChangeLabelCoords(Machine.BreakTestPosition);
             }
             else if (rbStretchTest.Checked)
             {
-                Machine.Instance.StretchTestPosition = newCoords;
-                ChangeLabelCoords(Machine.Instance.StretchTestPosition);
+                Machine.StretchTestPosition = newCoords;
+                ChangeLabelCoords(Machine.StretchTestPosition);
             }
             else if (rbShearTest.Checked)
             {
-                Machine.Instance.ShearTestPosition = newCoords;
-                ChangeLabelCoords(Machine.Instance.ShearTestPosition);
+                Machine.ShearTestPosition = newCoords;
+                ChangeLabelCoords(Machine.ShearTestPosition);
             }
 
-            Machine.SaveMachineParameters();
+            Machine.TestPosition.SaveTestPostitions();
         }
 
         private void btnSetupWire_Click(object sender, EventArgs e)

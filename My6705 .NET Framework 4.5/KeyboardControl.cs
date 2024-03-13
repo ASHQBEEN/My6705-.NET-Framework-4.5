@@ -71,13 +71,13 @@ namespace My6705.NET_Framework_4._5
                         direction = PositiveDirection;
                     else
                         direction = NegativeDirection;
-                    AxesController.StartContinuousMovementChecked(Machine.board, axisIndex, direction);
+                    AxesController.StartContinuousMovementChecked(Machine.Board, axisIndex, direction);
                 }
 
                 //событие KeyUp
                 if (wParam == (IntPtr)WM_KEYUP)
                 {
-                    AxesController.StopContinuousMovementEmg(Machine.board[axisIndex]);
+                    AxesController.StopContinuousMovementEmg(Machine.Board[axisIndex]);
                 }
             }
 
@@ -98,10 +98,10 @@ namespace My6705.NET_Framework_4._5
         {
             double speed;
             if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-                speed = Machine.Instance.FastManipulatorVelocity[axisIndex];
+                speed = Machine.FastVelocity[axisIndex];
             else
-                speed = Machine.Instance.SlowManipulatorVelocity[axisIndex];
-            AxesController.SetAxisHighVelocity(Machine.board[axisIndex], speed);
+                speed = Machine.SlowVelocity[axisIndex];
+            AxesController.SetAxisHighVelocity(Machine.Board[axisIndex], speed);
         }
 
         #region DLL Imports

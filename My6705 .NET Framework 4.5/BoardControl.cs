@@ -15,9 +15,9 @@ namespace My6705.NET_Framework_4._5
             if (AxesController.GetAxisState(b[axisIndex]) == (ushort)AxisState.STA_AX_READY)
             {
                 //если максимальная координата задана и нынешняя координата больше максимальной
-                if ((Machine.Instance.MaxCoordinate[axisIndex] != 0) &&
+                if ((Machine.MaxCoordinate[axisIndex] != 0) &&
                     (AxesController.GetAxisCommandPosition(b[axisIndex]) >=
-                    Machine.Instance.MaxCoordinate[axisIndex]))
+                    Machine.MaxCoordinate[axisIndex]))
 
                 {
                     MessageBox.Show("Достигнут максимум перемещения координаты");

@@ -71,7 +71,7 @@ namespace My6705.NET_Framework_4._5.DLL
 
         public static void RemoveAllAxesFromInterpolationGroup(Board b)
         {
-            for (int i = 0; i < Machine.board.AxesCount; i++) //3 = максимальное число осей для интерполяции
+            for (int i = 0; i < Machine.Board.AxesCount; i++) //3 = максимальное число осей для интерполяции
             {
                 RemoveAxisFromInterpolationGroup(b[i]);
             }
@@ -81,8 +81,8 @@ namespace My6705.NET_Framework_4._5.DLL
         {
             BoardActionPerformer.PerformBoardAction(() =>
             {
-                Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelHigh, Machine.Instance.DriverVelocity[axisIndex]);
-                return Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelLow, Machine.Instance.DriverVelocity[axisIndex]);
+                Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelHigh, Machine.DriverVelocity[axisIndex]);
+                return Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelLow, Machine.DriverVelocity[axisIndex]);
             },
             "Interpolation Group Set Velocity");
         }

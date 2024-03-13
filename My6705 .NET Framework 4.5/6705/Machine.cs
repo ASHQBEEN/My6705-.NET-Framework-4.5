@@ -1,75 +1,27 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
-using Advantech.Motion;
-using My6705.NET_Framework_4._5;
-using Newtonsoft.Json;
-
-public class Machine
+﻿namespace My6705.NET_Framework_4._5
 {
-    private static Machine instance = new Machine
+    public static class Machine
     {
-        SlowManipulatorVelocity = new double[] { 500, 500, 500, 500 },
-        FastManipulatorVelocity = new double[] { 2000, 2000, 2000, 2000 },
-        DriverVelocity = new double[] { 50000, 50000, 50000, 50000 },
-        Acceleration = new double[] { 1000000, 1000000, 1000000, 1000000 },
-        Jerk = new double[] { 0, 0, 0, 0 },
-        MaxCoordinate = new double[] { 0, 0, 64000, 0},
-        BreakTestPosition = new double[] { 1000, 1000, 1000 },
-        StretchTestPosition = new double[] { 1000, 1000, 1000 },
-        ShearTestPosition = new double[] { 1000, 1000, 1000 },
-    };
+        public readonly static Board Board = new Board("1245");
 
-    private Machine() { }
+        public static TestPosition TestPosition { get; set; } = new TestPosition();
 
-    public static Machine Instance
-    {
-        get => instance;
-        set => instance = value;
-    }
-
-    public double[] LowVelocity { get; set; } = { 10, 10, 10, 10 };
-    public double[] SlowManipulatorVelocity { get; set; }
-    public double[] FastManipulatorVelocity { get; set; }
-    public double[] DriverVelocity { get; set; }
-    public double[] Acceleration { get; set; }
-    public double[] Jerk { get; set; }
-    public double[] MaxCoordinate { get; set; }
-    public static readonly string ParametersFilePath = $"{nameof(Machine)}.json";
-    public static readonly Board board = new Board((uint)DevTypeID.PCI1245, 0, 4);
-    
-    public double[] BreakTestPosition { get; set; }
-    public double[] StretchTestPosition { get; set; }
-    public double[] ShearTestPosition { get; set; }
-
-    //public static readonly Board secondBoard;
-
-    public static void SaveMachineParameters()
-    {
-        try
+        static Machine()
         {
-            string jsonData = JsonConvert.SerializeObject(Instance, Formatting.Indented);
-            File.WriteAllText(ParametersFilePath, jsonData);
+            Board.LoadBoardProperties();
+            Board.OpenBoard();
+            TestPosition.LoadBoardProperties();
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error saving to JSON file: {ex.Message}");
-        }
-    }
 
-    public static void LoadMachineParameters()
-    {
-        try
-        {
-            string loadedJsonData = File.ReadAllText(ParametersFilePath);
-            Instance = JsonConvert.DeserializeObject<Machine>(loadedJsonData);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error loading from JSON file: {ex.Message}\n" +
-                $"Скорее всего вы ещё не сохраняли параметры установки");
-            return;
-        }
+        public static double AxesCount { get { return Board.AxesCount; } }
+        public static double[] SlowVelocity { get { return Board.SlowVelocity; } set { Board.SlowVelocity = value; } }
+        public static double[] FastVelocity { get { return Board.FastVelocity; } set { Board.FastVelocity = value; } }
+        public static double[] DriverVelocity { get { return Board.DriverVelocity; } set { Board.DriverVelocity = value; } }
+        public static double[] Acceleration { get { return Board.Acceleration; } set { Board.Acceleration = value; } }
+        public static double[] Jerk { get { return Board.Jerk; } set { Board.Jerk = value; } }
+        public static double[] MaxCoordinate { get { return Board.MaxCoordinate; } set { Board.MaxCoordinate = value; } }
+        public static double[] BreakTestPosition { get { return TestPosition.Break; } set { TestPosition.Break = value; } }
+        public static double[] StretchTestPosition { get { return TestPosition.Stretch; } set { TestPosition.Stretch = value; } }
+        public static double[] ShearTestPosition { get { return TestPosition.Shear; } set { TestPosition.Shear = value; } }
     }
 }

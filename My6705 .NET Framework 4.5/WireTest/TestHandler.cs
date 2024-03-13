@@ -74,11 +74,11 @@ namespace My6705.NET_Framework_4._5
 
             if (test is StretchTest)
             ((StretchTest)test).
-                    StartPosition = AxesController.GetAxisCommandPosition(Machine.board[testAxisIndex]);
+                    StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
 
             StartTestTimer();
 
-            AxesController.StartContinuousMovementChecked(Machine.board, testAxisIndex, 0);
+            AxesController.StartContinuousMovementChecked(Machine.Board, testAxisIndex, 0);
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace My6705.NET_Framework_4._5
             if (!(test is StretchTest))
                 return;
             ((StretchTest)test).
-                    EndPosition = AxesController.GetAxisCommandPosition(Machine.board[testAxisIndex]);
+                    EndPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
         }
 
         private void StartTestTimer()
@@ -132,13 +132,13 @@ namespace My6705.NET_Framework_4._5
             cbBoundSet.Enabled = false;
             nudForceBound.Enabled = false;
             rtbTestValues.Clear();
-            AxesController.SetAxisHighVelocity(Machine.board[testAxisIndex], Machine.Instance.SlowManipulatorVelocity[testAxisIndex]);
+            AxesController.SetAxisHighVelocity(Machine.Board[testAxisIndex], Machine.SlowVelocity[testAxisIndex]);
             timer.Start();
         }
 
         private void StopTestTimer()
         {
-            AxesController.StopMovementForAllAxes(Machine.board);
+            AxesController.StopMovementForAllAxes(Machine.Board);
             timer.Stop();
             stopTimerCounter = 0;
             btnStart.Enabled = true;
@@ -162,7 +162,7 @@ namespace My6705.NET_Framework_4._5
             else if (rbStretchTest.Checked)
             {
                 test = new StretchTest();
-                ((StretchTest)test).StartPosition = AxesController.GetAxisCommandPosition(Machine.board[testAxisIndex]);
+                ((StretchTest)test).StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
                 testAxisIndex = 2;
                 cmbTests.Items.Add(test);
             }

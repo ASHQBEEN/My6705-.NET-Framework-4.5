@@ -77,11 +77,11 @@ namespace My6705.NET_Framework_4._5
                             tickerState = 4;
                             break;
                         }
-                        AxesController.MoveToPoint(Machine.board[ptpAxisIndex], coords.first);
+                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.first);
                         tickerState++;
                         break;
                     case 2:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
+                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
                         tickerState++;
                         break;
                     case 3:
@@ -89,11 +89,11 @@ namespace My6705.NET_Framework_4._5
                         tickerState = 0;
                         break;
                     case 4:
-                        AxesController.MoveToPoint(Machine.board[ptpAxisIndex], coords.second);
+                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.second);
                         tickerState++;
                         break;
                     case 5:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
+                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
                         tickerState++;
                         break;
                     case 6:
@@ -111,11 +111,11 @@ namespace My6705.NET_Framework_4._5
                 switch (tickerState)
                 {
                     case 1:
-                        AxesController.MoveToPoint(Machine.board[ptpAxisIndex], coords.first);
+                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.first);
                         tickerState++;
                         break;
                     case 2:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
+                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
                         testStartTime = Environment.TickCount;
                         tickerState++;
                         break;
@@ -124,11 +124,11 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 4:
-                        AxesController.MoveToPoint(Machine.board[ptpAxisIndex], coords.second);
+                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.second);
                         tickerState++;
                         break;
                     case 5:
-                        if (AxesController.GetAxisState(Machine.board[ptpAxisIndex]) == statePtpMoving) break;
+                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
                         testStartTime = Environment.TickCount;
                         tickerState++;
                         break;
@@ -166,7 +166,7 @@ namespace My6705.NET_Framework_4._5
                     if (interpolationCounter < 3)
                     {
                         interpolationCounter++;
-                        InterpolationController.AddAxisToInterpolationGroup(Machine.board[i]);
+                        InterpolationController.AddAxisToInterpolationGroup(Machine.Board[i]);
                         listPosition1.Add(Convert.ToDouble(nudPosition1[i].Value));
                         listPosition2.Add(Convert.ToDouble(nudPosition2[i].Value));
                     }
@@ -269,7 +269,7 @@ namespace My6705.NET_Framework_4._5
                             tickerState = 4;
                             break;
                         }
-                        AxesController.MoveToPoint(Machine.board[3], phiPos1);
+                        AxesController.MoveToPoint(Machine.Board[3], phiPos1);
                         InterpolationController.MoveInterpolationGroupAbsolute(pos1);
                         tickerState++;
                         break;
@@ -282,7 +282,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState = 0;
                         break;
                     case 4:
-                        AxesController.MoveToPoint(Machine.board[3], phiPos2);
+                        AxesController.MoveToPoint(Machine.Board[3], phiPos2);
                         InterpolationController.MoveInterpolationGroupAbsolute(pos2);
                         tickerState++;
                         break;
@@ -300,7 +300,7 @@ namespace My6705.NET_Framework_4._5
 
         private bool IsHybridInterpolationInProgress()
         {
-            return AxesController.GetAxisState(Machine.board[3]) == statePtpMoving ||
+            return AxesController.GetAxisState(Machine.Board[3]) == statePtpMoving ||
                         InterpolationController.GetInterpolationGroupState() == stateIntMoving;
         }
 
@@ -311,7 +311,7 @@ namespace My6705.NET_Framework_4._5
                 switch (tickerState)
                 {
                     case 1:
-                        AxesController.MoveToPoint(Machine.board[3], phiPos1);
+                        AxesController.MoveToPoint(Machine.Board[3], phiPos1);
                         InterpolationController.MoveInterpolationGroupAbsolute(pos1);
                         tickerState++;
                         break;
@@ -328,7 +328,7 @@ namespace My6705.NET_Framework_4._5
                         tickerState++;
                         break;
                     case 5:
-                        AxesController.MoveToPoint(Machine.board[3], phiPos2);
+                        AxesController.MoveToPoint(Machine.Board[3], phiPos2);
                         InterpolationController.MoveInterpolationGroupAbsolute(pos2);
                         tickerState++;
                         break;
@@ -372,7 +372,7 @@ namespace My6705.NET_Framework_4._5
                 if (axesInTest == 1)
                 {
                     int ptpAxisIndex = GetPTPIndex();
-                    AxesController.SetAxisHighVelocity(Machine.board[ptpAxisIndex], Machine.Instance.DriverVelocity[ptpAxisIndex]);
+                    AxesController.SetAxisHighVelocity(Machine.Board[ptpAxisIndex], Machine.DriverVelocity[ptpAxisIndex]);
                     PairOfCoordinates coords = GetPTPCoordinates();
                     if (rbStep.Checked)
                     {
@@ -387,7 +387,7 @@ namespace My6705.NET_Framework_4._5
                 }
                 else if (axesInTest > 1)
                 {
-                    InterpolationController.RemoveAllAxesFromInterpolationGroup(Machine.board);
+                    InterpolationController.RemoveAllAxesFromInterpolationGroup(Machine.Board);
                     GetInterpolationCoordsArray(out double[] pos1, out double[] pos2);
 
                     if (axesInTest < 4)
@@ -397,7 +397,7 @@ namespace My6705.NET_Framework_4._5
                             SetInterpolationAutoTicker(pos1, pos2, Convert.ToInt32(nudDelay.Value));
                     else
                     {
-                        AxesController.SetAxisHighVelocity(Machine.board[3], Machine.Instance.DriverVelocity[3]);
+                        AxesController.SetAxisHighVelocity(Machine.Board[3], Machine.DriverVelocity[3]);
                         if (rbStep.Checked)
                             SetHybridStepTicker(pos1,
                                             pos2,
@@ -432,7 +432,7 @@ namespace My6705.NET_Framework_4._5
                 //if test in progress - press of button stops it
                 tickerState = 0;
                 InterpolationController.StopInterpolationGroupMovement();
-                AxesController.StopMovementForAllAxes(Machine.board);
+                AxesController.StopMovementForAllAxes(Machine.Board);
                 btnStartInterpolatedMovement.Text = "Начать\nдвижение";
                 KeyboardControl.blockControls = false;
             }
@@ -445,8 +445,8 @@ namespace My6705.NET_Framework_4._5
 
             for (int i = 0; i < 4; i++)
             {
-                if (Machine.Instance.MaxCoordinate[i] == 0) continue;
-                decimal maxValue = Convert.ToDecimal(Machine.Instance.MaxCoordinate[i]);
+                if (Machine.MaxCoordinate[i] == 0) continue;
+                decimal maxValue = Convert.ToDecimal(Machine.MaxCoordinate[i]);
                 nudPosition2[i].Maximum = maxValue;
                 nudPosition1[i].Maximum = maxValue;
             }
@@ -461,7 +461,7 @@ namespace My6705.NET_Framework_4._5
         private void DriverTest_FormClosing(object sender, FormClosingEventArgs e)
         {
             InterpolationController.StopInterpolationGroupMovement();
-            AxesController.StopMovementForAllAxes(Machine.board);
+            AxesController.StopMovementForAllAxes(Machine.Board);
             tickerState = 0;
         }
 
