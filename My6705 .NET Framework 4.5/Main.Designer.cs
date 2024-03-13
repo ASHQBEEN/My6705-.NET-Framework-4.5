@@ -91,7 +91,6 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.velParametersToolStripMenuItem,
@@ -101,7 +100,6 @@
             this.comGraphToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(1258, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
@@ -179,7 +177,6 @@
             // 
             // timerCmdPos
             // 
-            this.timerCmdPos.Enabled = true;
             this.timerCmdPos.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // pbLimPos0

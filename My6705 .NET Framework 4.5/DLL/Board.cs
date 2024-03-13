@@ -12,6 +12,7 @@ namespace My6705.NET_Framework_4._5
         [JsonProperty] private uint deviceType = 167;
         [JsonProperty] private uint boardID = 1;
         [JsonProperty] private int axesCount = 4;
+
         /// <summary>
         /// Количество осей, используемых платой.
         /// </summary>
@@ -86,13 +87,16 @@ namespace My6705.NET_Framework_4._5
         /// <returns>Обработчик (Handler) выбранной оси.</returns>
         public IntPtr this[int axisIndex] { get { return axesHandler[axisIndex]; } }
 
-        public void LoadConfig(string path)
+        public string AdvantechConfigPath { get; set; } = string.Empty;
+        public void LoadConfig()
         {
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_DevLoadConfig(deviceHandler, path);
-            },
-            "Load Config");
+            if (File.Exists(AdvantechConfigPath))
+                BoardActionPerformer.PerformBoardAction(() =>
+                {
+                    return Motion.mAcm_DevLoadConfig(deviceHandler, AdvantechConfigPath);
+                },
+                "Load Config");
+            else MessageBox.Show($"Конфигурационный файл для платы {boardName} не был обнаружен."); 
         }
 
         public void CloseBoard()
@@ -104,9 +108,21 @@ namespace My6705.NET_Framework_4._5
             "Close Board");
         }
 
+        public void LoadOverridedConfig()
+        {
+            LoadConfig();
+            //Since Acceleration = Deceleration (requirement)
+            AxesController.SetDeceleration(this, Acceleration);
+            AxesController.SetLowVelocity(this, LowVelocity);
+            AxesController.SetActAcc(this, Acceleration);
+            AxesController.SetJerk(this, Jerk);
+        }
+
+        private string boardName;
         public Board(string boardName)
         {
-            jsonPath = $"{boardName}Properties.json";
+            this.boardName = boardName;
+            jsonPath = $"{this.boardName}Properties.json";
             LowVelocity = new double[4] { 10, 10, 10, 10 };
             SlowVelocity = new double[4] { 500, 500, 500, 500 };
             FastVelocity = new double[4] { 2000, 2000, 2000, 2000 };
@@ -153,6 +169,7 @@ namespace My6705.NET_Framework_4._5
             Acceleration = instance.Acceleration;
             Jerk = instance.Jerk;
             MaxCoordinate = instance.MaxCoordinate;
+            AdvantechConfigPath = instance.AdvantechConfigPath;
         }
     }
 }

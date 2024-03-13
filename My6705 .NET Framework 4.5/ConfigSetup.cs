@@ -14,23 +14,21 @@ namespace My6705.NET_Framework_4._5
 
         private void btnLoadCfg_Click(object sender, EventArgs e)
         {
-            string path;
-            if (cbMemCfg.Checked == true)
+            if (cbMemCfg.Checked)
             {
-                if (dr.SelectPath(dr.LoadPath) == DialogResult.OK)
-                {
-                    path = dr.ReadPath(dr.LoadPath);
-                    dr.LoadCfg(path);
+                    OpenFileDialog openFileConfig = new OpenFileDialog();
+                    if (openFileConfig.ShowDialog() == DialogResult.OK)
+                        Machine.Board.AdvantechConfigPath = openFileConfig.FileName;
+                    Machine.Board.SaveBoardProperties();
+                    Machine.Board.LoadOverridedConfig();
                     Close();
-                }
             }
             else
             {
                 OpenFileDialog openFileConfig = new OpenFileDialog();
                 if (openFileConfig.ShowDialog() == DialogResult.OK)
                 {
-                    path = openFileConfig.FileName;
-                    dr.LoadCfg(path);
+                    Machine.Board.LoadOverridedConfig();
                     Close();
                 }
             }

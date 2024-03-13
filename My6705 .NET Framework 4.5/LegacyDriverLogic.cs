@@ -9,7 +9,6 @@ namespace My6705.NET_Framework_4._5
 {
     public class LegacyDriverLogic
     {
-        public string LoadPath { get; set; } = "_path_cfg.txt";
         //Flag to control parameters load
         public bool ParametersBeenSet { get; set; } = false;
 
@@ -18,38 +17,8 @@ namespace My6705.NET_Framework_4._5
         // Load config file
         // ***CONTAINING REQUIREMENT-RELATED METHODS***
         //
-        public void LoadCfg(string path)
-        {
-            Machine.Board.LoadConfig(path);
 
-            //Since Acceleration = Deceleration (requirement)
-            AxesController.SetDeceleration(Machine.Board, Machine.Acceleration);
-            AxesController.SetLowVelocity(Machine.Board, Machine.Board.LowVelocity);
-            AxesController.SetActAcc(Machine.Board, Machine.Acceleration);
-            AxesController.SetJerk(Machine.Board, Machine.Jerk);
-        }
-        public DialogResult SelectPath(string loadPath)
-        {
-            OpenFileDialog openFileConfig = new OpenFileDialog();
-            if (openFileConfig.ShowDialog() == DialogResult.OK)
-            {
-                File.WriteAllText(loadPath, openFileConfig.FileName);
-                return DialogResult.OK;
-            }
-            else return DialogResult.No;
-            //File.Create(loadPath).Dispose();
-        }
-        public string ReadPath(string loadPath)
-        {
-            if (File.Exists(loadPath))
-            {
-                StreamReader sr = File.OpenText(loadPath);
-                string path = sr.ReadLine();
-                sr.Close();
-                return path;
-            }
-            return null;
-        }
+
         #endregion
         #region Main form API methods (Driver Move, Limiters control)
 

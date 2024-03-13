@@ -25,8 +25,12 @@ namespace My6705.NET_Framework_4._5
         public Main()
         {
             InitializeComponent();
-            Machine.TestPosition.ToString();
+            //Костыль: плата создаётся при первом обращении к классу Machine, а при открытии окна запускается таймер работающий с
+            // ещё не инициализированной платой
+            Machine.Board[3].ToString();
+            //костыть end
             hh = new HomeHandler(timerHome, btnHome, btnServo);
+
         }
 
         private void velParametersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -37,6 +41,7 @@ namespace My6705.NET_Framework_4._5
 
         private void Main_Load(object sender, EventArgs e)
         {
+            timerCmdPos.Start();
             try
             {
                 webCams = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
@@ -51,33 +56,29 @@ namespace My6705.NET_Framework_4._5
                 MessageBox.Show(ex.Message);
             }
 
+
             //First we are looking in our .exe directory for file that contains the path to config
             //if it exists - load the config file
             //else - create with a string containing path config file and then load
 
-            string path = dr.ReadPath(dr.LoadPath);
-            if (!File.Exists(path))
+
+            if (!File.Exists(Machine.Board.AdvantechConfigPath))
             {
                 DialogResult cfgDlg = MessageBox.Show("Конфигурационный файл не был обнаружен, укажите к нему путь." +
                     "\nИначе будут использованы параметры по умолчанию.", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (cfgDlg == DialogResult.OK)
                 {
-                    if (dr.SelectPath(dr.LoadPath) == DialogResult.OK)
-                    {
-                        path = dr.ReadPath(dr.LoadPath);
-                        dr.LoadCfg(path);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    OpenFileDialog openFileConfig = new OpenFileDialog();
+                    if (openFileConfig.ShowDialog() == DialogResult.OK)
+                        Machine.Board.AdvantechConfigPath = openFileConfig.FileName;
+                    Machine.Board.SaveBoardProperties();
                 }
                 else
                 {
                     return;
                 }
             }
-            else dr.LoadCfg(path);
+            else Machine.Board.LoadOverridedConfig();
         }
 
         private void loadConfigToolStripMenuItem_Click(object sender, EventArgs e)
@@ -123,14 +124,14 @@ namespace My6705.NET_Framework_4._5
             //max coord checker
             for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
-                    if (AxesController.IfMaximumReached(i))
-                    {
-                        AxesController.StopContinuousMovementEmg(Machine.Board[i]);
-                    }
+                if (AxesController.IfMaximumReached(i))
+                {
+                    AxesController.StopContinuousMovementEmg(Machine.Board[i]);
+                }
             }
         }
 
-        
+
 
 
         bool servoAll = false;  // Controls servo state
@@ -334,7 +335,7 @@ namespace My6705.NET_Framework_4._5
             AxesController.ResetAllErrors(Machine.Board);
         }
 
-        
+
         private void button2_Click(object sender, EventArgs e)
         {
             WireTest wt = new WireTest(port);
