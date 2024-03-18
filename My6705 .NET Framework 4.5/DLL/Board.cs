@@ -1,4 +1,5 @@
 ﻿using Advantech.Motion;
+using My6705.NET_Framework_4._5.DLL;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -33,11 +34,9 @@ namespace My6705.NET_Framework_4._5
         private uint FetchDeviceNumber(uint deviceType, uint boardID)
         {
             uint deviceNumber = new uint();
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GetDevNum(deviceType, boardID, ref deviceNumber);
-            },
-            "Open Device");
+            uint actionResult = Motion.mAcm_GetDevNum(deviceType, boardID, ref deviceNumber);
+            string errorPrefix = "Open Device";
+            APIErrorChecker.Check(actionResult, errorPrefix);
             return deviceNumber;
         }
         /// <summary>
@@ -56,11 +55,9 @@ namespace My6705.NET_Framework_4._5
         private IntPtr InitializeDeviceHandler()
         {
             IntPtr deviceHandler = IntPtr.Zero;
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_DevOpen(deviceNumber, ref deviceHandler);
-            },
-            "Open Device");
+            uint actionResult = Motion.mAcm_DevOpen(deviceNumber, ref deviceHandler);
+            string errorPrefix = "Open Device";
+            APIErrorChecker.Check(actionResult, errorPrefix);
             return deviceHandler;
         }
 
@@ -69,11 +66,9 @@ namespace My6705.NET_Framework_4._5
             IntPtr[] axesHandler = new IntPtr[axesCount];
             for (int i = 0; i < axesCount; i++)
             {
-                BoardActionPerformer.PerformBoardAction(() =>
-                {
-                    return Motion.mAcm_AxOpen(deviceHandler, (UInt16)i, ref axesHandler[i]);
-                },
-                "Open Axis");
+                uint actionResult = Motion.mAcm_AxOpen(deviceHandler, (UInt16)i, ref axesHandler[i]);
+                string errorPrefix = "Open Axis";
+                APIErrorChecker.Check(actionResult, errorPrefix);
                 //Set command and actual position of drivers to start (0-point)        
                 Motion.mAcm_AxSetCmdPosition(axesHandler[i], 0);
                 Motion.mAcm_AxSetActualPosition(axesHandler[i], 0);
@@ -91,21 +86,19 @@ namespace My6705.NET_Framework_4._5
         public void LoadConfig()
         {
             if (File.Exists(AdvantechConfigPath))
-                BoardActionPerformer.PerformBoardAction(() =>
-                {
-                    return Motion.mAcm_DevLoadConfig(deviceHandler, AdvantechConfigPath);
-                },
-                "Load Config");
+            {
+                uint actionResult = Motion.mAcm_DevLoadConfig(deviceHandler, AdvantechConfigPath);
+                string errorPrefix = "Load Config";
+                APIErrorChecker.Check(actionResult, errorPrefix);
+            }
             else MessageBox.Show($"Конфигурационный файл для платы {boardName} не был обнаружен."); 
         }
 
         public void CloseBoard()
         {
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_DevClose(ref deviceHandler);
-            },
-            "Close Board");
+            uint actionResult = Motion.mAcm_DevClose(ref deviceHandler);
+            string errorPrefix = "Close Board";
+            APIErrorChecker.Check(actionResult, errorPrefix);
         }
 
         public void LoadOverridedConfig()

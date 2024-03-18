@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="6705\Axes.cs" />
+    <Compile Include="DLL\APIErrorChecker.cs" />
     <Compile Include="TestPosition.cs" />
     <Compile Include="WireTest\BreakTest.cs" />
     <Compile Include="WireTest\COMPort.cs" />
@@ -114,7 +115,6 @@
     </Compile>
     <Compile Include="DLL\InterpolationController.cs" />
     <Compile Include="DLL\AxesController.cs" />
-    <Compile Include="DLL\BoardActionPerformer.cs" />
     <Compile Include="DriverTest\DriverTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,7 +199,6 @@
     <EmbeddedResource Include="WireTest\WireTest.resx">
       <DependentUpon>WireTest.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

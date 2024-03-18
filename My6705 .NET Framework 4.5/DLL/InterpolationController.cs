@@ -28,11 +28,9 @@ namespace My6705.NET_Framework_4._5.DLL
         /// <param name="axisHandler">Индекс оси</param>
         public static void AddAxisToInterpolationGroup(IntPtr axisHandler)
         {
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GpAddAxis(ref interpolationHandler, axisHandler);
-            },
-            "Add Axis To Group");
+            uint actionResult = Motion.mAcm_GpAddAxis(ref interpolationHandler, axisHandler);
+            string errorPrefix = "Add Axis To Group";
+            APIErrorChecker.Check(actionResult, errorPrefix);
         }
 
         //*На случай рефакторинга
@@ -54,11 +52,9 @@ namespace My6705.NET_Framework_4._5.DLL
         /// <param name="position"></param>
         public static void MoveInterpolationGroupAbsolute(double[] position)
         {
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                return Motion.mAcm_GpMoveLinearAbs(InterpolationHandler, position);
-            },
-            "Interpolation Group Move");
+            uint actionResult = Motion.mAcm_GpMoveLinearAbs(InterpolationHandler, position);
+            string errorPrefix = "Interpolation Group Move";
+            APIErrorChecker.Check(actionResult, errorPrefix);
         }
 
         /// <summary>
@@ -79,12 +75,13 @@ namespace My6705.NET_Framework_4._5.DLL
 
         public static void SetDriveAxis(int axisIndex)
         {
-            BoardActionPerformer.PerformBoardAction(() =>
-            {
-                Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelHigh, Machine.DriverVelocity[axisIndex]);
-                return Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelLow, Machine.DriverVelocity[axisIndex]);
-            },
-            "Interpolation Group Set Velocity");
+            uint actionResult = Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelHigh, Machine.DriverVelocity[axisIndex]);
+            string errorPrefix = "Interpolation Group Set Velocity";
+            APIErrorChecker.Check(actionResult, errorPrefix);
+
+            actionResult = Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelLow, Machine.DriverVelocity[axisIndex]);
+            errorPrefix = "Interpolation Group Set Velocity";
+            APIErrorChecker.Check(actionResult, errorPrefix);
         }
 
         public static ushort GetInterpolationGroupState()
