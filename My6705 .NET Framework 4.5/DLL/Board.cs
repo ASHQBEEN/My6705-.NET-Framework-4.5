@@ -1,6 +1,4 @@
-﻿using Advantech.Motion;
-using My6705.NET_Framework_4._5.DLL;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -14,10 +12,13 @@ namespace My6705.NET_Framework_4._5
         [JsonProperty] private uint boardID = 1;
         [JsonProperty] private int axesCount = 4;
 
+        [JsonIgnore] public IntPtr interpolationHandler = IntPtr.Zero;
+
         /// <summary>
         /// Количество осей, используемых платой.
         /// </summary>
         [JsonIgnore] public int AxesCount { get { return axesCount; } }
+
 
         public double[] LowVelocity { get; set; }
         public double[] SlowVelocity { get; set; }
@@ -31,14 +32,6 @@ namespace My6705.NET_Framework_4._5
         private IntPtr[] axesHandler;
         private IntPtr deviceHandler = IntPtr.Zero;
 
-        private uint FetchDeviceNumber(uint deviceType, uint boardID)
-        {
-            uint deviceNumber = new uint();
-            uint actionResult = Motion.mAcm_GetDevNum(deviceType, boardID, ref deviceNumber);
-            string errorPrefix = "Open Device";
-            APIErrorChecker.Check(actionResult, errorPrefix);
-            return deviceNumber;
-        }
         /// <summary>
         /// Конструктор для последующей инициализации платы Advantech и её осей
         /// </summary>
@@ -47,34 +40,11 @@ namespace My6705.NET_Framework_4._5
         /// <param name="axesCount">Количество осей, инициализируемых платой</param>
         public void OpenBoard()
         {
-            deviceNumber = FetchDeviceNumber(deviceType, boardID);
-            deviceHandler = InitializeDeviceHandler();
-            axesHandler = InitializeAxesHandler();
+            deviceNumber = AxesController.GetDeviceNumber(deviceType, boardID);
+            deviceHandler = AxesController.InitializeDeviceHandler(deviceNumber);
+            axesHandler = AxesController.InitializeAxesHandler(axesCount, deviceHandler);
         }
 
-        private IntPtr InitializeDeviceHandler()
-        {
-            IntPtr deviceHandler = IntPtr.Zero;
-            uint actionResult = Motion.mAcm_DevOpen(deviceNumber, ref deviceHandler);
-            string errorPrefix = "Open Device";
-            APIErrorChecker.Check(actionResult, errorPrefix);
-            return deviceHandler;
-        }
-
-        private IntPtr[] InitializeAxesHandler()
-        {
-            IntPtr[] axesHandler = new IntPtr[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                uint actionResult = Motion.mAcm_AxOpen(deviceHandler, (UInt16)i, ref axesHandler[i]);
-                string errorPrefix = "Open Axis";
-                APIErrorChecker.Check(actionResult, errorPrefix);
-                //Set command and actual position of drivers to start (0-point)        
-                Motion.mAcm_AxSetCmdPosition(axesHandler[i], 0);
-                Motion.mAcm_AxSetActualPosition(axesHandler[i], 0);
-            }
-            return axesHandler;
-        }
         /// <summary>
         /// Позволяет получить обработчик определённой оси.
         /// </summary>
@@ -87,18 +57,14 @@ namespace My6705.NET_Framework_4._5
         {
             if (File.Exists(AdvantechConfigPath))
             {
-                uint actionResult = Motion.mAcm_DevLoadConfig(deviceHandler, AdvantechConfigPath);
-                string errorPrefix = "Load Config";
-                APIErrorChecker.Check(actionResult, errorPrefix);
+                AxesController.LoadConfig(deviceHandler, AdvantechConfigPath);
             }
             else MessageBox.Show($"Конфигурационный файл для платы {boardName} не был обнаружен."); 
         }
 
         public void CloseBoard()
         {
-            uint actionResult = Motion.mAcm_DevClose(ref deviceHandler);
-            string errorPrefix = "Close Board";
-            APIErrorChecker.Check(actionResult, errorPrefix);
+            AxesController.CloseDevice(ref deviceHandler);
         }
 
         public void LoadOverridedConfig()

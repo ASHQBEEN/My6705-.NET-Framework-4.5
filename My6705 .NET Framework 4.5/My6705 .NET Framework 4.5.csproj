@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="6705\Axes.cs" />
-    <Compile Include="DLL\APIErrorChecker.cs" />
     <Compile Include="TestPosition.cs" />
     <Compile Include="WireTest\BreakTest.cs" />
     <Compile Include="WireTest\COMPort.cs" />
@@ -113,7 +112,6 @@
     <Compile Include="ConfigSetup.Designer.cs">
       <DependentUpon>ConfigSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DLL\InterpolationController.cs" />
     <Compile Include="DLL\AxesController.cs" />
     <Compile Include="DriverTest\DriverTest.cs">
       <SubType>Form</SubType>
