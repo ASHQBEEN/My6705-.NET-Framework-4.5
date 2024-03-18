@@ -282,5 +282,36 @@ namespace My6705.NET_Framework_4._5
             return Machine.MaxCoordinate[axisIndex] != 0 ? Machine.MaxCoordinate[axisIndex] 
                 <= GetAxisCommandPosition(Machine.Board[axisIndex]) : false;
         }
+
+        public static double[] GetActPositionsAsArray(Board b)
+        {
+            int axesCount = b.AxesCount;
+            double[] result = new double[axesCount];
+            for (int i = 0; i < axesCount; i++)
+            {
+                result[i] = GetAxisActPosition(b[i]);
+            }
+            return result;
+        }
+
+        public static double GetAxisActPosition(IntPtr axisHandler)
+        {
+            double CurrentActPosition = new double();
+            BoardActionPerformer.PerformBoardAction(() =>
+            {
+                return Motion.mAcm_AxGetActualPosition(axisHandler, ref CurrentActPosition);
+            },
+            "Get Comand Position");
+            return CurrentActPosition;
+        }
+
+        public static void ResetActPosition(IntPtr axisHandler)
+        {
+            BoardActionPerformer.PerformBoardAction(() =>
+            {
+                return Motion.mAcm_AxSetActualPosition(axisHandler, 0);
+            },
+            "Reset cmd position");
+        }
     }
 }

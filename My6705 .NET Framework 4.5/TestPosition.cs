@@ -7,7 +7,7 @@ namespace My6705.NET_Framework_4._5
 {
     public class TestPosition
     {
-        public static string jsonPath = $"{nameof(TestPosition)}.json";
+        private static string jsonPath = $"{nameof(TestPosition)}.json";
         public double[] Break { get; set; }
         public double[] Stretch { get; set; }
         public double[] Shear { get; set; }
@@ -19,7 +19,7 @@ namespace My6705.NET_Framework_4._5
             Shear = new double[] { 1500, 1500, 1500 };
         }
 
-        public void SaveTestPostitions()
+        public void Save()
         {
             try
             {
@@ -32,24 +32,31 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        public void LoadBoardProperties()
+        public void Load()
         {
-            string loadedJsonData;
-            if (File.Exists(jsonPath))
+            try
             {
-                loadedJsonData = File.ReadAllText(jsonPath);
+                string loadedJsonData;
+                if (File.Exists(jsonPath))
+                {
+                    loadedJsonData = File.ReadAllText(jsonPath);
+                    var instance = JsonConvert.DeserializeObject<TestPosition>(loadedJsonData);
+                    Break = instance.Break;
+                    Stretch = instance.Stretch;
+                    Shear = instance.Shear;
+                }
+                else
+                {
+                    MessageBox.Show($"Файл {jsonPath} не существует. Будут использованы значения по умолчанию.");
+                    Save();
+                    return;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show($"Файл {jsonPath} не существует. Будут использованы значения по умолчанию.");
-                SaveTestPostitions();
-                return;
+                // Обработка ошибки загрузки
+                Console.WriteLine($"Ошибка загрузки из файла: {ex.Message}");
             }
-
-            var instance = JsonConvert.DeserializeObject<TestPosition>(loadedJsonData);
-            Break = instance.Break;
-            Stretch = instance.Stretch;
-            Shear = instance.Shear;
         }
     }
 }

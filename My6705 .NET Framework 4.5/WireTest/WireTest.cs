@@ -147,7 +147,7 @@ namespace My6705.NET_Framework_4._5
                 ChangeLabelCoords(Machine.ShearTestPosition);
             }
 
-            Machine.TestPosition.SaveTestPostitions();
+            Machine.TestPosition.Save();
         }
 
         private void btnSetupWire_Click(object sender, EventArgs e)

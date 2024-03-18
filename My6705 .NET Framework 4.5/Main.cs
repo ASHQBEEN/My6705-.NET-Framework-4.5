@@ -100,11 +100,15 @@ namespace My6705.NET_Framework_4._5
             TextBox[] tbStates = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
 
             //Get current command position of the specified axis
-            TextBox[] nCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
+            TextBox[] tbCmdPos = { tbCmdPos0, tbCmdPos1, tbCmdPos2, tbCmdPos3 };
+            TextBox[] tbActPos = { tbFeedbackPos0, tbFeedbackPos1, tbFeedbackPos2, tbFeedbackPos3 };
             double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.Board);
+            double[] feedbackPos = AxesController.GetActPositionsAsArray(Machine.Board);
+            
             for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
-                nCmdPos[i].Text = Convert.ToString(cmdPos[i]);
+                tbCmdPos[i].Text = Convert.ToString(cmdPos[i]);
+                tbActPos[i].Text = Convert.ToString(feedbackPos[i]);
                 dr.GetIOTicker(i, pictureBoxPos, pictureBoxNeg);
             }
 

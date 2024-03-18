@@ -4,13 +4,14 @@
     {
         public readonly static Board Board = new Board("1245");
 
-        public static TestPosition TestPosition { get; set; } = new TestPosition();
+        //private readonly static TestPosition TestPosition { get; set; } = new TestPosition();
+        public readonly static TestPosition TestPosition = new TestPosition();
 
         static Machine()
         {
             Board.LoadBoardProperties();
             Board.OpenBoard();
-            TestPosition.LoadBoardProperties();
+            TestPosition.Load();
         }
 
         public static double AxesCount { get { return Board.AxesCount; } }

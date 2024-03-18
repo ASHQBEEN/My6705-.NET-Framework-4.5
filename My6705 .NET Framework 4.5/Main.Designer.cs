@@ -75,6 +75,10 @@
             this.lblTrbY = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.tbFeedbackPos3 = new System.Windows.Forms.TextBox();
+            this.tbFeedbackPos2 = new System.Windows.Forms.TextBox();
+            this.tbFeedbackPos1 = new System.Windows.Forms.TextBox();
+            this.tbFeedbackPos0 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimPos0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimNeg0)).BeginInit();
@@ -91,6 +95,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.velParametersToolStripMenuItem,
@@ -100,42 +105,42 @@
             this.comGraphToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1258, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1258, 36);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // velParametersToolStripMenuItem
             // 
             this.velParametersToolStripMenuItem.Name = "velParametersToolStripMenuItem";
-            this.velParametersToolStripMenuItem.Size = new System.Drawing.Size(203, 29);
+            this.velParametersToolStripMenuItem.Size = new System.Drawing.Size(203, 32);
             this.velParametersToolStripMenuItem.Text = "Параметры скорости";
             this.velParametersToolStripMenuItem.Click += new System.EventHandler(this.velParametersToolStripMenuItem_Click);
             // 
             // loadConfigToolStripMenuItem
             // 
             this.loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
-            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(193, 29);
+            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(193, 32);
             this.loadConfigToolStripMenuItem.Text = "Файл конфигурации";
             this.loadConfigToolStripMenuItem.Click += new System.EventHandler(this.loadConfigToolStripMenuItem_Click);
             // 
             // IOToolStripMenuItem
             // 
             this.IOToolStripMenuItem.Name = "IOToolStripMenuItem";
-            this.IOToolStripMenuItem.Size = new System.Drawing.Size(130, 29);
+            this.IOToolStripMenuItem.Size = new System.Drawing.Size(130, 32);
             this.IOToolStripMenuItem.Text = "Ввод-вывод";
             this.IOToolStripMenuItem.Click += new System.EventHandler(this.IOToolStripMenuItem_Click);
             // 
             // driverTestToolStripMenuItem
             // 
             this.driverTestToolStripMenuItem.Name = "driverTestToolStripMenuItem";
-            this.driverTestToolStripMenuItem.Size = new System.Drawing.Size(149, 29);
+            this.driverTestToolStripMenuItem.Size = new System.Drawing.Size(149, 32);
             this.driverTestToolStripMenuItem.Text = "Тест приводов";
             this.driverTestToolStripMenuItem.Click += new System.EventHandler(this.driverTestToolStripMenuItem_Click);
             // 
             // comGraphToolStripMenuItem
             // 
             this.comGraphToolStripMenuItem.Name = "comGraphToolStripMenuItem";
-            this.comGraphToolStripMenuItem.Size = new System.Drawing.Size(152, 29);
+            this.comGraphToolStripMenuItem.Size = new System.Drawing.Size(152, 32);
             this.comGraphToolStripMenuItem.Text = "График данных";
             this.comGraphToolStripMenuItem.Click += new System.EventHandler(this.comSetupToolStripMenuItem_Click);
             // 
@@ -545,11 +550,51 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // tbFeedbackPos3
+            // 
+            this.tbFeedbackPos3.Location = new System.Drawing.Point(1082, 927);
+            this.tbFeedbackPos3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbFeedbackPos3.Name = "tbFeedbackPos3";
+            this.tbFeedbackPos3.ReadOnly = true;
+            this.tbFeedbackPos3.Size = new System.Drawing.Size(100, 26);
+            this.tbFeedbackPos3.TabIndex = 46;
+            // 
+            // tbFeedbackPos2
+            // 
+            this.tbFeedbackPos2.Location = new System.Drawing.Point(753, 927);
+            this.tbFeedbackPos2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbFeedbackPos2.Name = "tbFeedbackPos2";
+            this.tbFeedbackPos2.ReadOnly = true;
+            this.tbFeedbackPos2.Size = new System.Drawing.Size(100, 26);
+            this.tbFeedbackPos2.TabIndex = 45;
+            // 
+            // tbFeedbackPos1
+            // 
+            this.tbFeedbackPos1.Location = new System.Drawing.Point(418, 927);
+            this.tbFeedbackPos1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbFeedbackPos1.Name = "tbFeedbackPos1";
+            this.tbFeedbackPos1.ReadOnly = true;
+            this.tbFeedbackPos1.Size = new System.Drawing.Size(100, 26);
+            this.tbFeedbackPos1.TabIndex = 44;
+            // 
+            // tbFeedbackPos0
+            // 
+            this.tbFeedbackPos0.Location = new System.Drawing.Point(86, 927);
+            this.tbFeedbackPos0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbFeedbackPos0.Name = "tbFeedbackPos0";
+            this.tbFeedbackPos0.ReadOnly = true;
+            this.tbFeedbackPos0.Size = new System.Drawing.Size(100, 26);
+            this.tbFeedbackPos0.TabIndex = 43;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1258, 968);
+            this.Controls.Add(this.tbFeedbackPos3);
+            this.Controls.Add(this.tbFeedbackPos2);
+            this.Controls.Add(this.tbFeedbackPos1);
+            this.Controls.Add(this.tbFeedbackPos0);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTrbY);
@@ -661,6 +706,10 @@
         private System.Windows.Forms.Label lblTrbY;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox tbFeedbackPos3;
+        private System.Windows.Forms.TextBox tbFeedbackPos2;
+        private System.Windows.Forms.TextBox tbFeedbackPos1;
+        private System.Windows.Forms.TextBox tbFeedbackPos0;
     }
 }
 

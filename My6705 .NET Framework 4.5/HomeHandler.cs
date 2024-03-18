@@ -89,6 +89,7 @@ namespace My6705.NET_Framework_4._5
                 case 4:
                     if (AxesController.GetAxisState(Machine.Board[2]) == stateMoving) break;
                     AxesController.ResetCmdPosition(Machine.Board[2]);
+                    AxesController.ResetActPosition(Machine.Board[2]);
                     homeTickerState++;
                     break;
                 case 5:
@@ -112,6 +113,7 @@ namespace My6705.NET_Framework_4._5
                     if (AxesController.GetAxisState(Machine.Board[0]) == stateMoving) break;
                     homeTickerState++;
                     AxesController.ResetCmdPosition(Machine.Board[0]);
+                    AxesController.ResetActPosition(Machine.Board[0]);
                     break;
                 case 9:
                     AxesController.AxisMoveHome(Machine.Board[Axes.Y], 1, 1);
@@ -132,6 +134,7 @@ namespace My6705.NET_Framework_4._5
                 case 12:
                     if (AxesController.GetAxisState(Machine.Board[1]) == stateMoving) break;
                     AxesController.ResetCmdPosition(Machine.Board[1]);
+                    AxesController.ResetActPosition(Machine.Board[1]);
                     homeTickerState++;
                     break;
                 case 13:
@@ -156,7 +159,8 @@ namespace My6705.NET_Framework_4._5
                     break;
                 case 16:
                     if (AxesController.GetAxisState(Machine.Board[3]) == stateMoving) break;
-                    AxesController.ResetCmdPosition(Machine.Board[3]);
+                    AxesController.ResetCmdPosition(Machine.Board[3]);         
+                    AxesController.ResetActPosition(Machine.Board[3]);
                     homeTickerState = 0;
                     break;
             }
