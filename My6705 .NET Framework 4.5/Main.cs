@@ -61,24 +61,32 @@ namespace My6705.NET_Framework_4._5
             //if it exists - load the config file
             //else - create with a string containing path config file and then load
 
-
-            if (!File.Exists(Machine.Board.AdvantechConfigPath))
+            if (File.Exists(Machine.Board.AdvantechConfigPath))
+            {
+                Machine.Board.LoadOverridedConfig();
+            }
+            else
             {
                 DialogResult cfgDlg = MessageBox.Show("Конфигурационный файл не был обнаружен, укажите к нему путь." +
                     "\nИначе будут использованы параметры по умолчанию.", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (cfgDlg == DialogResult.OK)
                 {
                     OpenFileDialog openFileConfig = new OpenFileDialog();
-                    if (openFileConfig.ShowDialog() == DialogResult.OK)
+                    if (openFileConfig.ShowDialog() == DialogResult.OK) 
+                    {
                         Machine.Board.AdvantechConfigPath = openFileConfig.FileName;
-                    Machine.Board.SaveBoardProperties();
+                        Machine.Board.LoadOverridedConfig();
+                    }
+                    else
+                    {
+                        Machine.Board.OverrideConfig();
+                    }
                 }
                 else
                 {
-                    return;
+                    Machine.Board.OverrideConfig();
                 }
             }
-            else Machine.Board.LoadOverridedConfig();
         }
 
         private void loadConfigToolStripMenuItem_Click(object sender, EventArgs e)

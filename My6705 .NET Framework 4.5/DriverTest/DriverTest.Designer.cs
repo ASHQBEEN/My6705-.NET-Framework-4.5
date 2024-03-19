@@ -358,7 +358,7 @@
             this.btnStartInterpolatedMovement.TabIndex = 16;
             this.btnStartInterpolatedMovement.Text = "Начать\r\nдвижение";
             this.btnStartInterpolatedMovement.UseVisualStyleBackColor = true;
-            this.btnStartInterpolatedMovement.Click += new System.EventHandler(this.button1_Click_1);
+            this.btnStartInterpolatedMovement.Click += new System.EventHandler(this.btnStartTestClick);
             // 
             // rbBackAndForth
             // 
@@ -540,7 +540,6 @@
             this.Name = "DriverTest";
             this.Text = "Тест приводов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriverTest_FormClosing);
-            this.Load += new System.EventHandler(this.DriverTest_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Y)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Z)).EndInit();

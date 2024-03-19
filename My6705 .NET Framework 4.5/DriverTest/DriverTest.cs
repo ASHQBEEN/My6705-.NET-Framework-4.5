@@ -13,8 +13,7 @@ namespace My6705.NET_Framework_4._5
         private readonly NumericUpDown[] nudPosition1;
         private readonly NumericUpDown[] nudPosition2;
 
-        Action testTimerTick;
-        bool firstStepDone = false;
+
         int tickerState = 0;
         int testStartTime = 0;
 
@@ -25,10 +24,12 @@ namespace My6705.NET_Framework_4._5
             nudPosition2 = new NumericUpDown[] { nudPosition2X, nudPosition2Y, nudPosition2Z, nudPosition2Phi };
             rbDriveSpeed = new RadioButton[] { rbDriveX, rbDriveY, rbDriveZ, rbDrivePhi };
             cbAddedAxes = new CheckBox[] { cbAddAxisX, cbAddAxisY, cbAddAxisZ, cbAddAxisPhi };
+            checkboxesToRadioButtons.Add(cbAddAxisX, rbDriveX);
+            checkboxesToRadioButtons.Add(cbAddAxisY, rbDriveY);
+            checkboxesToRadioButtons.Add(cbAddAxisZ, rbDriveZ);
+            checkboxesToRadioButtons.Add(cbAddAxisPhi, rbDrivePhi);
             SetMaxCoord();
         }
-
-        private Dictionary<CheckBox, RadioButton> checkboxesToRadioButtons = new Dictionary<CheckBox, RadioButton>();
 
         GroupState interpolationGroupState;
 
@@ -36,12 +37,13 @@ namespace My6705.NET_Framework_4._5
         {
             if (tickerState == 0)
             {
-                if (rbStep.Checked) 
+                if (rbStep.Checked)
                 {
                     rbBackAndForth.Enabled = true;
                     btnStartInterpolatedMovement.Enabled = true;
                 }
                 KeyboardControl.blockControls = false;
+                driverTestTimer.Stop();
                 driverTestTimer.Stop();
             }
 
@@ -60,98 +62,20 @@ namespace My6705.NET_Framework_4._5
             throw new Exception();
         }
 
-
-        ushort statePtpMoving = (ushort)AxisState.STA_AX_PTP_MOT;
-        ushort stateIntMoving = (ushort)GroupState.STA_Gp_Motion;
-        private void SetPTPStepTicker(int ptpAxisIndex, PairOfCoordinates coords)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        if (firstStepDone)
-                        {
-                            tickerState = 4;
-                            break;
-                        }
-                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.first);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
-                        tickerState++;
-                        break;
-                    case 3:
-                        firstStepDone = true;
-                        tickerState = 0;
-                        break;
-                    case 4:
-                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.second);
-                        tickerState++;
-                        break;
-                    case 5:
-                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
-                        tickerState++;
-                        break;
-                    case 6:
-                        firstStepDone = false;
-                        tickerState = 0;
-                        break;
-                }
-            };
-        }
-
-        private void SetPTPAutoTicker(int ptpAxisIndex, PairOfCoordinates coords, int delay)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.first);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 3:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 4:
-                        AxesController.MoveToPoint(Machine.Board[ptpAxisIndex], coords.second);
-                        tickerState++;
-                        break;
-                    case 5:
-                        if (AxesController.GetAxisState(Machine.Board[ptpAxisIndex]) == statePtpMoving) break;
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 6:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 7:
-                        tickerState = 1;
-                        break;
-                }
-            };
-        }
-
-        private PairOfCoordinates GetPTPCoordinates()
+        private void GetPTPCoordinates(out double coord1, out double coord2)
         {
             for (int i = 0; i < cbAddedAxes.Length; i++)
             {
                 if (cbAddedAxes[i].Checked)
                 {
-                    return new PairOfCoordinates(Convert.ToDouble(nudPosition1[i].Value), Convert.ToDouble(nudPosition2[i].Value));
+                    coord1 = Convert.ToDouble(nudPosition1[i].Value);
+                    coord2 = Convert.ToDouble(nudPosition2[i].Value);
+                    return;
                 }
             }
             throw new Exception();
         }
+
         private void GetInterpolationCoordsArray(out double[] pos1, out double[] pos2)
         {
             List<double> listPosition1 = new List<double>();
@@ -173,183 +97,8 @@ namespace My6705.NET_Framework_4._5
             pos1 = listPosition1.ToArray();
             pos2 = listPosition2.ToArray();
         }
-        private void SetInterpolationStepTicker(double[] pos1, double[] pos2)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        if (firstStepDone)
-                        {
-                            tickerState = 4;
-                            break;
-                        }
-                        AxesController.MoveInterpolationGroupAbsolute(pos1, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (AxesController.GetInterpolationGroupState(Machine.Board.interpolationHandler) == stateIntMoving) break;
-                        tickerState++;
-                        break;
-                    case 3:
-                        firstStepDone = true;
-                        tickerState = 0;
-                        break;
-                    case 4:
-                        AxesController.MoveInterpolationGroupAbsolute(pos2, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 5:
-                        if (AxesController.GetInterpolationGroupState(Machine.Board.interpolationHandler) == stateIntMoving) break;
-                        tickerState++;
-                        break;
-                    case 6:
-                        firstStepDone = false;
-                        tickerState = 0;
-                        break;
-                }
-            };
-        }
-        private void SetInterpolationAutoTicker(double[] pos1, double[] pos2, int delay)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        AxesController.MoveInterpolationGroupAbsolute(pos1, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (AxesController.GetInterpolationGroupState(Machine.Board.interpolationHandler) == stateIntMoving) break;
-                        tickerState++;
-                        break;
-                    case 3:
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 4:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 5:
-                        AxesController.MoveInterpolationGroupAbsolute(pos2, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 6:
-                        if (AxesController.GetInterpolationGroupState(Machine.Board.interpolationHandler) == stateIntMoving) break;
-                        tickerState++;
-                        break;
-                    case 7:
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 8:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 9:
-                        tickerState = 1;
-                        break;
-                }
-            };
-        }
-        private void SetHybridStepTicker(double[] pos1, double[] pos2, double phiPos1, double phiPos2)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        if (firstStepDone)
-                        {
-                            tickerState = 4;
-                            break;
-                        }
-                        AxesController.MoveToPoint(Machine.Board[3], phiPos1);
-                        AxesController.MoveInterpolationGroupAbsolute(pos1, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (IsHybridInterpolationInProgress()) break;
-                        tickerState++;
-                        break;
-                    case 3:
-                        firstStepDone = true;
-                        tickerState = 0;
-                        break;
-                    case 4:
-                        AxesController.MoveToPoint(Machine.Board[3], phiPos2);
-                        AxesController.MoveInterpolationGroupAbsolute(pos2, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 5:
-                        if (IsHybridInterpolationInProgress()) break;
-                        tickerState++;
-                        break;
-                    case 6:
-                        firstStepDone = false;
-                        tickerState = 0;
-                        break;
-                };
-            };
-        }
 
-        private bool IsHybridInterpolationInProgress()
-        {
-            return AxesController.GetAxisState(Machine.Board[3]) == statePtpMoving ||
-                        AxesController.GetInterpolationGroupState(Machine.Board.interpolationHandler) == stateIntMoving;
-        }
-
-        private void SetHybridAutoTicker(double[] pos1, double[] pos2, double phiPos1, double phiPos2, int delay)
-        {
-            testTimerTick = () =>
-            {
-                switch (tickerState)
-                {
-                    case 1:
-                        AxesController.MoveToPoint(Machine.Board[3], phiPos1);
-                        AxesController.MoveInterpolationGroupAbsolute(pos1, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 2:
-                        if (IsHybridInterpolationInProgress()) break;
-                        tickerState++;
-                        break;
-                    case 3:
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 4:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 5:
-                        AxesController.MoveToPoint(Machine.Board[3], phiPos2);
-                        AxesController.MoveInterpolationGroupAbsolute(pos2, Machine.Board.interpolationHandler);
-                        tickerState++;
-                        break;
-                    case 6:
-                        if (IsHybridInterpolationInProgress()) break;
-                        tickerState++;
-                        break;
-                    case 7:
-                        testStartTime = Environment.TickCount;
-                        tickerState++;
-                        break;
-                    case 8:
-                        if (Environment.TickCount - testStartTime < delay) break;
-                        tickerState++;
-                        break;
-                    case 9:
-                        tickerState = 1;
-                        break;
-                }
-            };
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnStartTestClick(object sender, EventArgs e)
         {
             if (tickerState == 0)
             {
@@ -375,16 +124,16 @@ namespace My6705.NET_Framework_4._5
                     AxesController.SetAxisHighVelocity(Machine.Board[ptpAxisIndex], Machine.DriverVelocity[ptpAxisIndex]);
                     //
                     //MessageBox.Show(AxesController.GetAxisHighVelocity(Machine.Board[ptpAxisIndex]).ToString());
-                    PairOfCoordinates coords = GetPTPCoordinates();
+                    GetPTPCoordinates(out double coord1, out double coord2);
                     if (rbStep.Checked)
                     {
-                        SetPTPStepTicker(ptpAxisIndex, coords);
+                        SetPTPStepTicker(ptpAxisIndex, coord1, coord2);
                         //idea - if manipulator is already in 1st position -> go to second
                         //if (coords.first == AxesController.GetAxisCommandPosition(Machine.board[ptpAxisIndex])) firstStepDone = true;
                     }
                     else
                     {
-                        SetPTPAutoTicker(ptpAxisIndex, coords, Convert.ToInt32(nudDelay.Value));
+                        SetPTPAutoTicker(ptpAxisIndex, coord1, coord2, Convert.ToInt32(nudDelay.Value));
                     }
                 }
                 else if (axesInTest > 1)
@@ -416,17 +165,19 @@ namespace My6705.NET_Framework_4._5
                 }
                 //start test
                 if (axesInTest > 1)
-                    for(int i = 0; i < rbDriveSpeed.Length; i++)
+                {
+                    tmrInterpolationGroupState.Start();
+                    for (int i = 0; i < rbDriveSpeed.Length; i++)
                     {
                         if (rbDriveSpeed[i].Checked)
                         {
                             AxesController.SetDriveAxis(i, Machine.Board.interpolationHandler);
                             break;
-                        } 
+                        }
                     }
+                }
                 tickerState = 1;
                 driverTestTimer.Start();
-                tmrInterpolationGroupState.Start();
                 KeyboardControl.blockControls = true;
             }
             else
@@ -440,19 +191,7 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        void SetMaxCoord()
-        {
-            NumericUpDown[] nudPosition1 = { nudPosition1X, nudPosition1Y, nudPosition1Z, nudPosition1Phi };
-            NumericUpDown[] nudPosition2 = { nudPosition2X, nudPosition2Y, nudPosition2Z, nudPosition2Phi };
 
-            for (int i = 0; i < 4; i++)
-            {
-                if (Machine.MaxCoordinate[i] == 0) continue;
-                decimal maxValue = Convert.ToDecimal(Machine.MaxCoordinate[i]);
-                nudPosition2[i].Maximum = maxValue;
-                nudPosition1[i].Maximum = maxValue;
-            }
-        }
 
         private void tmrInterpolationGroupState_Tick(object sender, EventArgs e)
         {
@@ -465,130 +204,6 @@ namespace My6705.NET_Framework_4._5
             AxesController.StopInterpolationGroupMovement(Machine.Board.interpolationHandler);
             AxesController.StopMovementForAllAxes(Machine.Board);
             tickerState = 0;
-        }
-
-        private void DriverTest_Load(object sender, EventArgs e)
-        {
-            checkboxesToRadioButtons.Add(cbAddAxisX, rbDriveX);
-            checkboxesToRadioButtons.Add(cbAddAxisY, rbDriveY);
-            checkboxesToRadioButtons.Add(cbAddAxisZ, rbDriveZ);
-            checkboxesToRadioButtons.Add(cbAddAxisPhi, rbDrivePhi);
-        }
-
-        private void ActivateInterfaceByCb(object sender)
-        {
-            CheckBox checkbox = (CheckBox)sender;
-            RadioButton radioButton;
-            if (checkboxesToRadioButtons.TryGetValue(checkbox, out radioButton))
-            {
-                bool cben = false;
-                for (int i = 0; i < 4; i++)
-                {
-                    if (checkboxesToRadioButtons.ElementAt(i).Value.Checked) cben = true;
-                }
-
-                if (!radioButton.Checked && !cben)
-                {
-                    radioButton.Checked = checkbox.Checked;
-                }
-
-                if (checkbox.Checked == false && checkboxesToRadioButtons[checkbox].Checked)
-                {
-                    radioButton.Checked = false;
-
-                    // Находим следующий активный радиобаттон
-                    int nextActiveIndex = FindNextActiveRadioButton(cbAddedAxes);
-
-                    // Если такой радиобаттон найден, устанавливаем у него свойство Checked в значение true
-                    if (nextActiveIndex < checkboxesToRadioButtons.Count)
-                    {
-                        checkboxesToRadioButtons.ElementAt(nextActiveIndex).Value.Checked = true;
-                    }
-                }
-            }
-        }
-
-        private int FindNextActiveRadioButton(CheckBox[] checkboxes)
-        {
-            int nextActiveIndex = 0;
-            while (nextActiveIndex < checkboxes.Length && !checkboxes[nextActiveIndex].Checked)
-            {
-                nextActiveIndex++;
-            }
-
-            return nextActiveIndex;
-        }
-
-        private void cbAddAxisX_CheckedChanged(object sender, EventArgs e)
-        {
-            ActivateInterfaceByCb(sender);
-            nudPosition1X.Enabled = !nudPosition1X.Enabled;
-            nudPosition2X.Enabled = !nudPosition2X.Enabled;
-            rbDriveX.Enabled = !rbDriveX.Enabled;
-        }
-
-        private void cbAddAxisY_CheckedChanged(object sender, EventArgs e)
-        {
-            ActivateInterfaceByCb(sender);
-            nudPosition1Y.Enabled = !nudPosition1Y.Enabled;
-            nudPosition2Y.Enabled = !nudPosition2Y.Enabled;
-            rbDriveY.Enabled = !rbDriveY.Enabled;
-        }
-
-        private void cbAddAxisZ_CheckedChanged(object sender, EventArgs e)
-        {
-            ActivateInterfaceByCb(sender);
-            nudPosition1Z.Enabled = !nudPosition1Z.Enabled;
-            nudPosition2Z.Enabled = !nudPosition2Z.Enabled;
-            rbDriveZ.Enabled = !rbDriveZ.Enabled;
-        }
-
-        private void cbAddAxisPhi_CheckedChanged(object sender, EventArgs e)
-        {
-            ActivateInterfaceByCb(sender);
-            nudPosition1Phi.Enabled = !nudPosition1Phi.Enabled;
-            nudPosition2Phi.Enabled = !nudPosition2Phi.Enabled;
-            rbDrivePhi.Enabled = !rbDrivePhi.Enabled;
-        }
-
-        private void nudPosition1X_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition2Z_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition2Y_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition2X_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition1Phi_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition1Z_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition1Y_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
-
-        private void nudPosition2Phi_ValueChanged(object sender, EventArgs e)
-        {
-            SetMaxCoord();
-        }
+        }        
     }
 }

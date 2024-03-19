@@ -77,6 +77,15 @@ namespace My6705.NET_Framework_4._5
             AxesController.SetJerk(this, Jerk);
         }
 
+        public void OverrideConfig()
+        {
+            //Since Acceleration = Deceleration (requirement)
+            AxesController.SetDeceleration(this, Acceleration);
+            AxesController.SetLowVelocity(this, LowVelocity);
+            AxesController.SetActAcc(this, Acceleration);
+            AxesController.SetJerk(this, Jerk);
+        }
+
         private string boardName;
         public Board(string boardName)
         {
