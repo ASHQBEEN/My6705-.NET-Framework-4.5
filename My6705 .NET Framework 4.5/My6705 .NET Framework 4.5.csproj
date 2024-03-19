@@ -95,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="6705\Axes.cs" />
+    <Compile Include="DLL\DeviceController.cs" />
+    <Compile Include="DLL\MultiAxisController.cs" />
     <Compile Include="DriverTest\DriverTestTickers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,7 +120,7 @@
     <Compile Include="ConfigSetup.Designer.cs">
       <DependentUpon>ConfigSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DLL\AxesController.cs" />
+    <Compile Include="DLL\SingleAxisController.cs" />
     <Compile Include="DriverTest\DriverTest.cs">
       <SubType>Form</SubType>
     </Compile>

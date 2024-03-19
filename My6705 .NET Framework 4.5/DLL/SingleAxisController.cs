@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace My6705.NET_Framework_4._5
 {
-    public static class AxesController
+    public static partial class AxesController
     {
         /// <summary>
         /// Движение в точку по одной оси
@@ -16,7 +16,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxMoveAbs(axisHandler, position);
             string errorPrefix = "PTP Move";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace My6705.NET_Framework_4._5
             double CurrentComandPosition = new double();
             uint actionResult = Motion.mAcm_AxGetCmdPosition(axisHandler, ref CurrentComandPosition);
             string errorPrefix = "Get Comand Position";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
             return CurrentComandPosition;
         }
 
@@ -58,7 +58,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_SetF64Property(axisHandler, (uint)PropertyID.PAR_AxVelHigh, velHigh);
             string errorPrefix = "Set high velocity";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace My6705.NET_Framework_4._5
             for (int i = 0; i < b.AxesCount; i++)
             {
                 actionResult = Motion.mAcm_SetF64Property(b[i], (uint)PropertyID.PAR_AxAcc, acc[i]);
-                CheckApiError(actionResult, errorPrefix);
+                CheckAPIError(actionResult, errorPrefix);
             }
         }
 
@@ -94,14 +94,14 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxStopEmg(axisHandler);
             string errorPrefix = "Axis Emg Stop";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void SetAxisDeceleration(IntPtr axisHandler, double value)
         {
             uint actionResult = Motion.mAcm_SetF64Property(axisHandler, (uint)PropertyID.PAR_AxDec, value);
             string errorPrefix = "Set deceleration";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void SetDeceleration(Board b, double[] decs)
@@ -116,7 +116,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_SetF64Property(axisHandler, (uint)PropertyID.PAR_AxJerk, value);
             string errorPrefix = "Set the type of velocity profile";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void SetJerk(Board b, double[] decs)
@@ -131,7 +131,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_SetF64Property(axisHandler, (uint)PropertyID.PAR_AxVelLow, value);
             string errorPrefix = "Set low velocity";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void SetLowVelocity(Board b, double[] velLow)
@@ -146,7 +146,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxSetSvOn(axisHandler, 1);
             string errorPrefix = "Servo On";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void AllAxesServoOn(Board b)
@@ -161,7 +161,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxSetSvOn(axisHandler, 0);
             string errorPrefix = "Servo Off";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void AllAxesServoOff(Board b)
@@ -176,7 +176,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxHome(axisHandler, homeMode, dirMode);
             string errorPrefix = "AxHome";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void StartContinuousMovementChecked(Board b, int axisIndex, ushort direction)
@@ -197,7 +197,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxMoveVel(b[axisIndex], direction);
             string errorPrefix = "Continuous Movement";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static ushort GetAxisState(IntPtr axisHandler)
@@ -205,7 +205,7 @@ namespace My6705.NET_Framework_4._5
             ushort state = new ushort();
             uint actionResult = Motion.mAcm_AxGetState(axisHandler, ref state);
             string errorPrefix = "Get Axis State";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
             return state;
         }
 
@@ -229,21 +229,21 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxResetError(axisHandler);
             string errorPrefix = "Reset axis's error";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void AxisRelativeMove(IntPtr axisHandler, double distance)
         {
             uint actionResult = Motion.mAcm_AxMoveRel(axisHandler, distance);
             string errorPrefix = "Ax Move Rel";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static void ResetCmdPosition(IntPtr axisHandler)
         {
             uint actionResult = Motion.mAcm_AxSetActualPosition(axisHandler, 0);
             string errorPrefix = "Reset cmd position";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static bool IfMaximumReached(int axisIndex)
@@ -268,7 +268,7 @@ namespace My6705.NET_Framework_4._5
             double currentActPosition = new double();
             uint actionResult = Motion.mAcm_AxGetActualPosition(axisHandler, ref currentActPosition);
             string errorPrefix = "Get Comand Position";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
             return currentActPosition;
         }
 
@@ -276,7 +276,7 @@ namespace My6705.NET_Framework_4._5
         {
             uint actionResult = Motion.mAcm_AxSetActualPosition(axisHandler, 0);
             string errorPrefix = "Reset cmd position";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
         }
 
         public static double GetAxisHighVelocity(IntPtr axisHandler)
@@ -284,88 +284,12 @@ namespace My6705.NET_Framework_4._5
             double vel = new double();
             uint actionResult = Motion.mAcm_GetF64Property(axisHandler, (uint)PropertyID.PAR_AxVelHigh, ref vel);
             string errorPrefix = "get vel high";
-            CheckApiError(actionResult, errorPrefix);
+            CheckAPIError(actionResult, errorPrefix);
             return vel;
 
         }
 
-
-        //.__        __                             .__          __  .__               
-        //|__| _____/  |_  _________________   ____ |  | _____ _/  |_|__| ____   ____  
-        //|  |/    \   __\/ __ \_  __ \____ \ /  _ \|  | \__  \\   __\  |/  _ \ /    \ 
-        //|  |   |  \  | \  ___/|  | \/  |_> >  <_> )  |__/ __ \|  | |  (  <_> )   |  \
-        //|__|___|  /__|  \___  >__|  |   __/ \____/|____(____  /__| |__|\____/|___|  /
-        //        \/          \/      |__|                    \/                    \/ 
-
-
-        /// <summary>
-        /// Добавляет выбранную ось в интерполяционной группы
-        /// </summary>
-        /// <param name="axisHandler">Индекс оси</param>
-        public static void AddAxisToInterpolationGroup(IntPtr axisHandler, ref IntPtr interpolationHandler)
-        {
-            uint actionResult = Motion.mAcm_GpAddAxis(ref interpolationHandler, axisHandler);
-            string errorPrefix = "Add Axis To Group";
-            CheckApiError(actionResult, errorPrefix);
-        }
-
-        /// <summary>
-        /// Убирает выбранную ось из интерполяционной группы
-        /// </summary>
-        /// <param name="axisHandler">Индекс оси</param>
-        public static void RemoveAxisFromInterpolationGroup(IntPtr axisHandler, IntPtr interpolationHandler)
-        {
-            Motion.mAcm_GpRemAxis(interpolationHandler, axisHandler);
-        }
-
-        /// <summary>
-        /// Начинает интерполированное движение в заданную позицию
-        /// </summary>
-        /// <param name="position"></param>
-        public static void MoveInterpolationGroupAbsolute(double[] position, IntPtr interpolationHandler)
-        {
-            uint actionResult = Motion.mAcm_GpMoveLinearAbs(interpolationHandler, position);
-            string errorPrefix = "Interpolation Group Move";
-            CheckApiError(actionResult, errorPrefix);
-        }
-
-        /// <summary>
-        /// Останавливает интерполированное движение
-        /// </summary>
-        public static void StopInterpolationGroupMovement(IntPtr interpolationHandler)
-        {
-            Motion.mAcm_GpStopEmg(interpolationHandler);
-        }
-
-        public static void RemoveAllAxesFromInterpolationGroup(Board b)
-        {
-            for (int i = 0; i < Machine.Board.AxesCount; i++) //3 = максимальное число осей для интерполяции
-            {
-                RemoveAxisFromInterpolationGroup(b[i], b.interpolationHandler);
-            }
-        }
-
-        public static void SetDriveAxis(int axisIndex, IntPtr interpolationHandler)
-        {
-            uint actionResult = Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelHigh, Machine.DriverVelocity[axisIndex]);
-            string errorPrefix = "Interpolation Group Set Velocity";
-            CheckApiError(actionResult, errorPrefix);
-
-            actionResult = Motion.mAcm_SetF64Property(interpolationHandler, (uint)PropertyID.PAR_GpVelLow, Machine.DriverVelocity[axisIndex]);
-            errorPrefix = "Interpolation Group Set Velocity";
-            CheckApiError(actionResult, errorPrefix);
-        }
-
-        public static ushort GetInterpolationGroupState(IntPtr interpolationHandler)
-        {
-            ushort GpState = new ushort();
-            uint actionResult = Motion.mAcm_GpGetState(interpolationHandler, ref GpState);
-            string errorPrefix = "get interpolation state";
-            CheckApiError(actionResult, errorPrefix);
-            return GpState;
-        }
-
-        private static void CheckApiError(uint errorCode, string errorPrefix)
+        private static void CheckAPIError(uint errorCode, string errorPrefix)
         {
             string errorMessage = $"{errorPrefix} Failed With Error Code: [0x";
             if (errorCode != (uint)ErrorCode.SUCCESS)
@@ -381,51 +305,5 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        public static uint GetDeviceNumber(uint deviceType, uint boardID)
-        {
-            uint deviceNumber = new uint();
-            uint actionResult = Motion.mAcm_GetDevNum(deviceType, boardID, ref deviceNumber);
-            string errorPrefix = "Open Device";
-            CheckApiError(actionResult, errorPrefix);
-            return deviceNumber;
-        }
-
-        public static IntPtr InitializeDeviceHandler(uint deviceNumber)
-        {
-            IntPtr deviceHandler = IntPtr.Zero;
-            uint actionResult = Motion.mAcm_DevOpen(deviceNumber, ref deviceHandler);
-            string errorPrefix = "Open Device";
-            CheckApiError(actionResult, errorPrefix);
-            return deviceHandler;
-        }
-
-        public static IntPtr[] InitializeAxesHandler(int axesCount, IntPtr deviceHandler)
-        {
-            IntPtr[] axesHandler = new IntPtr[axesCount];
-            for (int i = 0; i < axesCount; i++)
-            {
-                uint actionResult = Motion.mAcm_AxOpen(deviceHandler, (UInt16)i, ref axesHandler[i]);
-                string errorPrefix = "Open Axis";
-                CheckApiError(actionResult, errorPrefix);
-                //Set command and actual position of drivers to start (0-point)        
-                Motion.mAcm_AxSetCmdPosition(axesHandler[i], 0);
-                Motion.mAcm_AxSetActualPosition(axesHandler[i], 0);
-            }
-            return axesHandler;
-        }
-
-        public static void CloseDevice(ref IntPtr deviceHandler)
-        {
-            uint actionResult = Motion.mAcm_DevClose(ref deviceHandler);
-            string errorPrefix = "Close Board";
-            CheckApiError(actionResult, errorPrefix);
-        }
-
-        public static void LoadConfig(IntPtr deviceHandler, string advantechConfigPath)
-        {
-            uint actionResult = Motion.mAcm_DevLoadConfig(deviceHandler, advantechConfigPath);
-            string errorPrefix = "Load Config";
-            CheckApiError(actionResult, errorPrefix);
-        }
     }
 }

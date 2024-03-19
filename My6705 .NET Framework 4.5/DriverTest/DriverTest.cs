@@ -13,7 +13,6 @@ namespace My6705.NET_Framework_4._5
         private readonly NumericUpDown[] nudPosition1;
         private readonly NumericUpDown[] nudPosition2;
 
-
         int tickerState = 0;
         int testStartTime = 0;
 
@@ -30,8 +29,6 @@ namespace My6705.NET_Framework_4._5
             checkboxesToRadioButtons.Add(cbAddAxisPhi, rbDrivePhi);
             SetMaxCoord();
         }
-
-        GroupState interpolationGroupState;
 
         private void driverTestTimer_Tick(object sender, EventArgs e)
         {
@@ -50,6 +47,7 @@ namespace My6705.NET_Framework_4._5
             testTimerTick();
 
         }
+
         private int GetPTPIndex()
         {
             for (int i = 0; i < rbDriveSpeed.Length; i++)
@@ -191,7 +189,7 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-
+        GroupState interpolationGroupState;
 
         private void tmrInterpolationGroupState_Tick(object sender, EventArgs e)
         {
