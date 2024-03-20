@@ -117,7 +117,7 @@
             this.rbBreak.Location = new System.Drawing.Point(886, 62);
             this.rbBreak.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbBreak.Name = "rbBreak";
-            this.rbBreak.Size = new System.Drawing.Size(90, 24);
+            this.rbBreak.Size = new System.Drawing.Size(83, 24);
             this.rbBreak.TabIndex = 5;
             this.rbBreak.TabStop = true;
             this.rbBreak.Text = "Разрыв";
@@ -130,7 +130,7 @@
             this.rbShear.Location = new System.Drawing.Point(886, 132);
             this.rbShear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbShear.Name = "rbShear";
-            this.rbShear.Size = new System.Drawing.Size(81, 24);
+            this.rbShear.Size = new System.Drawing.Size(74, 24);
             this.rbShear.TabIndex = 6;
             this.rbShear.Text = "Сдвиг";
             this.rbShear.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             this.rbStretch.Location = new System.Drawing.Point(886, 97);
             this.rbStretch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbStretch.Name = "rbStretch";
-            this.rbStretch.Size = new System.Drawing.Size(126, 24);
+            this.rbStretch.Size = new System.Drawing.Size(119, 24);
             this.rbStretch.TabIndex = 7;
             this.rbStretch.Text = "Растяжение";
             this.rbStretch.UseVisualStyleBackColor = true;
@@ -230,7 +230,7 @@
             this.cbSetBound.AutoSize = true;
             this.cbSetBound.Location = new System.Drawing.Point(882, 223);
             this.cbSetBound.Name = "cbSetBound";
-            this.cbSetBound.Size = new System.Drawing.Size(22, 21);
+            this.cbSetBound.Size = new System.Drawing.Size(15, 14);
             this.cbSetBound.TabIndex = 18;
             this.cbSetBound.UseVisualStyleBackColor = true;
             this.cbSetBound.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);

@@ -21,16 +21,14 @@ namespace My6705.NET_Framework_4._5
         private VideoCapture capture = null;
         private DsDevice[] webCams = null;
 
-        private readonly HomeHandler hh;
         public Main()
         {
             InitializeComponent();
-            //Костыль: плата создаётся при первом обращении к классу Machine, а при открытии окна запускается таймер работающий с
-            // ещё не инициализированной платой
-            Machine.Board[3].ToString();
-            //костыть end
-            hh = new HomeHandler(timerHome, btnHome, btnServo);
 
+            Machine.Board.OpenBoard();
+
+            btnHome.Click += Start;
+            timerHome.Tick += TimerTick;
         }
 
         private void velParametersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -72,13 +70,14 @@ namespace My6705.NET_Framework_4._5
                 if (cfgDlg == DialogResult.OK)
                 {
                     OpenFileDialog openFileConfig = new OpenFileDialog();
-                    if (openFileConfig.ShowDialog() == DialogResult.OK) 
+                    if (openFileConfig.ShowDialog() == DialogResult.OK)
                     {
                         Machine.Board.AdvantechConfigPath = openFileConfig.FileName;
                         Machine.Board.LoadOverridedConfig();
                     }
                     else
                     {
+                        Activate();
                         Machine.Board.OverrideConfig();
                     }
                 }
@@ -112,7 +111,7 @@ namespace My6705.NET_Framework_4._5
             TextBox[] tbActPos = { tbFeedbackPos0, tbFeedbackPos1, tbFeedbackPos2, tbFeedbackPos3 };
             double[] cmdPos = AxesController.GetCommandPositionsAsArray(Machine.Board);
             double[] feedbackPos = AxesController.GetActPositionsAsArray(Machine.Board);
-            
+
             for (int i = 0; i < Machine.Board.AxesCount; i++)
             {
                 tbCmdPos[i].Text = Convert.ToString(cmdPos[i]);
@@ -142,9 +141,6 @@ namespace My6705.NET_Framework_4._5
                 }
             }
         }
-
-
-
 
         bool servoAll = false;  // Controls servo state
         public void ServoAll(Button button)
@@ -180,56 +176,7 @@ namespace My6705.NET_Framework_4._5
             interpolatedMovement.Show();
         }
 
-        private void btnOpenPort_Click(object sender, EventArgs e)
-        {
-            bool error = false;
-            // If the port is open, close it.
-            if (comPort.ComIsOpen())
-            {
-                comPort.ComClose();
-                btnOpenPort.Text = "Открыть порт";
-            }
-            else
-            {
-                try
-                {
-                    comPort.SetPortName(cmbComPort.Text);
-                    btnOpenPort.Text = "Закрыть порт";
-                    // Open the port
-                    //comPort.ComOpen();
-                    port.PortName = cmbComPort.Text;
-                    port.Open();
-                    // Start Graph Timer
-                }
-                catch (UnauthorizedAccessException) { error = true; }
-                catch (IOException) { error = true; }
-                catch (ArgumentException) { error = true; }
-
-                if (error)
-                    MessageBox.Show("Не удалось открыть COM-порт. Скорее всего он уже подключен, недоступен или вовсе отключен.", "Ошибка COM-порта", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }
-
-            // Change the state of the form's controls
-            //EnableControls();
-
-            tmrComDataGetter.Start();
-        }
-
-        private void tmrComDataGetter_Tick(object sender, EventArgs e)
-        {
-            tbComData.Text = comPort.getPortDataTicker();
-        }
-
-        private void tmrCheckComPorts_Tick(object sender, EventArgs e)
-        {
-            comPort.RefreshComPortList(cmbComPort);
-        }
-
         bool camIsActive = false;
-        private void comSetupToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            comPort.openGraph();
-        }
 
         int selectedCamID = new int();
         private void btnOpenCam_Click(object sender, EventArgs e)
@@ -241,7 +188,7 @@ namespace My6705.NET_Framework_4._5
                     if (capture != null)
                     {
                         //capture.Pause();
-                        cbEnCross.Checked = false;
+                        //cbEnCross.Checked = false;
                         capture.Dispose();
                         capture = null;
                         pictureBox1.Image.Dispose();
@@ -307,39 +254,21 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-        int rectW = 10, rectH = 10, ofset = 5;
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            if (cbEnCross.Checked)
-            {
-                Pen p = new Pen(Color.Cyan, 2);
-                Rectangle rect = new Rectangle(pictureBox1.Width / 2 - rectW / 2, pictureBox1.Height / 2 - rectH / 2, rectW, rectH);
-                e.Graphics.DrawRectangle(p, rect);
-                Point px1 = new Point(pictureBox1.Width / 2 - rectW / 2 - ofset, pictureBox1.Height / 2);
-                Point px2 = new Point(pictureBox1.Width / 2 + rectW / 2 + ofset, pictureBox1.Height / 2);
-                Point py1 = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2 - rectH / 2 - ofset);
-                Point py2 = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2 + rectH / 2 + ofset);
-                e.Graphics.DrawLine(p, px1, px2);
-                e.Graphics.DrawLine(p, py1, py2);
-            }
-        }
 
-        private void cbEnCross_CheckedChanged(object sender, EventArgs e)
-        {
-            trbX.Enabled = cbEnCross.Checked;
-            trbY.Enabled = cbEnCross.Checked;
-        }
+        
 
         private void btnTest1_Click(object sender, EventArgs e)
         {
-            TestsForm testsForm = new TestsForm(comPort, graph, td, dr);
-            testsForm.Show();
+            WireTest wt = new WireTest();
+            wt.Show();
+
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            HomeStop();
+            Machine.Board.CloseBoard();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -350,19 +279,8 @@ namespace My6705.NET_Framework_4._5
 
         private void button2_Click(object sender, EventArgs e)
         {
-            WireTest wt = new WireTest(port);
-            wt.Show();
+            TestsForm testsForm = new TestsForm(comPort, graph, td, dr);
+            testsForm.Show();
         }
-
-        private void trbY_Scroll(object sender, EventArgs e)
-        {
-            rectH = trbY.Value;
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            rectW = trbX.Value;
-        }
-
-    } // class
-} // namespace
+    }
+}

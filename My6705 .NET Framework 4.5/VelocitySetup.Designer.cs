@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gbManipulatorVelocities = new System.Windows.Forms.GroupBox();
             this.ndFastVel3 = new System.Windows.Forms.NumericUpDown();
             this.ndSlowVel0 = new System.Windows.Forms.NumericUpDown();
             this.ndFastVel2 = new System.Windows.Forms.NumericUpDown();
@@ -74,7 +73,6 @@
             this.ndMaxCoord1 = new System.Windows.Forms.NumericUpDown();
             this.ndMaxCoord2 = new System.Windows.Forms.NumericUpDown();
             this.ndMaxCoord3 = new System.Windows.Forms.NumericUpDown();
-            this.gbManipulatorVelocities.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndFastVel3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndSlowVel0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndFastVel2)).BeginInit();
@@ -101,26 +99,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ndMaxCoord3)).BeginInit();
             this.SuspendLayout();
             // 
-            // gbManipulatorVelocities
-            // 
-            this.gbManipulatorVelocities.Controls.Add(this.ndFastVel3);
-            this.gbManipulatorVelocities.Controls.Add(this.ndSlowVel0);
-            this.gbManipulatorVelocities.Controls.Add(this.ndFastVel2);
-            this.gbManipulatorVelocities.Controls.Add(this.ndSlowVel1);
-            this.gbManipulatorVelocities.Controls.Add(this.ndFastVel1);
-            this.gbManipulatorVelocities.Controls.Add(this.ndSlowVel2);
-            this.gbManipulatorVelocities.Controls.Add(this.ndFastVel0);
-            this.gbManipulatorVelocities.Controls.Add(this.lblFastVel);
-            this.gbManipulatorVelocities.Controls.Add(this.ndSlowVel3);
-            this.gbManipulatorVelocities.Controls.Add(this.lblSlowVel);
-            this.gbManipulatorVelocities.Location = new System.Drawing.Point(48, 18);
-            this.gbManipulatorVelocities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbManipulatorVelocities.Name = "gbManipulatorVelocities";
-            this.gbManipulatorVelocities.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbManipulatorVelocities.Size = new System.Drawing.Size(428, 238);
-            this.gbManipulatorVelocities.TabIndex = 0;
-            this.gbManipulatorVelocities.TabStop = false;
-            // 
             // ndFastVel3
             // 
             this.ndFastVel3.Increment = new decimal(new int[] {
@@ -128,7 +106,7 @@
             0,
             0,
             0});
-            this.ndFastVel3.Location = new System.Drawing.Point(254, 186);
+            this.ndFastVel3.Location = new System.Drawing.Point(297, 204);
             this.ndFastVel3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndFastVel3.Maximum = new decimal(new int[] {
             300000,
@@ -148,7 +126,7 @@
             0,
             0,
             0});
-            this.ndSlowVel0.Location = new System.Drawing.Point(24, 52);
+            this.ndSlowVel0.Location = new System.Drawing.Point(67, 70);
             this.ndSlowVel0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndSlowVel0.Maximum = new decimal(new int[] {
             300000,
@@ -167,7 +145,7 @@
             0,
             0,
             0});
-            this.ndFastVel2.Location = new System.Drawing.Point(254, 142);
+            this.ndFastVel2.Location = new System.Drawing.Point(297, 160);
             this.ndFastVel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndFastVel2.Maximum = new decimal(new int[] {
             300000,
@@ -187,7 +165,7 @@
             0,
             0,
             0});
-            this.ndSlowVel1.Location = new System.Drawing.Point(24, 97);
+            this.ndSlowVel1.Location = new System.Drawing.Point(67, 115);
             this.ndSlowVel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndSlowVel1.Maximum = new decimal(new int[] {
             300000,
@@ -206,7 +184,7 @@
             0,
             0,
             0});
-            this.ndFastVel1.Location = new System.Drawing.Point(254, 97);
+            this.ndFastVel1.Location = new System.Drawing.Point(297, 115);
             this.ndFastVel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndFastVel1.Maximum = new decimal(new int[] {
             300000,
@@ -226,7 +204,7 @@
             0,
             0,
             0});
-            this.ndSlowVel2.Location = new System.Drawing.Point(24, 142);
+            this.ndSlowVel2.Location = new System.Drawing.Point(67, 160);
             this.ndSlowVel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndSlowVel2.Maximum = new decimal(new int[] {
             300000,
@@ -245,7 +223,7 @@
             0,
             0,
             0});
-            this.ndFastVel0.Location = new System.Drawing.Point(254, 52);
+            this.ndFastVel0.Location = new System.Drawing.Point(297, 70);
             this.ndFastVel0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndFastVel0.Maximum = new decimal(new int[] {
             300000,
@@ -261,12 +239,12 @@
             // lblFastVel
             // 
             this.lblFastVel.AutoSize = true;
-            this.lblFastVel.Location = new System.Drawing.Point(261, 25);
+            this.lblFastVel.Location = new System.Drawing.Point(289, 42);
             this.lblFastVel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFastVel.Name = "lblFastVel";
-            this.lblFastVel.Size = new System.Drawing.Size(130, 20);
+            this.lblFastVel.Size = new System.Drawing.Size(169, 20);
             this.lblFastVel.TabIndex = 23;
-            this.lblFastVel.Text = "Манип. быстрая";
+            this.lblFastVel.Text = "Манип. быстрая, мк/c";
             // 
             // ndSlowVel3
             // 
@@ -275,7 +253,7 @@
             0,
             0,
             0});
-            this.ndSlowVel3.Location = new System.Drawing.Point(24, 186);
+            this.ndSlowVel3.Location = new System.Drawing.Point(67, 204);
             this.ndSlowVel3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndSlowVel3.Maximum = new decimal(new int[] {
             300000,
@@ -290,12 +268,12 @@
             // lblSlowVel
             // 
             this.lblSlowVel.AutoSize = true;
-            this.lblSlowVel.Location = new System.Drawing.Point(22, 25);
+            this.lblSlowVel.Location = new System.Drawing.Point(47, 42);
             this.lblSlowVel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSlowVel.Name = "lblSlowVel";
-            this.lblSlowVel.Size = new System.Drawing.Size(152, 20);
+            this.lblSlowVel.Size = new System.Drawing.Size(191, 20);
             this.lblSlowVel.TabIndex = 22;
-            this.lblSlowVel.Text = "Манип. медленная";
+            this.lblSlowVel.Text = "Манип. медленная, мк/c";
             // 
             // ndDrVel0
             // 
@@ -457,7 +435,7 @@
             // 
             this.pJerk0.Controls.Add(this.rbS0);
             this.pJerk0.Controls.Add(this.rbT0);
-            this.pJerk0.Location = new System.Drawing.Point(990, 71);
+            this.pJerk0.Location = new System.Drawing.Point(1193, 71);
             this.pJerk0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pJerk0.Name = "pJerk0";
             this.pJerk0.Size = new System.Drawing.Size(141, 31);
@@ -466,7 +444,7 @@
             // rbS0
             // 
             this.rbS0.AutoSize = true;
-            this.rbS0.Location = new System.Drawing.Point(86, 3);
+            this.rbS0.Location = new System.Drawing.Point(86, 0);
             this.rbS0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbS0.Name = "rbS0";
             this.rbS0.Size = new System.Drawing.Size(45, 24);
@@ -478,7 +456,7 @@
             // 
             this.rbT0.AutoSize = true;
             this.rbT0.Checked = true;
-            this.rbT0.Location = new System.Drawing.Point(12, 3);
+            this.rbT0.Location = new System.Drawing.Point(12, -1);
             this.rbT0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbT0.Name = "rbT0";
             this.rbT0.Size = new System.Drawing.Size(43, 24);
@@ -491,7 +469,7 @@
             // 
             this.pJerk1.Controls.Add(this.rbS1);
             this.pJerk1.Controls.Add(this.rbT1);
-            this.pJerk1.Location = new System.Drawing.Point(990, 115);
+            this.pJerk1.Location = new System.Drawing.Point(1193, 115);
             this.pJerk1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pJerk1.Name = "pJerk1";
             this.pJerk1.Size = new System.Drawing.Size(141, 31);
@@ -500,7 +478,7 @@
             // rbS1
             // 
             this.rbS1.AutoSize = true;
-            this.rbS1.Location = new System.Drawing.Point(86, 3);
+            this.rbS1.Location = new System.Drawing.Point(86, 0);
             this.rbS1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbS1.Name = "rbS1";
             this.rbS1.Size = new System.Drawing.Size(45, 24);
@@ -512,7 +490,7 @@
             // 
             this.rbT1.AutoSize = true;
             this.rbT1.Checked = true;
-            this.rbT1.Location = new System.Drawing.Point(12, 3);
+            this.rbT1.Location = new System.Drawing.Point(12, -1);
             this.rbT1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbT1.Name = "rbT1";
             this.rbT1.Size = new System.Drawing.Size(43, 24);
@@ -525,7 +503,7 @@
             // 
             this.pJerk2.Controls.Add(this.rbS2);
             this.pJerk2.Controls.Add(this.rbT2);
-            this.pJerk2.Location = new System.Drawing.Point(990, 160);
+            this.pJerk2.Location = new System.Drawing.Point(1193, 160);
             this.pJerk2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pJerk2.Name = "pJerk2";
             this.pJerk2.Size = new System.Drawing.Size(141, 31);
@@ -534,7 +512,7 @@
             // rbS2
             // 
             this.rbS2.AutoSize = true;
-            this.rbS2.Location = new System.Drawing.Point(86, 3);
+            this.rbS2.Location = new System.Drawing.Point(86, -1);
             this.rbS2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbS2.Name = "rbS2";
             this.rbS2.Size = new System.Drawing.Size(45, 24);
@@ -546,7 +524,7 @@
             // 
             this.rbT2.AutoSize = true;
             this.rbT2.Checked = true;
-            this.rbT2.Location = new System.Drawing.Point(12, 3);
+            this.rbT2.Location = new System.Drawing.Point(12, -1);
             this.rbT2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbT2.Name = "rbT2";
             this.rbT2.Size = new System.Drawing.Size(43, 24);
@@ -559,7 +537,7 @@
             // 
             this.pJerk3.Controls.Add(this.rbS3);
             this.pJerk3.Controls.Add(this.rbT3);
-            this.pJerk3.Location = new System.Drawing.Point(990, 205);
+            this.pJerk3.Location = new System.Drawing.Point(1193, 205);
             this.pJerk3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pJerk3.Name = "pJerk3";
             this.pJerk3.Size = new System.Drawing.Size(141, 31);
@@ -568,7 +546,7 @@
             // rbS3
             // 
             this.rbS3.AutoSize = true;
-            this.rbS3.Location = new System.Drawing.Point(86, 3);
+            this.rbS3.Location = new System.Drawing.Point(86, -1);
             this.rbS3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbS3.Name = "rbS3";
             this.rbS3.Size = new System.Drawing.Size(45, 24);
@@ -580,7 +558,7 @@
             // 
             this.rbT3.AutoSize = true;
             this.rbT3.Checked = true;
-            this.rbT3.Location = new System.Drawing.Point(12, 3);
+            this.rbT3.Location = new System.Drawing.Point(12, -1);
             this.rbT3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rbT3.Name = "rbT3";
             this.rbT3.Size = new System.Drawing.Size(43, 24);
@@ -628,27 +606,27 @@
             // lblDrVel
             // 
             this.lblDrVel.AutoSize = true;
-            this.lblDrVel.Location = new System.Drawing.Point(531, 43);
+            this.lblDrVel.Location = new System.Drawing.Point(510, 42);
             this.lblDrVel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDrVel.Name = "lblDrVel";
-            this.lblDrVel.Size = new System.Drawing.Size(150, 20);
+            this.lblDrVel.Size = new System.Drawing.Size(189, 20);
             this.lblDrVel.TabIndex = 24;
-            this.lblDrVel.Text = "Скорость привода";
+            this.lblDrVel.Text = "Скорость привода, мк/c";
             // 
             // lblAcc
             // 
             this.lblAcc.AutoSize = true;
-            this.lblAcc.Location = new System.Drawing.Point(771, 43);
+            this.lblAcc.Location = new System.Drawing.Point(738, 42);
             this.lblAcc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAcc.Name = "lblAcc";
-            this.lblAcc.Size = new System.Drawing.Size(126, 20);
+            this.lblAcc.Size = new System.Drawing.Size(170, 20);
             this.lblAcc.TabIndex = 25;
-            this.lblAcc.Text = "Ускор./Замедл.";
+            this.lblAcc.Text = "Ускор./Замедл., мк/c²";
             // 
             // lblJerk
             // 
             this.lblJerk.AutoSize = true;
-            this.lblJerk.Location = new System.Drawing.Point(1016, 43);
+            this.lblJerk.Location = new System.Drawing.Point(1218, 42);
             this.lblJerk.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblJerk.Name = "lblJerk";
             this.lblJerk.Size = new System.Drawing.Size(93, 20);
@@ -698,12 +676,12 @@
             // lblMaxCoord
             // 
             this.lblMaxCoord.AutoSize = true;
-            this.lblMaxCoord.Location = new System.Drawing.Point(1221, 43);
+            this.lblMaxCoord.Location = new System.Drawing.Point(976, 42);
             this.lblMaxCoord.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaxCoord.Name = "lblMaxCoord";
-            this.lblMaxCoord.Size = new System.Drawing.Size(146, 20);
+            this.lblMaxCoord.Size = new System.Drawing.Size(173, 20);
             this.lblMaxCoord.TabIndex = 35;
-            this.lblMaxCoord.Text = "Макс. координата";
+            this.lblMaxCoord.Text = "Макс. координата, мк";
             // 
             // ndMaxCoord0
             // 
@@ -712,7 +690,7 @@
             0,
             0,
             0});
-            this.ndMaxCoord0.Location = new System.Drawing.Point(1220, 71);
+            this.ndMaxCoord0.Location = new System.Drawing.Point(989, 70);
             this.ndMaxCoord0.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndMaxCoord0.Maximum = new decimal(new int[] {
             5000000,
@@ -731,7 +709,7 @@
             0,
             0,
             0});
-            this.ndMaxCoord1.Location = new System.Drawing.Point(1220, 115);
+            this.ndMaxCoord1.Location = new System.Drawing.Point(989, 116);
             this.ndMaxCoord1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndMaxCoord1.Maximum = new decimal(new int[] {
             5000000,
@@ -750,7 +728,7 @@
             0,
             0,
             0});
-            this.ndMaxCoord2.Location = new System.Drawing.Point(1220, 160);
+            this.ndMaxCoord2.Location = new System.Drawing.Point(989, 161);
             this.ndMaxCoord2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndMaxCoord2.Maximum = new decimal(new int[] {
             5000000,
@@ -769,7 +747,7 @@
             0,
             0,
             0});
-            this.ndMaxCoord3.Location = new System.Drawing.Point(1220, 202);
+            this.ndMaxCoord3.Location = new System.Drawing.Point(989, 205);
             this.ndMaxCoord3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ndMaxCoord3.Maximum = new decimal(new int[] {
             5000000,
@@ -785,15 +763,25 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1386, 343);
+            this.ClientSize = new System.Drawing.Size(1349, 336);
+            this.Controls.Add(this.ndFastVel3);
             this.Controls.Add(this.lblMaxCoord);
+            this.Controls.Add(this.ndSlowVel0);
             this.Controls.Add(this.ndMaxCoord0);
+            this.Controls.Add(this.ndFastVel2);
             this.Controls.Add(this.ndMaxCoord1);
+            this.Controls.Add(this.ndSlowVel1);
             this.Controls.Add(this.ndMaxCoord2);
+            this.Controls.Add(this.ndFastVel1);
             this.Controls.Add(this.ndMaxCoord3);
+            this.Controls.Add(this.ndSlowVel2);
             this.Controls.Add(this.lblF);
+            this.Controls.Add(this.ndFastVel0);
             this.Controls.Add(this.lblZ);
+            this.Controls.Add(this.lblFastVel);
+            this.Controls.Add(this.ndSlowVel3);
             this.Controls.Add(this.lblY);
+            this.Controls.Add(this.lblSlowVel);
             this.Controls.Add(this.lblX);
             this.Controls.Add(this.lblJerk);
             this.Controls.Add(this.lblAcc);
@@ -811,7 +799,6 @@
             this.Controls.Add(this.ndAcc3);
             this.Controls.Add(this.ndDrVel0);
             this.Controls.Add(this.ndDrVel1);
-            this.Controls.Add(this.gbManipulatorVelocities);
             this.Controls.Add(this.ndDrVel2);
             this.Controls.Add(this.ndDrVel3);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -819,8 +806,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Параметры скорости";
             this.Load += new System.EventHandler(this.VelocitySetup_Load);
-            this.gbManipulatorVelocities.ResumeLayout(false);
-            this.gbManipulatorVelocities.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndFastVel3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndSlowVel0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndFastVel2)).EndInit();
@@ -855,8 +840,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox gbManipulatorVelocities;
         private System.Windows.Forms.NumericUpDown ndSlowVel0;
         private System.Windows.Forms.NumericUpDown ndSlowVel1;
         private System.Windows.Forms.NumericUpDown ndSlowVel2;

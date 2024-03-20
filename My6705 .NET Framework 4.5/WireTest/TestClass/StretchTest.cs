@@ -13,7 +13,9 @@ namespace My6705.NET_Framework_4._5
         private static int nextId = 1;
         public override string TestNameString => "Растяжение";
         public override double TestResult { get { return EndPosition / StartPosition * 100; } }
-        
+        public static double TestSpeed { get; set; }
+        public static double[] TestPoint { get; set; } = new double[3];
+
         public StretchTest() : base(nextId++) { }
     }
 }

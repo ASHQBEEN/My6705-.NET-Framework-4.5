@@ -3,38 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace My6705.NET_Framework_4._5
 {
-    public class HomeHandler
+    public partial class Main
     {
         private readonly double basingDistance = 1000;
-        private readonly ushort stateHoming = (ushort)AxisState.STA_AX_HOMING;
-        private readonly ushort stateMoving = (ushort)AxisState.STA_AX_PTP_MOT;
+        private readonly ushort STATE_HOMING = (ushort)AxisState.STA_AX_HOMING;
+        private readonly ushort STATE_MOVING = (ushort)AxisState.STA_AX_PTP_MOT;
         private static readonly int ticksBeforeStop = 10000;
         private readonly double timeBeforeStop = ticksBeforeStop * 1; // Home timer variable to control time spend on reaching the limiter
-        private readonly Timer timer;
-        private readonly Button homeBtn;
-        private readonly Button turnServoBtn;
-
         int startTime;
         int homeTickerState = 0;
-
-        public HomeHandler(Timer homeTimer, Button homeBtn, Button turnServoBtn)
-        {
-            timer = homeTimer;
-            this.homeBtn = homeBtn;
-            this.turnServoBtn = turnServoBtn;
-            this.homeBtn.Click += Start;
-            timer.Tick += TimerTick;
-        }
 
         private void SensorNotFoundStop(int axisIndex)
         {
             homeTickerState = 0;
-            turnServoBtn.Enabled = true;
-            homeBtn.Enabled = true;
+            btnServo.Enabled = true;
+            btnHome.Enabled = true;
             AxesController.StopContinuousMovementEmg(Machine.Board[axisIndex]);
             KeyboardControl.blockControls = false;
             MessageBox.Show("Не удалось обнаружить датчик ИП");
@@ -43,12 +31,23 @@ namespace My6705.NET_Framework_4._5
         public void Start(object sender, EventArgs e)
         {
             startTime = Environment.TickCount;
-            turnServoBtn.Enabled = false;
+            btnServo.Enabled = false;
             KeyboardControl.blockControls = true;
             homeTickerState = 1;
-            homeBtn.Enabled = false;
+            btnHome.Enabled = false;
             AxesController.SetHighVelocity(Machine.Board, Machine.DriverVelocity);
-            timer.Start();
+            timerHome.Start();
+        }
+
+        private void HomeStop()
+        {
+            homeTickerState = 0;
+            timerHome.Stop();
+            btnHome.Enabled = true;
+            btnServo.Enabled = true;
+            KeyboardControl.blockControls = false;
+            AxesController.StopMovementForAllAxes(Machine.Board);
+            return;
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -56,13 +55,15 @@ namespace My6705.NET_Framework_4._5
             //Home Timer
             if (homeTickerState == 0)
             {
-                timer.Stop();
-                homeBtn.Enabled = true;
-                turnServoBtn.Enabled = true;
-                KeyboardControl.blockControls = false;
-                return;
+                HomeStop();
             }
             HomeTick();
+        }
+
+        private void StopHomeBySpaceKey(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+                HomeStop();
         }
 
         public void HomeTick()
@@ -79,7 +80,7 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(2);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.Board[2]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[2]) == STATE_HOMING) break;
                     homeTickerState++;
                     break;
                 case 3:
@@ -87,7 +88,7 @@ namespace My6705.NET_Framework_4._5
                     homeTickerState++;
                     break;
                 case 4:
-                    if (AxesController.GetAxisState(Machine.Board[2]) == stateMoving) break;
+                    if (AxesController.GetAxisState(Machine.Board[2]) == STATE_MOVING) break;
                     AxesController.ResetCmdPosition(Machine.Board[2]);
                     AxesController.ResetActPosition(Machine.Board[2]);
                     homeTickerState++;
@@ -102,7 +103,7 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(0);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.Board[0]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[0]) == STATE_HOMING) break;
                     homeTickerState++;
                     break;
                 case 7:
@@ -110,7 +111,7 @@ namespace My6705.NET_Framework_4._5
                     homeTickerState++;
                     break;
                 case 8:
-                    if (AxesController.GetAxisState(Machine.Board[0]) == stateMoving) break;
+                    if (AxesController.GetAxisState(Machine.Board[0]) == STATE_MOVING) break;
                     homeTickerState++;
                     AxesController.ResetCmdPosition(Machine.Board[0]);
                     AxesController.ResetActPosition(Machine.Board[0]);
@@ -125,14 +126,14 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(1);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.Board[1]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[1]) == STATE_HOMING) break;
                     homeTickerState++; break;
                 case 11:
                     AxesController.AxisRelativeMove(Machine.Board[1], basingDistance);
                     homeTickerState++;
                     break;
                 case 12:
-                    if (AxesController.GetAxisState(Machine.Board[1]) == stateMoving) break;
+                    if (AxesController.GetAxisState(Machine.Board[1]) == STATE_MOVING) break;
                     AxesController.ResetCmdPosition(Machine.Board[1]);
                     AxesController.ResetActPosition(Machine.Board[1]);
                     homeTickerState++;
@@ -147,7 +148,7 @@ namespace My6705.NET_Framework_4._5
                         SensorNotFoundStop(3);
                         break;
                     }
-                    if (AxesController.GetAxisState(Machine.Board[3]) == stateHoming) break;
+                    if (AxesController.GetAxisState(Machine.Board[3]) == STATE_HOMING) break;
                     else
                     {
                         homeTickerState = 0;
@@ -158,8 +159,8 @@ namespace My6705.NET_Framework_4._5
                     homeTickerState++;
                     break;
                 case 16:
-                    if (AxesController.GetAxisState(Machine.Board[3]) == stateMoving) break;
-                    AxesController.ResetCmdPosition(Machine.Board[3]);         
+                    if (AxesController.GetAxisState(Machine.Board[3]) == STATE_MOVING) break;
+                    AxesController.ResetCmdPosition(Machine.Board[3]);
                     AxesController.ResetActPosition(Machine.Board[3]);
                     homeTickerState = 0;
                     break;

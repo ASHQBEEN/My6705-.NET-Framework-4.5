@@ -92,7 +92,7 @@ namespace My6705.NET_Framework_4._5
             for (int i = 0; i < 4; i++)
             {
                 if (Machine.MaxCoordinate[i] == 0) continue;
-                decimal maxValue = Convert.ToDecimal(Machine.MaxCoordinate[i]);
+                decimal maxValue = (decimal)Machine.MaxCoordinate[i];
                 nudPosition2[i].Maximum = maxValue;
                 nudPosition1[i].Maximum = maxValue;
             }

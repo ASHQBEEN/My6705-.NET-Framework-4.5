@@ -356,6 +356,7 @@
             this.btnStartInterpolatedMovement.Name = "btnStartInterpolatedMovement";
             this.btnStartInterpolatedMovement.Size = new System.Drawing.Size(196, 63);
             this.btnStartInterpolatedMovement.TabIndex = 16;
+            this.btnStartInterpolatedMovement.TabStop = false;
             this.btnStartInterpolatedMovement.Text = "Начать\r\nдвижение";
             this.btnStartInterpolatedMovement.UseVisualStyleBackColor = true;
             this.btnStartInterpolatedMovement.Click += new System.EventHandler(this.btnStartTestClick);
@@ -540,6 +541,7 @@
             this.Name = "DriverTest";
             this.Text = "Тест приводов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriverTest_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StopOnSpaceKey);
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Y)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Z)).EndInit();

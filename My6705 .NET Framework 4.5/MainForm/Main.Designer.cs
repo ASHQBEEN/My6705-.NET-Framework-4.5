@@ -34,7 +34,6 @@
             this.loadConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.driverTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbCmdPos0 = new System.Windows.Forms.TextBox();
             this.tbCmdPos1 = new System.Windows.Forms.TextBox();
             this.tbCmdPos2 = new System.Windows.Forms.TextBox();
@@ -59,20 +58,10 @@
             this.btnHome = new System.Windows.Forms.Button();
             this.timerHome = new System.Windows.Forms.Timer(this.components);
             this.btnServo = new System.Windows.Forms.Button();
-            this.tbComData = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnOpenPort = new System.Windows.Forms.Button();
-            this.cmbComPort = new System.Windows.Forms.ComboBox();
-            this.tmrCheckComPorts = new System.Windows.Forms.Timer(this.components);
-            this.tmrComDataGetter = new System.Windows.Forms.Timer(this.components);
             this.btnTest1 = new System.Windows.Forms.Button();
             this.cmbCams = new System.Windows.Forms.ComboBox();
             this.btnOpenCam = new System.Windows.Forms.Button();
-            this.trbX = new System.Windows.Forms.TrackBar();
-            this.cbEnCross = new System.Windows.Forms.CheckBox();
-            this.trbY = new System.Windows.Forms.TrackBar();
-            this.lblTrbX = new System.Windows.Forms.Label();
-            this.lblTrbY = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tbFeedbackPos3 = new System.Windows.Forms.TextBox();
@@ -89,8 +78,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbLimNeg3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimPos3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trbX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trbY)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -101,48 +88,40 @@
             this.velParametersToolStripMenuItem,
             this.loadConfigToolStripMenuItem,
             this.IOToolStripMenuItem,
-            this.driverTestToolStripMenuItem,
-            this.comGraphToolStripMenuItem});
+            this.driverTestToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1258, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1258, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // velParametersToolStripMenuItem
             // 
             this.velParametersToolStripMenuItem.Name = "velParametersToolStripMenuItem";
-            this.velParametersToolStripMenuItem.Size = new System.Drawing.Size(203, 32);
+            this.velParametersToolStripMenuItem.Size = new System.Drawing.Size(203, 29);
             this.velParametersToolStripMenuItem.Text = "Параметры скорости";
             this.velParametersToolStripMenuItem.Click += new System.EventHandler(this.velParametersToolStripMenuItem_Click);
             // 
             // loadConfigToolStripMenuItem
             // 
             this.loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
-            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(193, 32);
+            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(193, 29);
             this.loadConfigToolStripMenuItem.Text = "Файл конфигурации";
             this.loadConfigToolStripMenuItem.Click += new System.EventHandler(this.loadConfigToolStripMenuItem_Click);
             // 
             // IOToolStripMenuItem
             // 
             this.IOToolStripMenuItem.Name = "IOToolStripMenuItem";
-            this.IOToolStripMenuItem.Size = new System.Drawing.Size(130, 32);
+            this.IOToolStripMenuItem.Size = new System.Drawing.Size(130, 29);
             this.IOToolStripMenuItem.Text = "Ввод-вывод";
             this.IOToolStripMenuItem.Click += new System.EventHandler(this.IOToolStripMenuItem_Click);
             // 
             // driverTestToolStripMenuItem
             // 
             this.driverTestToolStripMenuItem.Name = "driverTestToolStripMenuItem";
-            this.driverTestToolStripMenuItem.Size = new System.Drawing.Size(149, 32);
+            this.driverTestToolStripMenuItem.Size = new System.Drawing.Size(149, 29);
             this.driverTestToolStripMenuItem.Text = "Тест приводов";
             this.driverTestToolStripMenuItem.Click += new System.EventHandler(this.driverTestToolStripMenuItem_Click);
-            // 
-            // comGraphToolStripMenuItem
-            // 
-            this.comGraphToolStripMenuItem.Name = "comGraphToolStripMenuItem";
-            this.comGraphToolStripMenuItem.Size = new System.Drawing.Size(152, 32);
-            this.comGraphToolStripMenuItem.Text = "График данных";
-            this.comGraphToolStripMenuItem.Click += new System.EventHandler(this.comSetupToolStripMenuItem_Click);
             // 
             // tbCmdPos0
             // 
@@ -355,7 +334,7 @@
             // btnHome
             // 
             this.btnHome.Enabled = false;
-            this.btnHome.Location = new System.Drawing.Point(1004, 431);
+            this.btnHome.Location = new System.Drawing.Point(993, 383);
             this.btnHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(112, 35);
@@ -365,7 +344,7 @@
             // 
             // btnServo
             // 
-            this.btnServo.Location = new System.Drawing.Point(1004, 475);
+            this.btnServo.Location = new System.Drawing.Point(993, 427);
             this.btnServo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnServo.Name = "btnServo";
             this.btnServo.Size = new System.Drawing.Size(112, 35);
@@ -373,20 +352,6 @@
             this.btnServo.Text = "Servo On";
             this.btnServo.UseVisualStyleBackColor = true;
             this.btnServo.Click += new System.EventHandler(this.btnServo_Click);
-            // 
-            // tbComData
-            // 
-            this.tbComData.BackColor = System.Drawing.Color.Black;
-            this.tbComData.Font = new System.Drawing.Font("DSEG7 Modern", 22F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbComData.ForeColor = System.Drawing.Color.Cyan;
-            this.tbComData.Location = new System.Drawing.Point(916, 38);
-            this.tbComData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbComData.Name = "tbComData";
-            this.tbComData.ReadOnly = true;
-            this.tbComData.Size = new System.Drawing.Size(265, 55);
-            this.tbComData.TabIndex = 24;
-            this.tbComData.Text = "0.00";
-            this.tbComData.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // pictureBox1
             // 
@@ -400,44 +365,14 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 25;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            // 
-            // btnOpenPort
-            // 
-            this.btnOpenPort.Location = new System.Drawing.Point(916, 108);
-            this.btnOpenPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnOpenPort.Name = "btnOpenPort";
-            this.btnOpenPort.Size = new System.Drawing.Size(141, 35);
-            this.btnOpenPort.TabIndex = 26;
-            this.btnOpenPort.Text = "Открыть порт";
-            this.btnOpenPort.UseVisualStyleBackColor = true;
-            this.btnOpenPort.Click += new System.EventHandler(this.btnOpenPort_Click);
-            // 
-            // cmbComPort
-            // 
-            this.cmbComPort.FormattingEnabled = true;
-            this.cmbComPort.Location = new System.Drawing.Point(1071, 111);
-            this.cmbComPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbComPort.Name = "cmbComPort";
-            this.cmbComPort.Size = new System.Drawing.Size(110, 28);
-            this.cmbComPort.TabIndex = 27;
-            // 
-            // tmrCheckComPorts
-            // 
-            this.tmrCheckComPorts.Enabled = true;
-            this.tmrCheckComPorts.Tick += new System.EventHandler(this.tmrCheckComPorts_Tick);
-            // 
-            // tmrComDataGetter
-            // 
-            this.tmrComDataGetter.Interval = 250;
-            this.tmrComDataGetter.Tick += new System.EventHandler(this.tmrComDataGetter_Tick);
             // 
             // btnTest1
             // 
-            this.btnTest1.Location = new System.Drawing.Point(1004, 298);
+            this.btnTest1.Font = new System.Drawing.Font("Ebrima", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTest1.Location = new System.Drawing.Point(957, 147);
             this.btnTest1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTest1.Name = "btnTest1";
-            this.btnTest1.Size = new System.Drawing.Size(112, 35);
+            this.btnTest1.Size = new System.Drawing.Size(188, 77);
             this.btnTest1.TabIndex = 28;
             this.btnTest1.Text = "Тесты";
             this.btnTest1.UseVisualStyleBackColor = true;
@@ -463,75 +398,9 @@
             this.btnOpenCam.UseVisualStyleBackColor = true;
             this.btnOpenCam.Click += new System.EventHandler(this.btnOpenCam_Click);
             // 
-            // trbX
-            // 
-            this.trbX.Enabled = false;
-            this.trbX.LargeChange = 0;
-            this.trbX.Location = new System.Drawing.Point(496, 655);
-            this.trbX.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.trbX.Maximum = 100;
-            this.trbX.Minimum = 10;
-            this.trbX.Name = "trbX";
-            this.trbX.Size = new System.Drawing.Size(156, 69);
-            this.trbX.SmallChange = 0;
-            this.trbX.TabIndex = 36;
-            this.trbX.TickFrequency = 100;
-            this.trbX.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trbX.Value = 10;
-            this.trbX.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // cbEnCross
-            // 
-            this.cbEnCross.AutoSize = true;
-            this.cbEnCross.Location = new System.Drawing.Point(420, 658);
-            this.cbEnCross.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cbEnCross.Name = "cbEnCross";
-            this.cbEnCross.Size = new System.Drawing.Size(81, 24);
-            this.cbEnCross.TabIndex = 37;
-            this.cbEnCross.Text = "Визир";
-            this.cbEnCross.UseVisualStyleBackColor = true;
-            this.cbEnCross.CheckedChanged += new System.EventHandler(this.cbEnCross_CheckedChanged);
-            // 
-            // trbY
-            // 
-            this.trbY.Enabled = false;
-            this.trbY.LargeChange = 0;
-            this.trbY.Location = new System.Drawing.Point(662, 655);
-            this.trbY.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.trbY.Maximum = 100;
-            this.trbY.Minimum = 10;
-            this.trbY.Name = "trbY";
-            this.trbY.Size = new System.Drawing.Size(156, 69);
-            this.trbY.SmallChange = 0;
-            this.trbY.TabIndex = 38;
-            this.trbY.TickFrequency = 100;
-            this.trbY.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trbY.Value = 10;
-            this.trbY.Scroll += new System.EventHandler(this.trbY_Scroll);
-            // 
-            // lblTrbX
-            // 
-            this.lblTrbX.AutoSize = true;
-            this.lblTrbX.Location = new System.Drawing.Point(564, 678);
-            this.lblTrbX.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTrbX.Name = "lblTrbX";
-            this.lblTrbX.Size = new System.Drawing.Size(20, 20);
-            this.lblTrbX.TabIndex = 39;
-            this.lblTrbX.Text = "X";
-            // 
-            // lblTrbY
-            // 
-            this.lblTrbY.AutoSize = true;
-            this.lblTrbY.Location = new System.Drawing.Point(730, 678);
-            this.lblTrbY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTrbY.Name = "lblTrbY";
-            this.lblTrbY.Size = new System.Drawing.Size(20, 20);
-            this.lblTrbY.TabIndex = 40;
-            this.lblTrbY.Text = "Y";
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1004, 522);
+            this.button1.Location = new System.Drawing.Point(993, 474);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 35);
@@ -542,9 +411,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1026, 713);
+            this.button2.Location = new System.Drawing.Point(1009, 619);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(75, 45);
             this.button2.TabIndex = 42;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
@@ -597,18 +466,10 @@
             this.Controls.Add(this.tbFeedbackPos0);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.lblTrbY);
-            this.Controls.Add(this.lblTrbX);
-            this.Controls.Add(this.trbY);
-            this.Controls.Add(this.cbEnCross);
-            this.Controls.Add(this.trbX);
             this.Controls.Add(this.btnOpenCam);
             this.Controls.Add(this.cmbCams);
             this.Controls.Add(this.btnTest1);
-            this.Controls.Add(this.cmbComPort);
-            this.Controls.Add(this.btnOpenPort);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.tbComData);
             this.Controls.Add(this.btnServo);
             this.Controls.Add(this.btnHome);
             this.Controls.Add(this.lblZPos);
@@ -640,6 +501,7 @@
             this.Text = "6705 by Zadarozhny Dzmitry";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StopHomeBySpaceKey);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimPos0)).EndInit();
@@ -651,8 +513,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbLimNeg3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLimPos3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trbX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trbY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -688,22 +548,11 @@
         private System.Windows.Forms.Button btnHome;
         private System.Windows.Forms.Timer timerHome;
         private System.Windows.Forms.Button btnServo;
-        private System.Windows.Forms.TextBox tbComData;
         private System.Windows.Forms.ToolStripMenuItem driverTestToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem comGraphToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnOpenPort;
-        private System.Windows.Forms.ComboBox cmbComPort;
-        private System.Windows.Forms.Timer tmrCheckComPorts;
-        private System.Windows.Forms.Timer tmrComDataGetter;
         private System.Windows.Forms.Button btnTest1;
         private System.Windows.Forms.ComboBox cmbCams;
         private System.Windows.Forms.Button btnOpenCam;
-        private System.Windows.Forms.TrackBar trbX;
-        private System.Windows.Forms.CheckBox cbEnCross;
-        private System.Windows.Forms.TrackBar trbY;
-        private System.Windows.Forms.Label lblTrbX;
-        private System.Windows.Forms.Label lblTrbY;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox tbFeedbackPos3;

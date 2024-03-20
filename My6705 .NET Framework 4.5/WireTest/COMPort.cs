@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO.Ports;
+using System.Linq;
 
 namespace My6705.NET_Framework_4._5
 {
@@ -26,6 +27,12 @@ namespace My6705.NET_Framework_4._5
             port.Open(); 
         }
 
+        public void Close()
+        {
+            port.Close();
+            //stayTimeStart = Environment.TickCount;
+        }
+
         private void DataReceivedEvent(object sender, SerialDataReceivedEventArgs e)
         {
             // If the com port has been closed, do nothing
@@ -35,6 +42,12 @@ namespace My6705.NET_Framework_4._5
             receivedStringValue = port.ReadLine();
             TestValue = double.Parse(receivedStringValue, CultureInfo.InvariantCulture);
             TestValue = Math.Round(TestValue, 1);
+        }
+
+        public string GetLastPortName()
+        {
+            int num;
+            return SerialPort.GetPortNames().OrderBy(a => a.Length > 3 && int.TryParse(a.Substring(3), out num) ? num : 0).ToArray().Last();
         }
     }
 }

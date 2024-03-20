@@ -242,24 +242,24 @@ namespace My6705.NET_Framework_4._5
             sw.Close();
         }
 
-        //Test testType = Test.Break;
+        //Test testType = Test.BreakTestPoint;
 
         private void rbBreak_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Макс. усилие";
-        //    testType = Test.Break;
+        //    testType = Test.BreakTestPoint;
         }
 
         private void rbStretch_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Растяжение, %";
-            //testType = Test.Stretch;
+            //testType = Test.StretchTestPoint;
         }
 
         private void rbShear_CheckedChanged(object sender, EventArgs e)
         {
             lblMaxCOMValue.Text = "Макс. усилие";
-            //testType = Test.Shear;
+            //testType = Test.ShearTestPoint;
         }
 
         private void btnSetupWire_Click(object sender, EventArgs e)

@@ -19,6 +19,7 @@ namespace My6705.NET_Framework_4._5
         public DriverTest()
         {
             InitializeComponent();
+            KeyPreview = true;
             nudPosition1 = new NumericUpDown[] { nudPosition1X, nudPosition1Y, nudPosition1Z, nudPosition1Phi };
             nudPosition2 = new NumericUpDown[] { nudPosition2X, nudPosition2Y, nudPosition2Z, nudPosition2Phi };
             rbDriveSpeed = new RadioButton[] { rbDriveX, rbDriveY, rbDriveZ, rbDrivePhi };
@@ -34,14 +35,7 @@ namespace My6705.NET_Framework_4._5
         {
             if (tickerState == 0)
             {
-                if (rbStep.Checked)
-                {
-                    rbBackAndForth.Enabled = true;
-                    btnStartInterpolatedMovement.Enabled = true;
-                }
-                KeyboardControl.blockControls = false;
-                driverTestTimer.Stop();
-                driverTestTimer.Stop();
+                StopTheTest();
             }
 
             testTimerTick();
@@ -66,8 +60,8 @@ namespace My6705.NET_Framework_4._5
             {
                 if (cbAddedAxes[i].Checked)
                 {
-                    coord1 = Convert.ToDouble(nudPosition1[i].Value);
-                    coord2 = Convert.ToDouble(nudPosition2[i].Value);
+                    coord1 = (double)nudPosition1[i].Value;
+                    coord2 = (double)nudPosition2[i].Value;
                     return;
                 }
             }
@@ -87,8 +81,8 @@ namespace My6705.NET_Framework_4._5
                     {
                         interpolationCounter++;
                         AxesController.AddAxisToInterpolationGroup(Machine.Board[i], ref Machine.Board.interpolationHandler);
-                        listPosition1.Add(Convert.ToDouble(nudPosition1[i].Value));
-                        listPosition2.Add(Convert.ToDouble(nudPosition2[i].Value));
+                        listPosition1.Add((double)nudPosition1[i].Value);
+                        listPosition2.Add((double)nudPosition2[i].Value);
                     }
                 }
             }
@@ -131,7 +125,7 @@ namespace My6705.NET_Framework_4._5
                     }
                     else
                     {
-                        SetPTPAutoTicker(ptpAxisIndex, coord1, coord2, Convert.ToInt32(nudDelay.Value));
+                        SetPTPAutoTicker(ptpAxisIndex, coord1, coord2, (int)nudDelay.Value);
                     }
                 }
                 else if (axesInTest > 1)
@@ -143,22 +137,22 @@ namespace My6705.NET_Framework_4._5
                         if (rbStep.Checked)
                             SetInterpolationStepTicker(pos1, pos2);
                         else
-                            SetInterpolationAutoTicker(pos1, pos2, Convert.ToInt32(nudDelay.Value));
+                            SetInterpolationAutoTicker(pos1, pos2, (int)nudDelay.Value);
                     else
                     {
                         AxesController.SetAxisHighVelocity(Machine.Board[3], Machine.DriverVelocity[3]);
                         if (rbStep.Checked)
                             SetHybridStepTicker(pos1,
                                             pos2,
-                                            Convert.ToDouble(nudPosition1Phi.Value),
-                                            Convert.ToDouble(nudPosition2Phi.Value));
+                                            (double)nudPosition1Phi.Value,
+                                            (double)nudPosition2Phi.Value);
                         else
 
                             SetHybridAutoTicker(pos1,
                                             pos2,
-                                            Convert.ToDouble(nudPosition1Phi.Value),
-                                            Convert.ToDouble(nudPosition2Phi.Value),
-                                            Convert.ToInt32(nudDelay.Value));
+                                            (double)nudPosition1Phi.Value,
+                                            (double)nudPosition2Phi.Value,
+                                            (int)nudDelay.Value);
                     }
                 }
                 //start test
@@ -177,14 +171,12 @@ namespace My6705.NET_Framework_4._5
                 tickerState = 1;
                 driverTestTimer.Start();
                 KeyboardControl.blockControls = true;
+                this.Activate();
             }
             else
             {
                 //if test in progress - press of button stops it
-                tickerState = 0;
-                AxesController.StopInterpolationGroupMovement(Machine.Board.interpolationHandler);
-                AxesController.StopMovementForAllAxes(Machine.Board);
-                btnStartInterpolatedMovement.Text = "Начать\nдвижение";
+                StopTheTest();
                 KeyboardControl.blockControls = false;
             }
         }
@@ -199,9 +191,32 @@ namespace My6705.NET_Framework_4._5
 
         private void DriverTest_FormClosing(object sender, FormClosingEventArgs e)
         {
+            StopTheTest();
+        }
+
+        private void StopTheTest()
+        {
+            tickerState = 0;
             AxesController.StopInterpolationGroupMovement(Machine.Board.interpolationHandler);
             AxesController.StopMovementForAllAxes(Machine.Board);
-            tickerState = 0;
-        }        
+            if (rbStep.Checked)
+            {
+                rbBackAndForth.Enabled = true;
+                btnStartInterpolatedMovement.Enabled = true;
+            }
+            KeyboardControl.blockControls = false;
+            driverTestTimer.Stop();
+            driverTestTimer.Stop();
+            btnStartInterpolatedMovement.Text = "Начать\nдвижение";
+        }
+
+        private void StopOnSpaceKey(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                StopTheTest();
+                lblAddAx.Focus();
+            }
+        }
     }
 }

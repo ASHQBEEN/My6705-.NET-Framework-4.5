@@ -304,6 +304,5 @@ namespace My6705.NET_Framework_4._5
                 throw new Exception();
             }
         }
-
     }
 }

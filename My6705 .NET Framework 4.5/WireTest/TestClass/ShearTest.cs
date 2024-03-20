@@ -11,6 +11,8 @@ namespace My6705.NET_Framework_4._5
         public override double TestResult { get { return Values.Max(); } }
         public override string TestNameString => "Сдвиг";
         private static int nextId = 1;
+        public static double TestSpeed { get; set; }
+        public static double[] TestPoint { get; set; } = new double[3];
 
         public ShearTest() : base(nextId++) { }
     }

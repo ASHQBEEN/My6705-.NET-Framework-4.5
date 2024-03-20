@@ -7,113 +7,181 @@ namespace My6705.NET_Framework_4._5
     public partial class WireTest : Form
     {
         private List<Test> tests = new List<Test>(20);
-        private TestHandler testHandler;
-        private readonly COMPort port;
+        private readonly COMPort port = new COMPort();
 
-        public WireTest(COMPort port)
+        double breakTestSpeed;
+        double stretchTestSpeed;
+        double shearTestSpeed;
+
+        public WireTest()
         {
-            this.port = port;
             InitializeComponent();
-            testHandler = new TestHandler
-                (
-                testHandlerTimer,
-                port,
-                btnStart,
-                cbBoundSet,
-                nudForceBound,
-                tbTestResult,
-                rbBreakTest,
-                rbStretchTest,
-                rbShearTest,
-                rtbTestValues,
-                tests,
-                cmbTests,
-                btnMoveToStart,
-                btnFixWire,
-                btnSetTestPoint
-                );
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            rtbTestValues.Clear();
-            foreach (var value in tests[cmbTests.SelectedIndex].Values)
-                rtbTestValues.AppendText(value.ToString() + '\n');
-
-            tbTestResult.Text = tests[cmbTests.SelectedIndex].TestResult.ToString();
-        }
-
-        private void ChangeLabelCoords(double[] coords)
-        {
-            label1.Text = coords[0].ToString();
-            label2.Text = coords[1].ToString();
-            label3.Text = coords[2].ToString();
-        }
-
-
-        private void rbBreakTest_CheckedChanged(object sender, EventArgs e)
-        {
-            ChangeLabelCoords(Machine.BreakTestPosition);
-            cmbTests.Items.Clear();
-            bool noTestsFound = true;
-            foreach (var test in tests)
-            {
-                {
-                    if (test is BreakTest)
-                    {
-                        cmbTests.Items.Add(test);
-                        noTestsFound = false;
-                    }
-                }
-                if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
-            }
-        }
-
-        private void rbShearTest_CheckedChanged(object sender, EventArgs e)
-        {
-            bool noTestsFound = true;
-            ChangeLabelCoords(Machine.ShearTestPosition);
-            cmbTests.Items.Clear();
-            foreach (var test in tests)
-            {
-                {
-                    if (test is ShearTest)
-                        cmbTests.Items.Add(test);
-                    noTestsFound = false;
-                }
-            }
-            if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
-        }
-        private void rbStretchTest_CheckedChanged(object sender, EventArgs e)
-        {
-            bool noTestsFound = true;
-            ChangeLabelCoords(Machine.StretchTestPosition);
-            cmbTests.Items.Clear();
-            foreach (var test in tests)
-            {
-                if (test is StretchTest)
-                {
-                    cmbTests.Items.Add(test);
-                    noTestsFound = false;
-                }
-            }
-            if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
+            KeyPreview = true;
         }
 
         private void WireTest_Load(object sender, EventArgs e)
         {
-            ChangeLabelCoords(Machine.BreakTestPosition);
+            testHandlerTimer.Tick += TimerTick;
+            OpenComPort();
+            ChangeLabelCoords(BreakTest.TestPoint);
+
+            testHandlerTimer.Tick += DrawPointTick;
+            InitializeGraph();
+
+            nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+            LoadSpeeds();
+        }
+
+        private void OpenComPort()
+        {
+            // If the port is open, close it.
+            if (port.IsOpen)
+            {
+                port.Close();
+            }
+            else
+            {
+                try
+                {
+                    port.PortName = port.GetLastPortName();
+                    port.Open();
+                    // Start Graph Timer
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Не удалось открыть COM-порт. Скорее всего он уже подключен, недоступен или вовсе отключен.", "Ошибка COM-порта", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+            }
+        }
+
+        private Test test;
+        private int testAxisIndex;
+        public double testValue;
+        int stopTimerCounter = 0;
+
+        private void Start(object sender, EventArgs e)
+        {
+            ChooseTestType();
+            if (test == null) return;
+
+            if (test is StretchTest)
+                ((StretchTest)test).
+                        StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
+
+            if (rbShearTest.Checked)
+                AxesController.SetAxisHighVelocity(Machine.Board[1], (double)nudTestSpeed.Value);
+            else
+                AxesController.SetAxisHighVelocity(Machine.Board[2], (double)nudTestSpeed.Value);
+
+            StartTestTimer();
+
+            AxesController.StartContinuousMovementChecked(Machine.Board, testAxisIndex, 0);
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            TestTick();
+
+            if (test.MaxValue > testValue)
+            {
+                stopTimerCounter++;
+            }
+
+            if (
+                DidWireBroke()
+                || AxesController.IfMaximumReached(testAxisIndex)
+                || IsForceBoundReached()
+                )
+                StopTest();
+        }
+
+        private bool IsForceBoundReached()
+        {
+            return (cbBoundSet.Checked && (double)nudForceBound.Value
+                <= testValue);
+        }
+
+        private bool DidWireBroke()
+        {
+            int timerSecondsToStop = (int)nudWireBreakDelay.Value;
+            const int TICKS_PER_SECOND = 4;
+            int timerTicksToStop = timerSecondsToStop * TICKS_PER_SECOND;
+            return stopTimerCounter == timerTicksToStop;
+        }
+
+        private void TestTick()
+        {
+            test.AddTestValue(testValue);
+
+            rtbTestValues.AppendText(testValue.ToString() + '\n');
+            tbTestResult.Text = test.TestResult.ToString();
+
+            if (!(test is StretchTest))
+                return;
+            ((StretchTest)test).
+                    EndPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
+        }
+
+        private void StartTestTimer()
+        {
+            btnMoveToStart.Enabled = false;
+            KeyboardControl.blockControls = true;
+            btnStart.Enabled = false;
+            btnSetTestPoint.Enabled = false;
+            btnLockWire.Enabled = false;
+            cbBoundSet.Enabled = false;
+            nudForceBound.Enabled = false;
+            rtbTestValues.Clear();
+            testHandlerTimer.Start();
+        }
+
+        private void StopTest()
+        {
+            AxesController.StopMovementForAllAxes(Machine.Board);
+            testHandlerTimer.Stop();
+            stopTimerCounter = 0;
+            btnStart.Enabled = true;
+            KeyboardControl.blockControls = false;
+            tests.Add(test);
+            btnMoveToStart.Enabled = true;
+            btnLockWire.Enabled = true;
+            btnSetTestPoint.Enabled = true;
+            cbBoundSet.Enabled = true;
+            nudForceBound.Enabled = true;
+        }
+
+        private void ChooseTestType()
+        {
+            if (rbBreakTest.Checked)
+            {
+                test = new BreakTest();
+                testAxisIndex = 2;
+                cmbTests.Items.Add(test);
+            }
+            else if (rbStretchTest.Checked)
+            {
+                test = new StretchTest();
+                ((StretchTest)test).StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
+                testAxisIndex = 2;
+                cmbTests.Items.Add(test);
+            }
+            else if (rbShearTest.Checked)
+            {
+                test = new ShearTest();
+                testAxisIndex = 1;
+                cmbTests.Items.Add(test);
+            }
         }
 
         private void btnToStartPosition_Click(object sender, EventArgs e)
         {
             double[] pos = new double[3];
             if (rbBreakTest.Checked)
-                pos = Machine.BreakTestPosition;
+                pos = BreakTest.TestPoint;
             else if (rbStretchTest.Checked)
-                pos = Machine.StretchTestPosition;
+                pos = StretchTest.TestPoint;
             else if (rbShearTest.Checked)
-                pos = Machine.ShearTestPosition;
+                pos = ShearTest.TestPoint;
 
             AxesController.SetHighVelocity(Machine.Board, Machine.DriverVelocity);
 
@@ -122,7 +190,7 @@ namespace My6705.NET_Framework_4._5
             AxesController.MoveToPoint(Machine.Board[2], pos[2]);
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnSetTestPoint_Click(object sender, EventArgs e)
         {
             double[] newCoords = new double[]
 {
@@ -133,31 +201,111 @@ namespace My6705.NET_Framework_4._5
 
             if (rbBreakTest.Checked)
             {
-                Machine.BreakTestPosition = newCoords;
-                ChangeLabelCoords(Machine.BreakTestPosition);
+                BreakTest.TestPoint = newCoords;
+                ChangeLabelCoords(BreakTest.TestPoint);
             }
             else if (rbStretchTest.Checked)
             {
-                Machine.StretchTestPosition = newCoords;
-                ChangeLabelCoords(Machine.StretchTestPosition);
+                StretchTest.TestPoint = newCoords;
+                ChangeLabelCoords(StretchTest.TestPoint);
             }
             else if (rbShearTest.Checked)
             {
-                Machine.ShearTestPosition = newCoords;
-                ChangeLabelCoords(Machine.ShearTestPosition);
+                ShearTest.TestPoint = newCoords;
+                ChangeLabelCoords(ShearTest.TestPoint);
             }
 
-            Machine.TestPosition.Save();
+            Machine.testConditions.Save();
         }
 
-        private void btnSetupWire_Click(object sender, EventArgs e)
+        private void btnLockWire_Click(object sender, EventArgs e)
         {
 
         }
 
         private void testHandlerTimer_Tick(object sender, EventArgs e)
         {
-            testHandler.testValue = port.TestValue;
+            testValue = port.TestValue;
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            if (rbBreakTest.Checked)
+            {
+                breakTestSpeed = (double)nudTestSpeed.Value;
+                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+            }
+            else if (rbStretchTest.Checked)
+            {
+                stretchTestSpeed = (double)nudTestSpeed.Value;
+                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
+            }
+            else if (rbShearTest.Checked)
+            {
+                shearTestSpeed = (double)nudTestSpeed.Value;
+                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+            }
+        }
+
+        private void StopTestBySpaceKey(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+                StopTest();
+        }
+
+        private void WireTest_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            StopTest();
+            port.Close();
+        }
+
+        private void LoadSpeeds()
+        {
+            Machine.testConditions.Load();
+            if (nudTestSpeed.Maximum > (decimal)BreakTest.TestSpeed)
+                breakTestSpeed = BreakTest.TestSpeed;
+            else
+                breakTestSpeed = (double)nudTestSpeed.Maximum;
+
+            if (nudTestSpeed.Maximum > (decimal)StretchTest.TestSpeed)
+                stretchTestSpeed = StretchTest.TestSpeed;
+            else
+                stretchTestSpeed = (double)nudTestSpeed.Maximum;
+
+            if (nudTestSpeed.Maximum > (decimal)ShearTest.TestSpeed)
+                shearTestSpeed = ShearTest.TestSpeed;
+            else
+                shearTestSpeed = (double)nudTestSpeed.Maximum;
+
+            if (rbBreakTest.Checked)
+                if (nudTestSpeed.Maximum > (decimal)BreakTest.TestSpeed)
+                    nudTestSpeed.Value = (decimal)breakTestSpeed;
+                else
+                    nudTestSpeed.Value = nudTestSpeed.Maximum;
+            else if (rbStretchTest.Checked)
+                if (nudTestSpeed.Maximum > (decimal)StretchTest.TestSpeed)
+                    nudTestSpeed.Value = (decimal)stretchTestSpeed;
+                else
+                    nudTestSpeed.Value = nudTestSpeed.Maximum;
+            else if (rbShearTest.Checked)
+                if (nudTestSpeed.Maximum > (decimal)ShearTest.TestSpeed)
+                    nudTestSpeed.Value = (decimal)shearTestSpeed;
+                else
+                    nudTestSpeed.Value = nudTestSpeed.Maximum;
+        }
+
+
+        private void btnLoadTestSpeed_Click(object sender, EventArgs e)
+        {
+            LoadSpeeds();
+        }
+
+        private void btnSaveTestSpeed_Click(object sender, EventArgs e)
+        {
+            BreakTest.TestSpeed = breakTestSpeed;
+            StretchTest.TestSpeed = stretchTestSpeed;
+            ShearTest.TestSpeed = shearTestSpeed;
+            Machine.testConditions.Save();
         }
     }
 }

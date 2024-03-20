@@ -72,19 +72,7 @@ namespace My6705.NET_Framework_4._5
             accumulatedStayTime += stayTime;
         }
 
-        public void RefreshComPortList(ComboBox cmb)
-        {
-            // Determain if the list of com port names has changed since last checked
-            string selected = RefreshComPortList(cmb.Items.Cast<string>(), cmb.SelectedItem as string, comPort.IsOpen);
 
-            // If there was an update, then update the control showing the user the list of port names
-            if (!String.IsNullOrEmpty(selected))
-            {
-                cmb.Items.Clear();
-                cmb.Items.AddRange(OrderedPortNames());
-                cmb.SelectedItem = selected;
-            }
-        }
 
         private string[] OrderedPortNames()
         {
@@ -136,15 +124,6 @@ namespace My6705.NET_Framework_4._5
         public int getStayTime()
         {
             return accumulatedStayTime;
-        }
-
-        public void openGraph()
-        {
-            accumulatedStayTime = 0;
-            stayTimeStart = 0;
-            stayTime = 0;
-            ComGraph comGraph = new ComGraph(this);
-            comGraph.Show();
         }
     }
 }
