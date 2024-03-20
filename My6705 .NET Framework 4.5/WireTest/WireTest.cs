@@ -30,6 +30,9 @@ namespace My6705.NET_Framework_4._5
 
             nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             LoadSpeeds();
+            nudForceBound.Controls[0].Visible = false;
+            nudTestSpeed.Controls[0].Visible = false;
+            nudWireBreakDelay.Controls[0].Visible = false;
         }
 
         private void OpenComPort()
@@ -233,17 +236,17 @@ namespace My6705.NET_Framework_4._5
             if (rbBreakTest.Checked)
             {
                 breakTestSpeed = (double)nudTestSpeed.Value;
-                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             }
             else if (rbStretchTest.Checked)
             {
                 stretchTestSpeed = (double)nudTestSpeed.Value;
-                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
+                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
             }
             else if (rbShearTest.Checked)
             {
                 shearTestSpeed = (double)nudTestSpeed.Value;
-                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             }
         }
 
@@ -306,6 +309,14 @@ namespace My6705.NET_Framework_4._5
             StretchTest.TestSpeed = stretchTestSpeed;
             ShearTest.TestSpeed = shearTestSpeed;
             Machine.testConditions.Save();
+        }
+
+        private void nudTestSpeed_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (rbShearTest.Checked)
+                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
+            else
+                nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
         }
     }
 }

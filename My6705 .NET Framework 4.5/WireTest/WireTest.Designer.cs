@@ -377,6 +377,7 @@
             0,
             0});
             this.nudTestSpeed.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudTestSpeed.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudTestSpeed_KeyDown);
             // 
             // groupBox1
             // 
