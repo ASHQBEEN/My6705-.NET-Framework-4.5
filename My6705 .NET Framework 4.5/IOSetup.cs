@@ -45,7 +45,7 @@ namespace My6705.NET_Framework_4._5
                     pictureBox = DOpbsArr[j][i - 4];
                     BtnDO = DOArr[j][i - 4];
                     //Get the specified channel's DO value
-                    Result = Motion.mAcm_AxDoGetBit(Machine.board[j], i, ref bitDo);
+                    Result = Motion.mAcm_AxDoGetBit(Machine.Board[j], i, ref bitDo);
                     if (Result != (uint)ErrorCode.SUCCESS)
                     {
                         pictureBox.Enabled = false;

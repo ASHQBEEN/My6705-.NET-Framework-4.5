@@ -9,7 +9,6 @@ namespace My6705.NET_Framework_4._5
 {
     public class LegacyDriverLogic
     {
-        public string LoadPath { get; set; } = "_path_cfg.txt";
         //Flag to control parameters load
         public bool ParametersBeenSet { get; set; } = false;
 
@@ -18,38 +17,8 @@ namespace My6705.NET_Framework_4._5
         // Load config file
         // ***CONTAINING REQUIREMENT-RELATED METHODS***
         //
-        public void LoadCfg(string path)
-        {
-            Machine.board.LoadConfig(path);
 
-            //Since Acceleration = Deceleration (requirement)
-            AxesController.SetDeceleration(Machine.board, Machine.Instance.Acceleration);
-            AxesController.SetLowVelocity(Machine.board, Machine.Instance.LowVelocity);
-            AxesController.SetActAcc(Machine.board, Machine.Instance.Acceleration);
-            AxesController.SetJerk(Machine.board, Machine.Instance.Jerk);
-        }
-        public DialogResult SelectPath(string loadPath)
-        {
-            OpenFileDialog openFileConfig = new OpenFileDialog();
-            if (openFileConfig.ShowDialog() == DialogResult.OK)
-            {
-                File.WriteAllText(loadPath, openFileConfig.FileName);
-                return DialogResult.OK;
-            }
-            else return DialogResult.No;
-            //File.Create(loadPath).Dispose();
-        }
-        public string ReadPath(string loadPath)
-        {
-            if (File.Exists(loadPath))
-            {
-                StreamReader sr = File.OpenText(loadPath);
-                string path = sr.ReadLine();
-                sr.Close();
-                return path;
-            }
-            return null;
-        }
+
         #endregion
         #region Main form API methods (Driver Move, Limiters control)
 
@@ -65,7 +34,7 @@ namespace My6705.NET_Framework_4._5
             else
                 DoValue = 1;
             //Set DO value to channel
-            Result = Motion.mAcm_AxDoSetBit(Machine.board[i], DOChannel, DoValue);
+            Result = Motion.mAcm_AxDoSetBit(Machine.Board[i], DOChannel, DoValue);
             if (Result != (uint)ErrorCode.SUCCESS)
             {
                 strTemp = "Set AxDoSetBit Failed With Error Code: [0x" + Convert.ToString(Result, 16) + "]";
@@ -89,7 +58,7 @@ namespace My6705.NET_Framework_4._5
             UInt32 Result;
             UInt32 IOStatus = new UInt32();
 
-            Result = Motion.mAcm_AxGetMotionIO(Machine.board[index], ref IOStatus);
+            Result = Motion.mAcm_AxGetMotionIO(Machine.Board[index], ref IOStatus);
             if (Result == (uint)ErrorCode.SUCCESS)
             {
                 if ((IOStatus & (uint)Ax_Motion_IO.AX_MOTION_IO_LMTP) > 0) pictureBoxPos[index].BackColor = Color.Red;

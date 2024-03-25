@@ -58,8 +58,6 @@
             this.lblAddAx = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.driverTestTimer = new System.Windows.Forms.Timer(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.speedometer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Y)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Z)).BeginInit();
@@ -283,7 +281,6 @@
             // 
             // tmrInterpolationGroupState
             // 
-            this.tmrInterpolationGroupState.Enabled = true;
             this.tmrInterpolationGroupState.Tick += new System.EventHandler(this.tmrInterpolationGroupState_Tick);
             // 
             // nudDelay
@@ -352,16 +349,17 @@
             this.cbAddAxisX.UseVisualStyleBackColor = true;
             this.cbAddAxisX.CheckedChanged += new System.EventHandler(this.cbAddAxisX_CheckedChanged);
             // 
-            // btnStart
+            // btnStartInterpolatedMovement
             // 
             this.btnStartInterpolatedMovement.Location = new System.Drawing.Point(34, 235);
             this.btnStartInterpolatedMovement.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnStartInterpolatedMovement.Name = "btnStart";
+            this.btnStartInterpolatedMovement.Name = "btnStartInterpolatedMovement";
             this.btnStartInterpolatedMovement.Size = new System.Drawing.Size(196, 63);
             this.btnStartInterpolatedMovement.TabIndex = 16;
+            this.btnStartInterpolatedMovement.TabStop = false;
             this.btnStartInterpolatedMovement.Text = "Начать\r\nдвижение";
             this.btnStartInterpolatedMovement.UseVisualStyleBackColor = true;
-            this.btnStartInterpolatedMovement.Click += new System.EventHandler(this.button1_Click_1);
+            this.btnStartInterpolatedMovement.Click += new System.EventHandler(this.btnStartTestClick);
             // 
             // rbBackAndForth
             // 
@@ -509,25 +507,11 @@
             this.driverTestTimer.Interval = 10;
             this.driverTestTimer.Tick += new System.EventHandler(this.driverTestTimer_Tick);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(440, 275);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(134, 26);
-            this.textBox1.TabIndex = 31;
-            // 
-            // speedometer
-            // 
-            this.speedometer.Tick += new System.EventHandler(this.speedometer_Tick);
-            // 
             // DriverTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(594, 323);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.rbDrivePhi);
             this.Controls.Add(this.rbDriveX);
             this.Controls.Add(this.panel1);
@@ -557,7 +541,7 @@
             this.Name = "DriverTest";
             this.Text = "Тест приводов";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DriverTest_FormClosing);
-            this.Load += new System.EventHandler(this.DriverTest_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StopOnSpaceKey);
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Y)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPosition1Z)).EndInit();
@@ -605,7 +589,5 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnStartInterpolatedMovement;
         private System.Windows.Forms.Timer driverTestTimer;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Timer speedometer;
     }
 }

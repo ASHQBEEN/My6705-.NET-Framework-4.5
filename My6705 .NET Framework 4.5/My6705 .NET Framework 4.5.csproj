@@ -56,8 +56,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdvMotAPI">
-      <HintPath>D:\Utilities\Common Motion\Public\AdvMotAPI.dll</HintPath>
+    <Reference Include="AdvMotAPI, Version=2.0.9.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\_Дима\Common Motion\Public\AdvMotAPI.dll</HintPath>
     </Reference>
     <Reference Include="DirectShowLib, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,14 +96,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="6705\Axes.cs" />
-    <Compile Include="BoardControl.cs" />
-    <Compile Include="DLL\Board.cs" />
-    <Compile Include="ComGraph.cs">
+    <Compile Include="DLL\DeviceController.cs" />
+    <Compile Include="DLL\MultiAxisController.cs" />
+    <Compile Include="DriverTest\DriverTestTickers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ComGraph.Designer.cs">
-      <DependentUpon>ComGraph.cs</DependentUpon>
+    <Compile Include="DriverTest\FormInterfaceController.cs">
+      <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainForm\Home.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="6705\TestConditions.cs" />
+    <Compile Include="WireTest\Graph.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WireTest\TestClass\BreakTest.cs" />
+    <Compile Include="WireTest\COMPort.cs" />
+    <Compile Include="DLL\Board.cs" />
     <Compile Include="6705\ComPort.cs" />
     <Compile Include="ConfigSetup.cs">
       <SubType>Form</SubType>
@@ -110,16 +121,13 @@
     <Compile Include="ConfigSetup.Designer.cs">
       <DependentUpon>ConfigSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="DLL\InterpolationController.cs" />
-    <Compile Include="DLL\AxesController.cs" />
-    <Compile Include="DLL\BoardActionPerformer.cs" />
+    <Compile Include="DLL\SingleAxisController.cs" />
     <Compile Include="DriverTest\DriverTest.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DriverTest\DriverTest.Designer.cs">
       <DependentUpon>DriverTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="HomeHandler.cs" />
     <Compile Include="KeyboardControl.cs" />
     <Compile Include="LegacyDriverLogic.cs" />
     <Compile Include="6705\Graph.cs" />
@@ -130,17 +138,22 @@
       <DependentUpon>IOSetup.cs</DependentUpon>
     </Compile>
     <Compile Include="6705\Machine.cs" />
-    <Compile Include="Main.cs">
+    <Compile Include="MainForm\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
+    <Compile Include="MainForm\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="DriverTest\PairOfCoordinates.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="6705\TestData.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="WireTest\FormInterfaceController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WireTest\GraphHandler.cs" />
+    <Compile Include="WireTest\TestClass\ShearTest.cs" />
+    <Compile Include="WireTest\TestClass\StretchTest.cs" />
+    <Compile Include="WireTest\TestClass\Test.cs" />
     <Compile Include="TestsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,9 +166,12 @@
     <Compile Include="VelocitySetup.Designer.cs">
       <DependentUpon>VelocitySetup.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ComGraph.resx">
-      <DependentUpon>ComGraph.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="WireTest\WireTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WireTest\WireTest.Designer.cs">
+      <DependentUpon>WireTest.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ConfigSetup.resx">
       <DependentUpon>ConfigSetup.cs</DependentUpon>
     </EmbeddedResource>
@@ -165,7 +181,7 @@
     <EmbeddedResource Include="IOSetup.resx">
       <DependentUpon>IOSetup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
+    <EmbeddedResource Include="MainForm\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -183,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VelocitySetup.resx">
       <DependentUpon>VelocitySetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WireTest\WireTest.resx">
+      <DependentUpon>WireTest.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />

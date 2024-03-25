@@ -1,19 +1,18 @@
 ﻿using Advantech.Motion;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace My6705.NET_Framework_4._5
+namespace My6705.NET_Framework_4._5.DLL
 {
-    /// <summary>
-    /// Проверяет на ошибку/исключение при вызове команд из Advantech.Motion
-    /// </summary>
-    public static class BoardActionPerformer
+    public static class APIErrorChecker
     {
-        public static void PerformBoardAction(Func<UInt32> action, string errorMessagePrefix)
+        public static void Check(uint errorCode, string errorPrefix)
         {
-            uint errorCode = action();
-            string errorMessage = $"{errorMessagePrefix} Failed With Error Code: [0x";
+            string errorMessage = $"{errorPrefix} Failed With Error Code: [0x";
             if (errorCode != (uint)ErrorCode.SUCCESS)
             {
                 errorMessage += Convert.ToString(errorCode, 16) + ']';
