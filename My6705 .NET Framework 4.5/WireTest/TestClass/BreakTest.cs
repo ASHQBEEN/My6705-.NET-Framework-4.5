@@ -14,6 +14,6 @@ namespace My6705.NET_Framework_4._5
         public static double TestSpeed { get; set; }
         public static double[] TestPoint { get; set; } = new double[3];
 
-        public BreakTest() : base(nextId++) { }
+        public BreakTest() : base(nextId++) => testStart = DateTime.Now;
     }
 }

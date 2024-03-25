@@ -1,22 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace My6705.NET_Framework_4._5
 {
     public partial class WireTest : Form
     {
-        private List<Test> tests = new List<Test>(20);
+        //private List<Test> tests = new List<Test>(20);
+        private List<BreakTest> breakTests = new List<BreakTest>(10);
+        private List<StretchTest> stretchTests = new List<StretchTest>(10);
+        private List<ShearTest> shearTests = new List<ShearTest>(10);
         private readonly COMPort port = new COMPort();
 
         double breakTestSpeed;
         double stretchTestSpeed;
         double shearTestSpeed;
 
+        private readonly string labelForceCaption = "Макс. усилие, г:";
+        private readonly string labelStretchCaption = "Растяжение, %";
+
         public WireTest()
         {
             InitializeComponent();
             KeyPreview = true;
+            cmbTests.Text = emptyCmbString;
+        }
+
+        private void cmbTests_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbTestValues.Clear();
+
+            List<Test> tests = new List<Test>();
+            if (rbBreakTest.Checked)
+            {
+                tests.AddRange(breakTests);
+            }
+            else if (rbStretchTest.Checked)
+            {
+                tests.AddRange(stretchTests);
+            }
+            else if (rbShearTest.Checked)
+            {
+                tests.AddRange(shearTests);
+            }
+
+            foreach (var value in tests[cmbTests.SelectedIndex].Values)
+                tbTestValues.AppendText(value.ToString() + '\n');
+
+            tbTestResult.Text = tests[cmbTests.SelectedIndex].TestResult.ToString();
+
+            DrawTestResultCurve();
+            //zgcGraph.RestoreScale(zgcGraph.GraphPane);
+            zgcGraph.AxisChange();
+            zgcGraph.Invalidate();
         }
 
         private void WireTest_Load(object sender, EventArgs e)
@@ -64,38 +101,25 @@ namespace My6705.NET_Framework_4._5
 
         private void Start(object sender, EventArgs e)
         {
-            ChooseTestType();
+            cmbTests.Text = emptyCmbString;
+            CreateTest();
             if (test == null) return;
 
             if (test is StretchTest)
                 ((StretchTest)test).
                         StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
 
+            UpdateMaximumSpeed();
+
             if (rbShearTest.Checked)
                 AxesController.SetAxisHighVelocity(Machine.Board[1], (double)nudTestSpeed.Value);
             else
                 AxesController.SetAxisHighVelocity(Machine.Board[2], (double)nudTestSpeed.Value);
 
+            UpdateGraph();
+
             StartTestTimer();
-
             AxesController.StartContinuousMovementChecked(Machine.Board, testAxisIndex, 0);
-        }
-
-        private void TimerTick(object sender, EventArgs e)
-        {
-            TestTick();
-
-            if (test.MaxValue > testValue)
-            {
-                stopTimerCounter++;
-            }
-
-            if (
-                DidWireBroke()
-                || AxesController.IfMaximumReached(testAxisIndex)
-                || IsForceBoundReached()
-                )
-                StopTest();
         }
 
         private bool IsForceBoundReached()
@@ -116,7 +140,7 @@ namespace My6705.NET_Framework_4._5
         {
             test.AddTestValue(testValue);
 
-            rtbTestValues.AppendText(testValue.ToString() + '\n');
+            tbTestValues.AppendText(testValue.ToString() + '\n');
             tbTestResult.Text = test.TestResult.ToString();
 
             if (!(test is StretchTest))
@@ -134,26 +158,41 @@ namespace My6705.NET_Framework_4._5
             btnLockWire.Enabled = false;
             cbBoundSet.Enabled = false;
             nudForceBound.Enabled = false;
-            rtbTestValues.Clear();
+            tbTestValues.Clear();
             testHandlerTimer.Start();
         }
 
         private void StopTest()
         {
+            if (stopTimerCounter == 0) return;
             AxesController.StopMovementForAllAxes(Machine.Board);
             testHandlerTimer.Stop();
             stopTimerCounter = 0;
             btnStart.Enabled = true;
             KeyboardControl.blockControls = false;
-            tests.Add(test);
+
+            if (rbBreakTest.Checked)
+            {
+                breakTests.Add((BreakTest)test);
+            }
+            else if (rbStretchTest.Checked)
+            {
+                stretchTests.Add((StretchTest)test);
+            }
+            else if (rbShearTest.Checked)
+            {
+                shearTests.Add((ShearTest)test);
+            }
+
             btnMoveToStart.Enabled = true;
             btnLockWire.Enabled = true;
             btnSetTestPoint.Enabled = true;
             cbBoundSet.Enabled = true;
             nudForceBound.Enabled = true;
+            test = null;
         }
 
-        private void ChooseTestType()
+        private void CreateTest()
         {
             if (rbBreakTest.Checked)
             {
@@ -236,17 +275,14 @@ namespace My6705.NET_Framework_4._5
             if (rbBreakTest.Checked)
             {
                 breakTestSpeed = (double)nudTestSpeed.Value;
-                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             }
             else if (rbStretchTest.Checked)
             {
                 stretchTestSpeed = (double)nudTestSpeed.Value;
-                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
             }
             else if (rbShearTest.Checked)
             {
                 shearTestSpeed = (double)nudTestSpeed.Value;
-                //nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             }
         }
 
@@ -297,9 +333,9 @@ namespace My6705.NET_Framework_4._5
                     nudTestSpeed.Value = nudTestSpeed.Maximum;
         }
 
-
         private void btnLoadTestSpeed_Click(object sender, EventArgs e)
         {
+            UpdateMaximumSpeed();
             LoadSpeeds();
         }
 
@@ -311,12 +347,35 @@ namespace My6705.NET_Framework_4._5
             Machine.testConditions.Save();
         }
 
-        private void nudTestSpeed_KeyDown(object sender, KeyEventArgs e)
+        private void UpdateMaximumSpeed()
         {
             if (rbShearTest.Checked)
                 nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[1];
-            else
+            else if (rbBreakTest.Checked || rbStretchTest.Checked)
                 nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
+        }
+
+        //Нужен для обновления максимума в случае если мы обновили FastVelocity и начали изменять значение в nud
+        private void nudTestSpeed_KeyDown(object sender, KeyEventArgs e)
+        {
+            UpdateMaximumSpeed();
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            TestTick();
+
+            if (test.MaxValue > testValue)
+            {
+                stopTimerCounter++;
+            }
+
+            if (
+                DidWireBroke()
+                || AxesController.IfMaximumReached(testAxisIndex)
+                || IsForceBoundReached()
+                )
+                StopTest();
         }
     }
 }

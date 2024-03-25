@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace My6705.NET_Framework_4._5
@@ -11,6 +12,7 @@ namespace My6705.NET_Framework_4._5
         public double LastValue { get { return Values.Last(); } }
         public readonly int testID;
         public abstract string TestNameString {  get; }
+        public DateTime testStart;
 
         public Test(int testID)
         {
@@ -24,7 +26,7 @@ namespace My6705.NET_Framework_4._5
 
         public override string ToString()
         {
-            return $"{testID} {TestNameString}";
+            return $"{testID}, {TestNameString} {testStart} ";
         }
     }
 }

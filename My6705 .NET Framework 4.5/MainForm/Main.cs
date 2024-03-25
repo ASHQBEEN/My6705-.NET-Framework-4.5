@@ -12,7 +12,6 @@ namespace My6705.NET_Framework_4._5
     public partial class Main : Form
     {
         LegacyDriverLogic dr = new LegacyDriverLogic();
-        ComPort comPort = new ComPort();
         Graph graph = new Graph();
         TestData td = new TestData();
         COMPort port = new COMPort();
@@ -274,13 +273,6 @@ namespace My6705.NET_Framework_4._5
         private void button1_Click(object sender, EventArgs e)
         {
             AxesController.ResetAllErrors(Machine.Board);
-        }
-
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            TestsForm testsForm = new TestsForm(comPort, graph, td, dr);
-            testsForm.Show();
         }
     }
 }

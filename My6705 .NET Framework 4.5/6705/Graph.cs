@@ -12,11 +12,11 @@ namespace My6705.NET_Framework_4._5
     public class Graph
     {
         private GraphPane tempPane;
-        private float pointWidth = 5f;
-        private float lineWidth = 2f;
-        private Color pointColor = Color.Blue;
-        private SymbolType symbolType = SymbolType.Circle;
-        private Color pointColorSetPoint = Color.Blue;
+        private readonly float pointWidth = 5f;
+        private readonly float lineWidth = 2f;
+        private readonly Color pointColor = Color.Blue;
+        private readonly SymbolType symbolType = SymbolType.Circle;
+        //private Color pointColorSetPoint = Color.Blue;
 
         const double TIMEPERIOD = 0.25;
 
@@ -50,9 +50,6 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-
-
-
         int testsRunned = 0;
         List<int> testsToLoad = new List<int>(15);
 
@@ -78,8 +75,6 @@ namespace My6705.NET_Framework_4._5
         }
 
         List<List<double>> testValues = new List<List<double>>(15);
-
-
 
         public void InitializeGraph(ZedGraphControl zgc, ref int tickStart)
         {

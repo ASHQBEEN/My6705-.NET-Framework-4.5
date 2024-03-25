@@ -158,12 +158,12 @@
             this.lblCOMValues.TabIndex = 8;
             this.lblCOMValues.Text = "Данные порта:";
             // 
-            // lblMaxCOMValue
+            // lblTestResult
             // 
             this.lblMaxCOMValue.AutoSize = true;
             this.lblMaxCOMValue.Location = new System.Drawing.Point(958, 191);
             this.lblMaxCOMValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMaxCOMValue.Name = "lblMaxCOMValue";
+            this.lblMaxCOMValue.Name = "lblTestResult";
             this.lblMaxCOMValue.Size = new System.Drawing.Size(126, 20);
             this.lblMaxCOMValue.TabIndex = 10;
             this.lblMaxCOMValue.Text = "Макс. усилие, г:";

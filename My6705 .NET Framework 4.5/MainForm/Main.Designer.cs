@@ -63,7 +63,6 @@
             this.cmbCams = new System.Windows.Forms.ComboBox();
             this.btnOpenCam = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tbFeedbackPos3 = new System.Windows.Forms.TextBox();
             this.tbFeedbackPos2 = new System.Windows.Forms.TextBox();
             this.tbFeedbackPos1 = new System.Windows.Forms.TextBox();
@@ -409,16 +408,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1009, 619);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 45);
-            this.button2.TabIndex = 42;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // tbFeedbackPos3
             // 
             this.tbFeedbackPos3.Location = new System.Drawing.Point(1082, 927);
@@ -464,7 +453,6 @@
             this.Controls.Add(this.tbFeedbackPos2);
             this.Controls.Add(this.tbFeedbackPos1);
             this.Controls.Add(this.tbFeedbackPos0);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnOpenCam);
             this.Controls.Add(this.cmbCams);
@@ -554,7 +542,6 @@
         private System.Windows.Forms.ComboBox cmbCams;
         private System.Windows.Forms.Button btnOpenCam;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox tbFeedbackPos3;
         private System.Windows.Forms.TextBox tbFeedbackPos2;
         private System.Windows.Forms.TextBox tbFeedbackPos1;

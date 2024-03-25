@@ -21,6 +21,7 @@ namespace My6705.NET_Framework_4._5
         {
             comPort.PortName = name;
         }
+
         public ComPort() 
         {
             comPort.BaudRate = 115200;
