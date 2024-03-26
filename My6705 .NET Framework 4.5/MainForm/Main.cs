@@ -12,10 +12,6 @@ namespace My6705.NET_Framework_4._5
     public partial class Main : Form
     {
         LegacyDriverLogic dr = new LegacyDriverLogic();
-        Graph graph = new Graph();
-        TestData td = new TestData();
-        COMPort port = new COMPort();
-
 
         private VideoCapture capture = null;
         private DsDevice[] webCams = null;
@@ -72,7 +68,9 @@ namespace My6705.NET_Framework_4._5
                     if (openFileConfig.ShowDialog() == DialogResult.OK)
                     {
                         Machine.Board.AdvantechConfigPath = openFileConfig.FileName;
+                        Machine.Board.SaveBoardProperties();
                         Machine.Board.LoadOverridedConfig();
+                        Activate();
                     }
                     else
                     {
@@ -165,7 +163,6 @@ namespace My6705.NET_Framework_4._5
         private void btnServo_Click(object sender, EventArgs e)
         {
             ServoAll(btnServo);
-
         }
 
         private void driverTestToolStripMenuItem_Click(object sender, EventArgs e)
@@ -253,15 +250,10 @@ namespace My6705.NET_Framework_4._5
             }
         }
 
-
-
-        
-
         private void btnTest1_Click(object sender, EventArgs e)
         {
             WireTest wt = new WireTest();
             wt.Show();
-
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

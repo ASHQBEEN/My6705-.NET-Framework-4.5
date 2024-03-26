@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using ZedGraph;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace My6705.NET_Framework_4._5
 {
@@ -19,10 +18,10 @@ namespace My6705.NET_Framework_4._5
         private const float TIME_PERIOD = 0.25f;
         private float countSecond = 0f;
 
-        private void DrawPointTick(object sender, EventArgs e)
+        private void DrawPointTick()
         {
-            countSecond += TIME_PERIOD;
             DrawRecievedPoint();
+            countSecond += TIME_PERIOD;
             zgcGraph.AxisChange();
             zgcGraph.Invalidate();
         }
@@ -84,7 +83,7 @@ namespace My6705.NET_Framework_4._5
             graphPane.XAxis.MajorGrid.Color = Color.LightGray;
             graphPane.YAxis.MajorGrid.Color = Color.LightGray;
             //минмальные и максимальные значения на пустом графике (размер сетки)
-            graphPane.XAxis.Scale.Min = 0;
+            graphPane.XAxis.Scale.Min = -0.5f;
             graphPane.XAxis.Scale.Max = 10;
 
             //Стартовый пустой график

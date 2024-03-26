@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace My6705.NET_Framework_4._5
 {
     public partial class WireTest : Form
@@ -51,9 +49,7 @@ namespace My6705.NET_Framework_4._5
             tbTestResult.Text = tests[cmbTests.SelectedIndex].TestResult.ToString();
 
             DrawTestResultCurve();
-            //zgcGraph.RestoreScale(zgcGraph.GraphPane);
-            zgcGraph.AxisChange();
-            zgcGraph.Invalidate();
+            zgcGraph.RestoreScale(zgcGraph.GraphPane);
         }
 
         private void WireTest_Load(object sender, EventArgs e)
@@ -61,8 +57,6 @@ namespace My6705.NET_Framework_4._5
             testHandlerTimer.Tick += TimerTick;
             OpenComPort();
             ChangeLabelCoords(BreakTest.TestPoint);
-
-            testHandlerTimer.Tick += DrawPointTick;
             InitializeGraph();
 
             nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
@@ -97,7 +91,7 @@ namespace My6705.NET_Framework_4._5
         private Test test;
         private int testAxisIndex;
         public double testValue;
-        int stopTimerCounter = 0;
+        int stopTimerTickCounter = 0;
 
         private void Start(object sender, EventArgs e)
         {
@@ -105,16 +99,21 @@ namespace My6705.NET_Framework_4._5
             CreateTest();
             if (test == null) return;
 
-            if (test is StretchTest)
-                ((StretchTest)test).
-                        StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
-
             UpdateMaximumSpeed();
 
             if (rbShearTest.Checked)
+            {
                 AxesController.SetAxisHighVelocity(Machine.Board[1], (double)nudTestSpeed.Value);
-            else
+            }
+            else if (rbStretchTest.Checked)
+            {
                 AxesController.SetAxisHighVelocity(Machine.Board[2], (double)nudTestSpeed.Value);
+                StretchTest.DelayTimeInSeconds = (int)nudWireBreakDelay.Value;
+            }
+            else if (rbBreakTest.Checked)
+            {
+                AxesController.SetAxisHighVelocity(Machine.Board[2], (double)nudTestSpeed.Value);
+            }
 
             UpdateGraph();
 
@@ -126,14 +125,6 @@ namespace My6705.NET_Framework_4._5
         {
             return (cbBoundSet.Checked && (double)nudForceBound.Value
                 <= testValue);
-        }
-
-        private bool DidWireBroke()
-        {
-            int timerSecondsToStop = (int)nudWireBreakDelay.Value;
-            const int TICKS_PER_SECOND = 4;
-            int timerTicksToStop = timerSecondsToStop * TICKS_PER_SECOND;
-            return stopTimerCounter == timerTicksToStop;
         }
 
         private void TestTick()
@@ -158,16 +149,22 @@ namespace My6705.NET_Framework_4._5
             btnLockWire.Enabled = false;
             cbBoundSet.Enabled = false;
             nudForceBound.Enabled = false;
+            rbShearTest.Enabled = false;
+            rbBreakTest.Enabled = false;
+            rbStretchTest.Enabled = false;
+            nudWireBreakDelay.Enabled = false;
+            nudForceBound.Enabled = false;
             tbTestValues.Clear();
             testHandlerTimer.Start();
         }
 
         private void StopTest()
         {
-            if (stopTimerCounter == 0) return;
-            AxesController.StopMovementForAllAxes(Machine.Board);
+            if (stopTimerTickCounter == 0) return;
             testHandlerTimer.Stop();
-            stopTimerCounter = 0;
+            AxesController.StopMovementForAllAxes(Machine.Board);
+
+            stopTimerTickCounter = 0;
             btnStart.Enabled = true;
             KeyboardControl.blockControls = false;
 
@@ -189,6 +186,12 @@ namespace My6705.NET_Framework_4._5
             btnSetTestPoint.Enabled = true;
             cbBoundSet.Enabled = true;
             nudForceBound.Enabled = true;
+            rbBreakTest.Enabled = true;
+            rbShearTest.Enabled = true;
+            rbStretchTest.Enabled = true;
+            nudForceBound.Enabled = true;
+            nudWireBreakDelay.Enabled = true;
+            tbTestResult.Text = test.TestResult.ToString();
             test = null;
         }
 
@@ -304,18 +307,24 @@ namespace My6705.NET_Framework_4._5
             if (nudTestSpeed.Maximum > (decimal)BreakTest.TestSpeed)
                 breakTestSpeed = BreakTest.TestSpeed;
             else
+            {
+                BreakTest.TestSpeed = (double)nudTestSpeed.Maximum;
                 breakTestSpeed = (double)nudTestSpeed.Maximum;
-
+            }
             if (nudTestSpeed.Maximum > (decimal)StretchTest.TestSpeed)
                 stretchTestSpeed = StretchTest.TestSpeed;
             else
+            {
+                StretchTest.TestSpeed = (double)nudTestSpeed.Maximum;
                 stretchTestSpeed = (double)nudTestSpeed.Maximum;
-
+            }
             if (nudTestSpeed.Maximum > (decimal)ShearTest.TestSpeed)
                 shearTestSpeed = ShearTest.TestSpeed;
             else
+            {
+                ShearTest.TestSpeed = (double)nudTestSpeed.Maximum;
                 shearTestSpeed = (double)nudTestSpeed.Maximum;
-
+            }
             if (rbBreakTest.Checked)
                 if (nudTestSpeed.Maximum > (decimal)BreakTest.TestSpeed)
                     nudTestSpeed.Value = (decimal)breakTestSpeed;
@@ -363,11 +372,13 @@ namespace My6705.NET_Framework_4._5
 
         private void TimerTick(object sender, EventArgs e)
         {
+
             TestTick();
+            DrawPointTick();
 
             if (test.MaxValue > testValue)
             {
-                stopTimerCounter++;
+                stopTimerTickCounter++;
             }
 
             if (
@@ -377,5 +388,13 @@ namespace My6705.NET_Framework_4._5
                 )
                 StopTest();
         }
+        private bool DidWireBroke()
+        {
+            const int SECOND_IN_MILLISECONDS = 1000;
+            int TICKS_PER_SECOND = SECOND_IN_MILLISECONDS / testHandlerTimer.Interval;
+            int timerTicksToStop = (int)nudWireBreakDelay.Value * TICKS_PER_SECOND;
+            return stopTimerTickCounter == timerTicksToStop;
+        }
+
     }
 }

@@ -80,6 +80,7 @@ namespace My6705.NET_Framework_4._5
             if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
             ClearInterface();
         }
+
         private void rbStretchTest_CheckedChanged(object sender, EventArgs e)
         {
             if (nudTestSpeed.Maximum > (decimal)stretchTestSpeed)
