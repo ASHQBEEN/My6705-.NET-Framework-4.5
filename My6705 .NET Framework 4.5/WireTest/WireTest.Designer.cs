@@ -36,7 +36,7 @@
             this.rbBreakTest = new System.Windows.Forms.RadioButton();
             this.rbStretchTest = new System.Windows.Forms.RadioButton();
             this.rbShearTest = new System.Windows.Forms.RadioButton();
-            this.tbTestValues = new System.Windows.Forms.RichTextBox();
+            this.rtbTestValues = new System.Windows.Forms.RichTextBox();
             this.cmbTests = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,6 +61,13 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnLoadTestSpeed = new System.Windows.Forms.Button();
             this.btnSaveTestSpeed = new System.Windows.Forms.Button();
+            this.btnSaveTestResults = new System.Windows.Forms.Button();
+            this.btnLoadTestResults = new System.Windows.Forms.Button();
+            this.btnTare = new System.Windows.Forms.Button();
+            this.btnCalibrate = new System.Windows.Forms.Button();
+            this.tCountDown = new System.Windows.Forms.Timer(this.components);
+            this.label8 = new System.Windows.Forms.Label();
+            this.cmbReferenceWeigths = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudForceBound)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWireBreakDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTestSpeed)).BeginInit();
@@ -76,10 +83,10 @@
             // 
             // tbTestResult
             // 
-            this.tbTestResult.Location = new System.Drawing.Point(1256, 463);
+            this.tbTestResult.Location = new System.Drawing.Point(1290, 446);
             this.tbTestResult.Name = "tbTestResult";
             this.tbTestResult.ReadOnly = true;
-            this.tbTestResult.Size = new System.Drawing.Size(144, 26);
+            this.tbTestResult.Size = new System.Drawing.Size(138, 26);
             this.tbTestResult.TabIndex = 1;
             // 
             // cbBoundSet
@@ -151,21 +158,22 @@
             this.rbShearTest.UseVisualStyleBackColor = true;
             this.rbShearTest.CheckedChanged += new System.EventHandler(this.rbShearTest_CheckedChanged);
             // 
-            // tbTestValues
+            // rtbTestValues
             // 
-            this.tbTestValues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbTestValues.Location = new System.Drawing.Point(1120, 404);
-            this.tbTestValues.Name = "tbTestValues";
-            this.tbTestValues.ReadOnly = true;
-            this.tbTestValues.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.tbTestValues.Size = new System.Drawing.Size(280, 53);
-            this.tbTestValues.TabIndex = 7;
-            this.tbTestValues.Text = "";
+            this.rtbTestValues.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.rtbTestValues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtbTestValues.Location = new System.Drawing.Point(1075, 404);
+            this.rtbTestValues.Name = "rtbTestValues";
+            this.rtbTestValues.ReadOnly = true;
+            this.rtbTestValues.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.rtbTestValues.Size = new System.Drawing.Size(179, 100);
+            this.rtbTestValues.TabIndex = 7;
+            this.rtbTestValues.Text = "";
             // 
             // cmbTests
             // 
             this.cmbTests.FormattingEnabled = true;
-            this.cmbTests.Location = new System.Drawing.Point(415, 12);
+            this.cmbTests.Location = new System.Drawing.Point(666, 12);
             this.cmbTests.Name = "cmbTests";
             this.cmbTests.Size = new System.Drawing.Size(268, 28);
             this.cmbTests.TabIndex = 8;
@@ -203,10 +211,10 @@
             // 
             // btnSetTestPoint
             // 
-            this.btnSetTestPoint.Location = new System.Drawing.Point(1267, 512);
+            this.btnSetTestPoint.Location = new System.Drawing.Point(1275, 602);
             this.btnSetTestPoint.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSetTestPoint.Name = "btnSetTestPoint";
-            this.btnSetTestPoint.Size = new System.Drawing.Size(144, 67);
+            this.btnSetTestPoint.Size = new System.Drawing.Size(179, 67);
             this.btnSetTestPoint.TabIndex = 16;
             this.btnSetTestPoint.Text = "Обучить координату";
             this.btnSetTestPoint.UseVisualStyleBackColor = true;
@@ -242,10 +250,10 @@
             // btnMoveToStart
             // 
             this.btnMoveToStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnMoveToStart.Location = new System.Drawing.Point(1101, 512);
+            this.btnMoveToStart.Location = new System.Drawing.Point(1075, 602);
             this.btnMoveToStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMoveToStart.Name = "btnMoveToStart";
-            this.btnMoveToStart.Size = new System.Drawing.Size(152, 67);
+            this.btnMoveToStart.Size = new System.Drawing.Size(179, 67);
             this.btnMoveToStart.TabIndex = 20;
             this.btnMoveToStart.Text = "В точку теста";
             this.btnMoveToStart.UseVisualStyleBackColor = true;
@@ -254,7 +262,7 @@
             // lblCOMValues
             // 
             this.lblCOMValues.AutoSize = true;
-            this.lblCOMValues.Location = new System.Drawing.Point(1214, 381);
+            this.lblCOMValues.Location = new System.Drawing.Point(1089, 381);
             this.lblCOMValues.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCOMValues.Name = "lblCOMValues";
             this.lblCOMValues.Size = new System.Drawing.Size(148, 20);
@@ -264,7 +272,7 @@
             // lblTestResult
             // 
             this.lblTestResult.AutoSize = true;
-            this.lblTestResult.Location = new System.Drawing.Point(1116, 466);
+            this.lblTestResult.Location = new System.Drawing.Point(1298, 424);
             this.lblTestResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTestResult.Name = "lblTestResult";
             this.lblTestResult.Size = new System.Drawing.Size(126, 20);
@@ -274,10 +282,10 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnStart.Location = new System.Drawing.Point(1101, 589);
+            this.btnStart.Location = new System.Drawing.Point(1075, 679);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(152, 77);
+            this.btnStart.Size = new System.Drawing.Size(179, 77);
             this.btnStart.TabIndex = 23;
             this.btnStart.Text = "Начать измерение";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -285,10 +293,10 @@
             // 
             // btnLockWire
             // 
-            this.btnLockWire.Location = new System.Drawing.Point(1265, 589);
+            this.btnLockWire.Location = new System.Drawing.Point(1275, 679);
             this.btnLockWire.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLockWire.Name = "btnLockWire";
-            this.btnLockWire.Size = new System.Drawing.Size(145, 77);
+            this.btnLockWire.Size = new System.Drawing.Size(179, 77);
             this.btnLockWire.TabIndex = 24;
             this.btnLockWire.Text = "Зафиксировать\r\nпроволоку\r\nCAPSLOCK\r\n";
             this.btnLockWire.UseVisualStyleBackColor = true;
@@ -297,7 +305,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(297, 15);
+            this.label7.Location = new System.Drawing.Point(548, 15);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(112, 20);
             this.label7.TabIndex = 25;
@@ -305,7 +313,7 @@
             // 
             // zgcGraph
             // 
-            this.zgcGraph.Location = new System.Drawing.Point(13, 48);
+            this.zgcGraph.Location = new System.Drawing.Point(13, 53);
             this.zgcGraph.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.zgcGraph.Name = "zgcGraph";
             this.zgcGraph.ScrollGrace = 0D;
@@ -446,11 +454,90 @@
             this.btnSaveTestSpeed.UseVisualStyleBackColor = true;
             this.btnSaveTestSpeed.Click += new System.EventHandler(this.btnSaveTestSpeed_Click);
             // 
+            // btnSaveTestResults
+            // 
+            this.btnSaveTestResults.Location = new System.Drawing.Point(93, 7);
+            this.btnSaveTestResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSaveTestResults.Name = "btnSaveTestResults";
+            this.btnSaveTestResults.Size = new System.Drawing.Size(198, 36);
+            this.btnSaveTestResults.TabIndex = 36;
+            this.btnSaveTestResults.Text = "Сохранить результаты";
+            this.btnSaveTestResults.UseVisualStyleBackColor = true;
+            this.btnSaveTestResults.Click += new System.EventHandler(this.btnSaveTestResults_Click);
+            // 
+            // btnLoadTestResults
+            // 
+            this.btnLoadTestResults.Location = new System.Drawing.Point(322, 7);
+            this.btnLoadTestResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLoadTestResults.Name = "btnLoadTestResults";
+            this.btnLoadTestResults.Size = new System.Drawing.Size(198, 36);
+            this.btnLoadTestResults.TabIndex = 37;
+            this.btnLoadTestResults.Text = "Загрузить результаты";
+            this.btnLoadTestResults.UseVisualStyleBackColor = true;
+            this.btnLoadTestResults.Click += new System.EventHandler(this.btnLoadTestResults_Click);
+            // 
+            // btnTare
+            // 
+            this.btnTare.Location = new System.Drawing.Point(1075, 560);
+            this.btnTare.Name = "btnTare";
+            this.btnTare.Size = new System.Drawing.Size(179, 34);
+            this.btnTare.TabIndex = 38;
+            this.btnTare.Text = "Тарирование";
+            this.btnTare.UseVisualStyleBackColor = true;
+            this.btnTare.Click += new System.EventHandler(this.SerialTare);
+            // 
+            // btnCalibrate
+            // 
+            this.btnCalibrate.Location = new System.Drawing.Point(1075, 520);
+            this.btnCalibrate.Name = "btnCalibrate";
+            this.btnCalibrate.Size = new System.Drawing.Size(179, 34);
+            this.btnCalibrate.TabIndex = 39;
+            this.btnCalibrate.Text = "Калибровка";
+            this.btnCalibrate.UseVisualStyleBackColor = true;
+            this.btnCalibrate.Click += new System.EventHandler(this.btnCalibrate_Click);
+            // 
+            // tCountDown
+            // 
+            this.tCountDown.Interval = 1000;
+            this.tCountDown.Tick += new System.EventHandler(this.tCountDown_Tick);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(1299, 513);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(124, 20);
+            this.label8.TabIndex = 41;
+            this.label8.Text = "Вес эталона, г:";
+            // 
+            // cmbReferenceWeigths
+            // 
+            this.cmbReferenceWeigths.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbReferenceWeigths.FormattingEnabled = true;
+            this.cmbReferenceWeigths.Items.AddRange(new object[] {
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "50"});
+            this.cmbReferenceWeigths.Location = new System.Drawing.Point(1302, 536);
+            this.cmbReferenceWeigths.Name = "cmbReferenceWeigths";
+            this.cmbReferenceWeigths.Size = new System.Drawing.Size(121, 28);
+            this.cmbReferenceWeigths.TabIndex = 42;
+            // 
             // WireTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1473, 696);
+            this.ClientSize = new System.Drawing.Size(1473, 774);
+            this.Controls.Add(this.cmbReferenceWeigths);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.btnCalibrate);
+            this.Controls.Add(this.btnTare);
+            this.Controls.Add(this.btnLoadTestResults);
+            this.Controls.Add(this.btnSaveTestResults);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.zgcGraph);
             this.Controls.Add(this.label7);
@@ -461,7 +548,7 @@
             this.Controls.Add(this.btnMoveToStart);
             this.Controls.Add(this.btnSetTestPoint);
             this.Controls.Add(this.cmbTests);
-            this.Controls.Add(this.tbTestValues);
+            this.Controls.Add(this.rtbTestValues);
             this.Controls.Add(this.tbTestResult);
             this.Name = "WireTest";
             this.Text = "Тест прочности";
@@ -490,7 +577,7 @@
         private System.Windows.Forms.RadioButton rbBreakTest;
         private System.Windows.Forms.RadioButton rbStretchTest;
         private System.Windows.Forms.RadioButton rbShearTest;
-        private System.Windows.Forms.RichTextBox tbTestValues;
+        private System.Windows.Forms.RichTextBox rtbTestValues;
         private System.Windows.Forms.ComboBox cmbTests;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -515,5 +602,12 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnLoadTestSpeed;
         private System.Windows.Forms.Button btnSaveTestSpeed;
+        private System.Windows.Forms.Button btnSaveTestResults;
+        private System.Windows.Forms.Button btnLoadTestResults;
+        private System.Windows.Forms.Button btnTare;
+        private System.Windows.Forms.Button btnCalibrate;
+        private System.Windows.Forms.Timer tCountDown;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cmbReferenceWeigths;
     }
 }

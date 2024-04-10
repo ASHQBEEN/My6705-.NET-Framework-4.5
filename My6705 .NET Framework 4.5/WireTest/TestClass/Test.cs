@@ -6,7 +6,7 @@ namespace My6705.NET_Framework_4._5
 {
     public abstract class Test
     {
-        public List<double> Values { get; } = new List<double>(50);
+
         public abstract double TestResult { get; }
         public double MaxValue { get { return Values.Max(); } }
         public double LastValue { get { return Values.Last(); } }
@@ -28,5 +28,6 @@ namespace My6705.NET_Framework_4._5
         {
             return $"{testID}, {TestNameString} {testStart} ";
         }
+        public List<double> Values { get; } = new List<double>(50);
     }
 }

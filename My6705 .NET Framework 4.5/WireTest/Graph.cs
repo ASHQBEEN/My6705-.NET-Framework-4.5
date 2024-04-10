@@ -104,6 +104,11 @@ namespace My6705.NET_Framework_4._5
             else if (rbShearTest.Checked)
                 zgcGraph.GraphPane.Title.Text = "Тест на Сдвиг";
 
+            graphPane.XAxis.Scale.Min = -0.5f;
+            graphPane.XAxis.Scale.Max = 10f;
+            zgcGraph.IsAutoScrollRange = true;
+            //graphPane.YAxis.Scale.Max = 1.2f;
+
             zgcGraph.Refresh();
             zgcGraph.AxisChange();
             zgcGraph.Invalidate();

@@ -27,6 +27,11 @@ namespace My6705.NET_Framework_4._5
             port.Open(); 
         }
 
+        public void Send(string str)
+        {
+            port.Write(str);
+        }
+
         public void Close()
         {
             port.Close();
@@ -44,10 +49,14 @@ namespace My6705.NET_Framework_4._5
             TestValue = Math.Round(TestValue, 1);
         }
 
+        public string ReadReferenceWeight()
+        {
+            return port.ReadLine();
+        }
+
         public string GetLastPortName()
         {
-            int num;
-            return SerialPort.GetPortNames().OrderBy(a => a.Length > 3 && int.TryParse(a.Substring(3), out num) ? num : 0).ToArray().Last();
+            return SerialPort.GetPortNames().OrderBy(a => a.Length > 3 && int.TryParse(a.Substring(3), out int num) ? num : 0).ToArray().Last();
         }
     }
 }

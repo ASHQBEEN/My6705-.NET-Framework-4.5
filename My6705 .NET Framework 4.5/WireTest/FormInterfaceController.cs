@@ -17,89 +17,51 @@ namespace My6705.NET_Framework_4._5
 
         private void ClearInterface()
         {
-            if(rbStretchTest.Checked)
+            if (rbStretchTest.Checked)
                 lblTestResult.Text = labelStretchCaption;
             else
                 lblTestResult.Text = labelForceCaption;
             cmbTests.Text = emptyCmbString;
             tbTestResult.Text = string.Empty;
-            tbTestValues.Text = string.Empty;
+            rtbTestValues.Text = string.Empty;
             UpdateGraph();
         }
 
         private void rbBreakTest_CheckedChanged(object sender, EventArgs e)
         {
-            if (nudTestSpeed.Maximum > (decimal)breakTestSpeed)
-                nudTestSpeed.Value = (decimal)breakTestSpeed;
-            else
-                nudTestSpeed.Value = nudTestSpeed.Maximum;
-            ChangeLabelCoords(BreakTest.TestPoint);
-            cmbTests.Items.Clear();
-            bool noTestsFound = true;
-            foreach (var test in breakTests)
-            {
-                if (test is BreakTest)
-                {
-                    cmbTests.Items.Add(test);
-                    noTestsFound = false;
-                }
-
-                if (noTestsFound) cmbTests.Text = emptyCmbString;
-
-                zgcGraph.GraphPane.Title.Text = "Тест на Разрыв";
-                RollingPointPairList list = new RollingPointPairList(255);
-                LineItem curve = zgcGraph.GraphPane.AddCurve("Граммы", list, pointColor, symbolType);
-                curve.Symbol.Fill.Type = FillType.Solid;
-                curve.Symbol.Size = pointWidth;
-                curve.Line.Width = lineWidth;
-                curve.Line.IsSmooth = true;
-                curve.Line.SmoothTension = 0.2f;
-                zgcGraph.AxisChange();
-            }
-
-            ClearInterface();
+            UpdateTestType(BreakTest.TestPoint, breakTestSpeed, breakTests, test => test is BreakTest);
         }
 
-        private void rbShearTest_CheckedChanged(object sender, EventArgs e)
+        private void UpdateTestType<T>(double[] testPoint, double testSpeed, List<T> tests, Func<T, bool> testCheck) where T : Test
         {
-            if (nudTestSpeed.Maximum > (decimal)shearTestSpeed)
-                nudTestSpeed.Value = (decimal)shearTestSpeed;
+            if (nudTestSpeed.Maximum > (decimal)testSpeed)
+                nudTestSpeed.Value = (decimal)testSpeed;
             else
                 nudTestSpeed.Value = nudTestSpeed.Maximum;
+
             bool noTestsFound = true;
-            ChangeLabelCoords(ShearTest.TestPoint);
+            ChangeLabelCoords(testPoint);
             cmbTests.Items.Clear();
-            foreach (var test in shearTests)
+            foreach (var test in tests)
             {
+                if (testCheck(test))
                 {
-                    if (test is ShearTest)
-                        cmbTests.Items.Add(test);
+                    cmbTests.Items.Add(test);
                     noTestsFound = false;
                 }
             }
             if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
             ClearInterface();
+        }
+
+        private void rbShearTest_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTestType(ShearTest.TestPoint, shearTestSpeed, shearTests, test => test is ShearTest);
         }
 
         private void rbStretchTest_CheckedChanged(object sender, EventArgs e)
         {
-            if (nudTestSpeed.Maximum > (decimal)stretchTestSpeed)
-                nudTestSpeed.Value = (decimal)stretchTestSpeed;
-            else
-                nudTestSpeed.Value = nudTestSpeed.Maximum;
-            bool noTestsFound = true;
-            ChangeLabelCoords(StretchTest.TestPoint);
-            cmbTests.Items.Clear();
-            foreach (var test in stretchTests)
-            {
-                if (test is StretchTest)
-                {
-                    cmbTests.Items.Add(test);
-                    noTestsFound = false;
-                }
-            }
-            if (noTestsFound) cmbTests.Text = "Выберите номер измерения";
-            ClearInterface();
+            UpdateTestType(StretchTest.TestPoint, stretchTestSpeed, stretchTests, test => test is StretchTest);
         }
     }
 }

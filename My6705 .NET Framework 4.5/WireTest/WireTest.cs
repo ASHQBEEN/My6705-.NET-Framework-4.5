@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 namespace My6705.NET_Framework_4._5
 {
     public partial class WireTest : Form
     {
-        //private List<Test> tests = new List<Test>(20);
         private List<BreakTest> breakTests = new List<BreakTest>(10);
         private List<StretchTest> stretchTests = new List<StretchTest>(10);
         private List<ShearTest> shearTests = new List<ShearTest>(10);
@@ -18,6 +19,9 @@ namespace My6705.NET_Framework_4._5
         private readonly string labelForceCaption = "Макс. усилие, г:";
         private readonly string labelStretchCaption = "Растяжение, %";
 
+        private int calibrationCountdownValue;
+        private const int CALIBRATION_COUNTDOWN_VALUE = 12;
+
         public WireTest()
         {
             InitializeComponent();
@@ -27,7 +31,7 @@ namespace My6705.NET_Framework_4._5
 
         private void cmbTests_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbTestValues.Clear();
+            rtbTestValues.Clear();
 
             List<Test> tests = new List<Test>();
             if (rbBreakTest.Checked)
@@ -44,7 +48,7 @@ namespace My6705.NET_Framework_4._5
             }
 
             foreach (var value in tests[cmbTests.SelectedIndex].Values)
-                tbTestValues.AppendText(value.ToString() + '\n');
+                rtbTestValues.AppendText(value.ToString() + '\n');
 
             tbTestResult.Text = tests[cmbTests.SelectedIndex].TestResult.ToString();
 
@@ -54,10 +58,10 @@ namespace My6705.NET_Framework_4._5
 
         private void WireTest_Load(object sender, EventArgs e)
         {
-            testHandlerTimer.Tick += TimerTick;
             OpenComPort();
             ChangeLabelCoords(BreakTest.TestPoint);
             InitializeGraph();
+            cmbReferenceWeigths.SelectedIndex = 0;
 
             nudTestSpeed.Maximum = (decimal)Machine.FastVelocity[2];
             LoadSpeeds();
@@ -129,9 +133,10 @@ namespace My6705.NET_Framework_4._5
 
         private void TestTick()
         {
+            port.Send("w;");
             test.AddTestValue(testValue);
 
-            tbTestValues.AppendText(testValue.ToString() + '\n');
+            rtbTestValues.AppendText(testValue.ToString() + '\n');
             tbTestResult.Text = test.TestResult.ToString();
 
             if (!(test is StretchTest))
@@ -142,30 +147,19 @@ namespace My6705.NET_Framework_4._5
 
         private void StartTestTimer()
         {
-            btnMoveToStart.Enabled = false;
             KeyboardControl.blockControls = true;
-            btnStart.Enabled = false;
-            btnSetTestPoint.Enabled = false;
-            btnLockWire.Enabled = false;
-            cbBoundSet.Enabled = false;
-            nudForceBound.Enabled = false;
-            rbShearTest.Enabled = false;
-            rbBreakTest.Enabled = false;
-            rbStretchTest.Enabled = false;
-            nudWireBreakDelay.Enabled = false;
-            nudForceBound.Enabled = false;
-            tbTestValues.Clear();
+            TurnInterfaceOFF();
+            rtbTestValues.Clear();
             testHandlerTimer.Start();
         }
 
         private void StopTest()
         {
-            if (stopTimerTickCounter == 0) return;
+            //if (stopTimerTickCounter == 0) return;
             testHandlerTimer.Stop();
             AxesController.StopMovementForAllAxes(Machine.Board);
 
             stopTimerTickCounter = 0;
-            btnStart.Enabled = true;
             KeyboardControl.blockControls = false;
 
             if (rbBreakTest.Checked)
@@ -181,6 +175,32 @@ namespace My6705.NET_Framework_4._5
                 shearTests.Add((ShearTest)test);
             }
 
+            TurnInterfaceON();
+            if (test != null)
+            tbTestResult.Text = test.TestResult.ToString();
+            test = null;
+        }
+
+        private void TurnInterfaceOFF()
+        {
+            btnMoveToStart.Enabled = false;
+            btnStart.Enabled = false;
+            btnSetTestPoint.Enabled = false;
+            btnLockWire.Enabled = false;
+            cbBoundSet.Enabled = false;
+            nudForceBound.Enabled = false;
+            rbShearTest.Enabled = false;
+            rbBreakTest.Enabled = false;
+            rbStretchTest.Enabled = false;
+            nudWireBreakDelay.Enabled = false;
+            nudForceBound.Enabled = false;
+            btnCalibrate.Enabled = false;
+            btnTare.Enabled = false;
+        }
+
+        private void TurnInterfaceON()
+        {
+            btnStart.Enabled = true;
             btnMoveToStart.Enabled = true;
             btnLockWire.Enabled = true;
             btnSetTestPoint.Enabled = true;
@@ -190,9 +210,8 @@ namespace My6705.NET_Framework_4._5
             rbShearTest.Enabled = true;
             rbStretchTest.Enabled = true;
             nudForceBound.Enabled = true;
-            nudWireBreakDelay.Enabled = true;
-            tbTestResult.Text = test.TestResult.ToString();
-            test = null;
+            btnTare.Enabled = true;
+            btnCalibrate.Enabled = true;
         }
 
         private void CreateTest()
@@ -271,6 +290,21 @@ namespace My6705.NET_Framework_4._5
         private void testHandlerTimer_Tick(object sender, EventArgs e)
         {
             testValue = port.TestValue;
+            TestTick();
+            DrawPointTick();
+
+            if (test.MaxValue > testValue)
+            {
+                stopTimerTickCounter++;
+            }
+
+            if (
+                DidWireBroke()
+                || AxesController.IfMaximumReached(testAxisIndex)
+                || IsForceBoundReached()
+                )
+                StopTest();
+
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -370,24 +404,6 @@ namespace My6705.NET_Framework_4._5
             UpdateMaximumSpeed();
         }
 
-        private void TimerTick(object sender, EventArgs e)
-        {
-
-            TestTick();
-            DrawPointTick();
-
-            if (test.MaxValue > testValue)
-            {
-                stopTimerTickCounter++;
-            }
-
-            if (
-                DidWireBroke()
-                || AxesController.IfMaximumReached(testAxisIndex)
-                || IsForceBoundReached()
-                )
-                StopTest();
-        }
         private bool DidWireBroke()
         {
             const int SECOND_IN_MILLISECONDS = 1000;
@@ -396,5 +412,64 @@ namespace My6705.NET_Framework_4._5
             return stopTimerTickCounter == timerTicksToStop;
         }
 
+        private void btnSaveTestResults_Click(object sender, EventArgs e)
+        {
+            Test[] tests = null;
+            if (rbBreakTest.Checked)
+                tests = breakTests.ToArray();
+            else if (rbShearTest.Checked)
+                tests = shearTests.ToArray();
+            else if (rbStretchTest.Checked)
+                tests = stretchTests.ToArray();
+
+            SerializedTest.Serialize(tests);
+            SerializedTest.Save();
+        }
+
+        private void btnLoadTestResults_Click(object sender, EventArgs e)
+        {
+            SerializedTest.Load();
+        }
+
+        private void SerialTare(object sender, EventArgs e)
+        {
+            port.Send("t;");
+        }
+
+        private void btnCalibrate_Click(object sender, EventArgs e)
+        {
+            port.Send("c;"); //arduino calibrate
+            Thread.Sleep(250);
+            int calibrationWeight = Convert.ToInt32(cmbReferenceWeigths.Items[cmbReferenceWeigths.SelectedIndex]);
+            port.Send(calibrationWeight.ToString());
+            Thread.Sleep(300);
+            MessageBox.Show(port.ReadReferenceWeight());
+            calibrationCountdownValue = CALIBRATION_COUNTDOWN_VALUE; // Сбрасываем значение обратного отсчета
+            btnCalibrate.Text = calibrationCountdownValue.ToString(); // Устанавливаем начальное значение текста кнопки
+            tCountDown.Start(); // Запускаем таймер
+            TurnInterfaceOFF();
+        }
+
+        private void tCountDown_Tick(object sender, EventArgs e)
+        {
+            if (calibrationCountdownValue > 0)
+            {
+                calibrationCountdownValue--;
+                btnCalibrate.Text = calibrationCountdownValue.ToString();
+            }
+            else
+            {
+                tCountDown.Stop();
+                btnCalibrate.Text = "Калибровка";
+                TurnInterfaceON();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            port.Send("f;");
+            Thread.Sleep(300);
+            MessageBox.Show(port.ReadReferenceWeight());
+        }
     }
 }

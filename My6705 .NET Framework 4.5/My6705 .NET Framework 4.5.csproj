@@ -125,6 +125,7 @@
     <Compile Include="WireTest\Graph.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="WireTest\SerializedTest.cs" />
     <Compile Include="WireTest\TestClass\BreakTest.cs" />
     <Compile Include="WireTest\COMPort.cs" />
     <Compile Include="DLL\Board.cs" />
