@@ -162,22 +162,32 @@ namespace My6705.NET_Framework_4._5
             stopTimerTickCounter = 0;
             KeyboardControl.blockControls = false;
 
-            if (rbBreakTest.Checked)
-            {
-                breakTests.Add((BreakTest)test);
-            }
-            else if (rbStretchTest.Checked)
-            {
-                stretchTests.Add((StretchTest)test);
-            }
-            else if (rbShearTest.Checked)
-            {
-                shearTests.Add((ShearTest)test);
-            }
-
             TurnInterfaceON();
+
             if (test != null)
-            tbTestResult.Text = test.TestResult.ToString();
+                if (test.Values.Count > 0)
+                {
+                    if (rbBreakTest.Checked)
+                    {
+                        breakTests.Add((BreakTest)test);
+                    }
+                    else if (rbStretchTest.Checked)
+                    {
+                        stretchTests.Add((StretchTest)test);
+                    }
+                    else if (rbShearTest.Checked)
+                    {
+                        shearTests.Add((ShearTest)test);
+                    }
+                    cmbTests.Items.Add(test);
+                    tbTestResult.Text = test.TestResult.ToString();
+                }
+                else
+                {
+                    test.TerminateTest();
+                    return;
+                }
+
             test = null;
         }
 
@@ -220,20 +230,17 @@ namespace My6705.NET_Framework_4._5
             {
                 test = new BreakTest();
                 testAxisIndex = 2;
-                cmbTests.Items.Add(test);
             }
             else if (rbStretchTest.Checked)
             {
                 test = new StretchTest();
                 ((StretchTest)test).StartPosition = AxesController.GetAxisCommandPosition(Machine.Board[testAxisIndex]);
                 testAxisIndex = 2;
-                cmbTests.Items.Add(test);
             }
             else if (rbShearTest.Checked)
             {
                 test = new ShearTest();
                 testAxisIndex = 1;
-                cmbTests.Items.Add(test);
             }
         }
 

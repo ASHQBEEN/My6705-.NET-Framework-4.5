@@ -313,7 +313,7 @@
             // 
             // zgcGraph
             // 
-            this.zgcGraph.Location = new System.Drawing.Point(13, 53);
+            this.zgcGraph.Location = new System.Drawing.Point(13, 62);
             this.zgcGraph.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.zgcGraph.Name = "zgcGraph";
             this.zgcGraph.ScrollGrace = 0D;
@@ -467,6 +467,7 @@
             // 
             // btnLoadTestResults
             // 
+            this.btnLoadTestResults.Enabled = false;
             this.btnLoadTestResults.Location = new System.Drawing.Point(322, 7);
             this.btnLoadTestResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLoadTestResults.Name = "btnLoadTestResults";

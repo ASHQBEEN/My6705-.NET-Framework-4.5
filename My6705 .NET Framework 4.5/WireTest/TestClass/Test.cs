@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace My6705.NET_Framework_4._5
 {
@@ -13,6 +14,7 @@ namespace My6705.NET_Framework_4._5
         public readonly int testID;
         public abstract string TestNameString {  get; }
         public DateTime testStart;
+        public abstract void TerminateTest();
 
         public Test(int testID)
         {
